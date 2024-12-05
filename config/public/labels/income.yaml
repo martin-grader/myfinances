@@ -1,0 +1,7 @@
+label: 'Income'
+sublabels:
+    Shares:
+      - 'Stock Options'
+      - 'Shares'
+    Salary:
+      - 'Salary from company'

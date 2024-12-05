@@ -1,0 +1,10 @@
+- Account: 'Example'
+  Files:
+    - 'data/public/transactions.csv'
+  Delimiter: ','
+  Decimal: '.'
+  DateKey: 'Date'
+  DateFormat: '%Y-%m-%d'
+  AmountKey: 'Amount'
+  TextKeys:
+    - 'Note'

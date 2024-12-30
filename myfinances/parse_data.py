@@ -8,13 +8,10 @@ from pandera.typing import DataFrame, Series
 from myfinances.config_utils import InputConfig, to_input_config
 
 
-class TransactionRaw(pa.DataFrameModel):
+class Transaction(pa.DataFrameModel):
     Date: Series[pd.Timestamp]
     Text: Series[str]
     Amount: Series[float]
-
-
-class Transaction(TransactionRaw):
     Account: Series[pd.CategoricalDtype]
 
 
@@ -23,24 +20,21 @@ def load_data(inputs_config: Path) -> DataFrame[Transaction]:
     inputs: list[InputConfig] = to_input_config(inputs_config)
     dfs: list[DataFrame[Transaction]] = []
     for input_config in inputs:
-        for files in input_config.Files:
-            for file in Path().cwd().rglob(files):
-                df_raw: pd.DataFrame = load_generic(
-                    file, input_config.Delimiter, input_config.Decimal
-                )
-                amount: pd.Series = parse_amount(df_raw, input_config.AmountKey)
-                date: pd.Series = parse_dates(df_raw, input_config.DateKey, input_config.DateFormat)
-                text: pd.Series = parse_text(df_raw, input_config.TextKeys)
-                df: DataFrame[TransactionRaw] = pd.DataFrame(
-                    {
-                        TransactionRaw.Date: date,
-                        TransactionRaw.Text: text,
-                        TransactionRaw.Amount: amount,
-                    }
-                )
-                df[Transaction.Account] = input_config.Account
-                df_with_account = transform(df, input_config.Account)
-                dfs.append(df_with_account)
+        data_files: List[Path] = get_all_data_files(input_config)
+        for file in data_files:
+            df_raw: pd.DataFrame = load_generic(file, input_config.Delimiter, input_config.Decimal)
+            amount: pd.Series = parse_amount(df_raw, input_config.AmountKey)
+            date: pd.Series = parse_dates(df_raw, input_config.DateKey, input_config.DateFormat)
+            text: pd.Series = parse_text(df_raw, input_config.TextKeys)
+            df: DataFrame[Transaction] = pd.DataFrame(
+                {
+                    Transaction.Date: date,
+                    Transaction.Text: text,
+                    Transaction.Amount: amount,
+                    Transaction.Account: input_config.Account,
+                }
+            )
+            dfs.append(df)
 
     df: DataFrame[Transaction] = pd.concat(dfs)  # type: ignore
 
@@ -49,9 +43,13 @@ def load_data(inputs_config: Path) -> DataFrame[Transaction]:
     return df
 
 
-# @pa.check_types
-def transform(df: DataFrame[TransactionRaw], account: str) -> DataFrame[Transaction]:
-    return df.assign(Account=account)
+def get_all_data_files(input_config: InputConfig) -> list[Path]:
+    all_data_files: list[Path] = []
+    for files in input_config.Files:
+        for file in Path().cwd().rglob(files):
+            all_data_files.append(file)
+
+    return all_data_files
 
 
 def load_generic(file_name: Path, delimiter: str, decimal: str) -> pd.DataFrame:
@@ -63,10 +61,10 @@ def load_generic(file_name: Path, delimiter: str, decimal: str) -> pd.DataFrame:
 
 
 def parse_amount(df: pd.DataFrame, amount_key: str) -> pd.Series:
-    amount: pd.Series = df[amount_key]
+    amount: pd.Series = df.loc[:, amount_key]
     if amount.dtype != float:
         locale.setlocale(locale.LC_NUMERIC, '')
-        amount = amount.apply(lambda v: locale.atof(v))
+        amount: pd.Series = amount.apply(lambda v: locale.atof(v))
     return amount
 
 
@@ -77,5 +75,5 @@ def parse_dates(df: pd.DataFrame, date_key: str, date_model: str) -> pd.Series:
 
 def parse_text(df: pd.DataFrame, text_keys: list[str]) -> pd.Series:
     df.fillna('-', inplace=True)
-    text: pd.Series = df[text_keys].agg(';'.join, axis=1)
+    text: pd.Series = df.loc[:, text_keys].agg(';'.join, axis=1)
     return text

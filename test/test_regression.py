@@ -28,4 +28,4 @@ def monthly_costs(df_all_labels) -> MonthlyCosts:
 
 def test_monthly_costs_regression(monthly_costs) -> None:
     np.testing.assert_equal(monthly_costs.expenses, 0.0)
-    np.testing.assert_equal(monthly_costs.income, 5100.0)
+    np.testing.assert_equal(monthly_costs.income, 5500.0)

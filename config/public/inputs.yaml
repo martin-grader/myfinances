@@ -1,6 +1,6 @@
-- Account: 'Example'
+- Account: 'BankA'
   Files:
-    - 'data/public/transactions.csv'
+    - 'data/public/transactions_bank_a.csv'
   Delimiter: ','
   Decimal: '.'
   DateKey: 'Date'
@@ -8,3 +8,14 @@
   AmountKey: 'Amount'
   TextKeys:
     - 'Note'
+
+- Account: 'BankB'
+  Files:
+    - 'data/public/transactions_bank_b*.csv'
+  Delimiter: ';'
+  Decimal: ','
+  DateKey: 'Date'
+  DateFormat: '%d.%m.%y'
+  AmountKey: 'Value'
+  TextKeys:
+    - 'Notes'

@@ -14,6 +14,9 @@ class MonthlyTransactions:
         self.month_split_day: int = month_split_day
         self.date_to_start: pd.Timestamp = self._day_to_start(df)
         self.date_to_end: pd.Timestamp = self._day_to_end(df)
+
+        print(self.date_to_start)
+        print(self.date_to_end)
         self.months_to_analyze: int = self._get_months_to_analyze()
         self.df: DataFrame[TransactionLabeled] = df.loc[
             (df[TransactionLabeled.Date] >= self.date_to_start)
@@ -31,12 +34,10 @@ class MonthlyTransactions:
             .max()
         )
 
-        if first_date.day < self.month_split_day:
-            first_month: int = first_date.month
-        else:
-            first_month: int = first_date.month + 1
+        if first_date.day >= self.month_split_day:
+            first_date: pd.Timestamp = first_date + pd.DateOffset(months=1)
 
-        return pd.Timestamp(datetime.date(first_date.year, first_month, self.month_split_day))  # type: ignore
+        return pd.Timestamp(datetime.date(first_date.year, first_date.month, self.month_split_day))  # type: ignore
 
     def _day_to_end(self, df) -> pd.Timestamp:
         last_date: pd.Timestamp = (
@@ -44,13 +45,12 @@ class MonthlyTransactions:
             .max()
             .min()
         )
-
         if last_date.day < self.month_split_day:
-            first_month: int = last_date.month - 1
-        else:
-            first_month: int = last_date.month
+            last_date: pd.Timestamp = last_date - pd.DateOffset(months=1)
 
-        return pd.Timestamp(datetime.date(last_date.year, first_month, self.month_split_day - 1))  # type:ignore
+        return pd.Timestamp(
+            datetime.date(last_date.year, last_date.month, self.month_split_day - 1)
+        )  # type:ignore
 
     def _get_months_to_analyze(self) -> int:
         time_period: pd.tseries.offsets.BaseOffset = self.date_to_end.to_period(  # type:ignore

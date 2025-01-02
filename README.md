@@ -1,3 +1,4 @@
+![CI passing](https://github.com/martin-grader/myfinances/actions/workflows/ci.yaml/badge.svg)
 # MyFinances
 A tool to get an overview of the own finances by categorizing and manipulating transactions
 

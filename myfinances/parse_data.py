@@ -66,7 +66,7 @@ def parse_amount(df: pd.DataFrame, amount_key: str) -> pd.Series:
     amount: pd.Series = df.loc[:, amount_key]
     if amount.dtype != float:
         locale.setlocale(locale.LC_NUMERIC, '')
-        amount: pd.Series = amount.apply(lambda v: locale.atof(v))
+        amount: pd.Series = amount.apply(lambda v: locale.atof(v))  # type:ignore
     return amount
 
 

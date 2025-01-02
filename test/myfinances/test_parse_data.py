@@ -29,7 +29,7 @@ a{d}b{d}c{d}d
     ],
     indirect=True,
 )
-def test_generic(transaction_file) -> None:
+def test_load_generic(transaction_file) -> None:
     df: pd.DataFrame = prsd.load_generic(
         transaction_file['file_name'], transaction_file['delimiter'], transaction_file['decimal']
     )
@@ -47,4 +47,24 @@ def df_amount() -> pd.DataFrame:
 def test_parse_amount(df_amount, key) -> None:
     df: pd.Series = prsd.parse_amount(df_amount, key)
     df_expected: pd.Series = pd.Series([1.0, 2.0], name=key)
+    pd.testing.assert_series_equal(df, df_expected)
+
+
+@pytest.fixture
+def df_dates() -> pd.DataFrame:
+    df: pd.DataFrame = pd.DataFrame({'a': ['04-10-2023'], 'b': ['04-10-23']})
+    return df
+
+
+@pytest.mark.parametrize(('key', 'model'), [('a', '%d-%m-%Y'), ('b', '%d-%m-%y')])
+def test_parse_dates(df_dates, key, model) -> None:
+    df: pd.Series = prsd.parse_dates(df_dates, key, model)
+    df_expected: pd.Series = pd.Series([pd.Timestamp(year=2023, month=10, day=4)], name=key)
+    pd.testing.assert_series_equal(df, df_expected)
+
+
+def test_parse_text() -> None:
+    df_unprocessed: pd.DataFrame = pd.DataFrame({'a': ['a', pd.NaT], 'b': ['b', 'c']})
+    df: pd.Series = prsd.parse_text(df_unprocessed, ['a', 'b'])
+    df_expected: pd.Series = pd.Series(['a;b', '-;c'])
     pd.testing.assert_series_equal(df, df_expected)

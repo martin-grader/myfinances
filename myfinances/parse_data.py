@@ -1,4 +1,3 @@
-import locale
 from pathlib import Path
 
 import pandas as pd
@@ -26,7 +25,7 @@ def load_data(inputs_config: Path) -> DataFrame[Transaction]:
             df_raw: pd.DataFrame = load_generic(file, input_config.Delimiter, input_config.Decimal)
             date: pd.Series = parse_dates(df_raw, input_config.DateKey, input_config.DateFormat)
             text: pd.Series = parse_text(df_raw, input_config.TextKeys)
-            amount: pd.Series = parse_amount(df_raw, input_config.AmountKey)
+            amount: pd.Series = parse_amount(df_raw, input_config.AmountKey, input_config.Decimal)
             df: DataFrame[Transaction] = pd.DataFrame(
                 {
                     Transaction.Date: date,
@@ -56,17 +55,21 @@ def get_all_data_files(input_config: InputConfig) -> list[Path]:
 def load_generic(file_name: Path, delimiter: str, decimal: str) -> pd.DataFrame:
     log.info(f'Loading {file_name.name}')
     df: pd.DataFrame = pd.read_csv(
-        file_name, delimiter=delimiter, decimal=decimal, encoding='iso-8859-1'
+        file_name,
+        delimiter=delimiter,
+        decimal=decimal,
+        encoding='iso-8859-1',
     )
     df.dropna(axis=1, how='all', inplace=True)
     return df
 
 
-def parse_amount(df: pd.DataFrame, amount_key: str) -> pd.Series:
+def parse_amount(df: pd.DataFrame, amount_key: str, decimal: str) -> pd.Series:
     amount: pd.Series = df.loc[:, amount_key]
     if amount.dtype != float:
-        locale.setlocale(locale.LC_NUMERIC, '')
-        amount: pd.Series = amount.apply(lambda v: locale.atof(v))  # type:ignore
+        amount: pd.Series = amount.str.replace('.', '')
+        amount: pd.Series = amount.str.replace(decimal, '.')
+        amount: pd.Series = amount.astype(float)
     return amount
 
 

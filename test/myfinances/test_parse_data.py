@@ -45,7 +45,7 @@ def df_amount() -> pd.DataFrame:
 
 @pytest.mark.parametrize('key', ['a', 'b'])
 def test_parse_amount(df_amount, key) -> None:
-    df: pd.Series = prsd.parse_amount(df_amount, key)
+    df: pd.Series = prsd.parse_amount(df_amount, key, ',')
     df_expected: pd.Series = pd.Series([1.0, 2.0], name=key)
     pd.testing.assert_series_equal(df, df_expected)
 

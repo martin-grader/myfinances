@@ -38,11 +38,13 @@ Labeling (here: all yaml files in `config/public/labels`):
 <br>
 This configuration allows to change the text of transactions. This might help categorization.
 <br>
-See the example [configuration](https://github.com/martin-grader/myfinances/tree/main/config/public/rename_transactions.yaml) (`config/public/rename_transactions.yaml`) on how to rename a wrongly named transaction.
+See the example <a href='https://github.com/martin-grader/myfinances/blob/main/config/public/rename_transactions.yaml'>configuration</a> (`config/public/rename_transactions.yaml`) on how to rename a wrongly named transaction.
 </details>
 
-Drop transactions from the analysis (here: `config/public/drop_transactions.yaml`)
-
+<details>
+<summary>Drop transactions</summary>
+`config/public/drop_transactions.yaml`
+</details>
 
 ## Analysis (optional)
 Provides an overview of monthly expenses by label.

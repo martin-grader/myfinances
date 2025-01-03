@@ -15,6 +15,7 @@ def df_all_labels() -> DataFrame[TransactionLabeled]:
             'inputs_config': 'public/inputs.yaml',
             'label_config_root': 'public/labels',
             'rename_transactions_config': 'public/rename_transactions.yaml',
+            'drop_transactions_config': 'public/drop_transactions.yaml',
         }  # type: ignore
     )
     config_paths = ConfigPaths(configs)

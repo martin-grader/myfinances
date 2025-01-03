@@ -43,7 +43,9 @@ See the example <a href='https://github.com/martin-grader/myfinances/blob/main/c
 
 <details>
 <summary>Drop transactions</summary>
-`config/public/drop_transactions.yaml`
+This configuration allows to drop transactions before labeling happens. This avoids unnecessary work on transactions that are not of interest.
+<br>
+See the example <a href='https://github.com/martin-grader/myfinances/blob/main/config/public/drop_transactions.yaml'>configuration</a> (`config/public/drop_transactions.yaml`) on how to drop unwanted transaction.
 </details>
 
 ## Analysis (optional)

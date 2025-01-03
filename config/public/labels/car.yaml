@@ -1,0 +1,10 @@
+
+label: 'Car'
+sublabels:
+    Repair:
+      - 'Car repair'
+    Insurance:
+      - 'Insurance car'
+    Fuel:
+      - 'Diesel'
+      - 'Gasoline'

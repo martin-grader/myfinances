@@ -1,10 +1,14 @@
 ![CI passing](https://github.com/martin-grader/myfinances/actions/workflows/ci.yaml/badge.svg)
 # MyFinances
-A tool to get an overview of the own finances by categorizing and manipulating csv file based transactions.
+A tool to analyze personal finances by categorizing and manipulating csv file based transactions. Specifically:
+- Categorize transactions (by hand).
+- Group the transactions by month.
+- Estimate monthly expenses by category.
+- Manipulate transactions by removing or adding or renaming.
 
 # Installation
-[Install poetry](https://python-poetry.org/docs/#installation)
-`poetry install`
+Requires python 3.12 and [poetry](https://python-poetry.org/docs/#installation).
+Install required dependencies with `poetry install` and you are good to go.
 
 # Usage
 - Save the transactions to analyze with this tool as `.csv` file.
@@ -29,8 +33,15 @@ Labeling (here: all yaml files in `config/public/labels`):
 
 ## Configurations (optional)
 
-Renaming transactions (here: `config/public/rename_transactions.yaml`)
-Dropping transactions from the analysis (here: `config/public/drop_transactions.yaml`)
+<details>
+<summary>Rename transactions</summary>
+<br>
+This configuration allows to change the text of transactions. This might help categorization.
+<br>
+See the example [configuration](https://github.com/martin-grader/myfinances/tree/main/config/public/rename_transactions.yaml) (`config/public/rename_transactions.yaml`) on how to rename a wrongly named transaction.
+</details>
+
+Drop transactions from the analysis (here: `config/public/drop_transactions.yaml`)
 
 
 ## Analysis (optional)

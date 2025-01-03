@@ -1,6 +1,6 @@
 inputs_config: 'public/inputs.yaml'
 label_config_root: 'public/labels'
-#rename_transactions_config: 'public/rename_transactions.yaml'
+rename_transactions_config: 'public/rename_transactions.yaml'
 #drop_transactions_config: 'public/drop_transactions.yaml'
 #drop_configs:
   #- 'public/drop_candidates_future.yaml'

@@ -108,17 +108,6 @@ class RenameConfigs(BaseModel):
     transactions: list[RenameConfig]
 
 
-def to_config(config_file: Path, config_definition):
-    config: dict = load_yaml(config_file)
-    ta = TypeAdapter(config_definition)
-    try:
-        rename_config: RenameConfigs = ta.validate_python(config)
-    except ValidationError as e:
-        log.error(e.errors())
-        raise
-    return rename_config
-
-
 class InputConfig(BaseModel):
     Account: str
     Files: list[str]
@@ -130,12 +119,12 @@ class InputConfig(BaseModel):
     TextKeys: list[str]
 
 
-def to_input_config(config_file: Path) -> list[InputConfig]:
+def to_config(config_file: Path, config_definition):
     config: dict = load_yaml(config_file)
-    ta = TypeAdapter(list[InputConfig])
+    ta = TypeAdapter(config_definition)
     try:
-        input_config: list[InputConfig] = ta.validate_python(config)
+        rename_config = ta.validate_python(config)
     except ValidationError as e:
         log.error(e.errors())
         raise
-    return input_config
+    return rename_config

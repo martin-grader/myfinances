@@ -5,7 +5,7 @@ import pandera as pa
 from loguru import logger as log
 from pandera.typing import DataFrame, Series
 
-from myfinances.config_utils import InputConfig, to_input_config
+from myfinances.config_utils import InputConfig, to_config
 
 
 class Transaction(pa.DataFrameModel):
@@ -17,7 +17,7 @@ class Transaction(pa.DataFrameModel):
 
 @pa.check_types
 def load_data(inputs_config: Path) -> DataFrame[Transaction]:
-    inputs: list[InputConfig] = to_input_config(inputs_config)
+    inputs: list[InputConfig] = to_config(inputs_config, list[InputConfig])
     dfs: list[DataFrame[Transaction]] = []
     for input_config in inputs:
         data_files: list[Path] = get_all_data_files(input_config)

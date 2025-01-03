@@ -20,6 +20,6 @@ def rename_transactions(
 def rename_transaction(
     df: DataFrame[Transaction], old_text: str, new_text: str
 ) -> DataFrame[Transaction]:
-    rows_to_drop: pd.Series = get_rows_by_exact_string(df, old_text)
-    df.loc[rows_to_drop, Transaction.Text] = new_text
+    rows_to_rename: pd.Series = get_rows_by_exact_string(df, old_text)
+    df.loc[rows_to_rename, Transaction.Text] = new_text
     return df

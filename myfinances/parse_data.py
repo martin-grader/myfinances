@@ -61,7 +61,6 @@ def load_generic(file_name: Path, delimiter: str, decimal: str) -> pd.DataFrame:
         encoding='iso-8859-1',
     )
     df.dropna(axis=1, how='all', inplace=True)
-    # print(df)
     return df
 
 
@@ -76,7 +75,6 @@ def parse_amount(df: pd.DataFrame, amount_key: str, decimal: str) -> pd.Series:
 
 def parse_dates(df: pd.DataFrame, date_key: str, date_model: str) -> pd.Series:
     date: pd.Series = pd.to_datetime(df[date_key], format=date_model)
-    # print(date)
     return date
 
 

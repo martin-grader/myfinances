@@ -36,21 +36,15 @@ def main() -> None:
 
 def get_labled_data(configs_paths) -> DataFrame[TransactionLabeled]:
     transactions_all: DataFrame[Transaction] = load_data(configs_paths.inputs_config)
-    if configs_paths.rename_config.is_file():
-        transactions_renamed: DataFrame[Transaction] = rename_transactions(
-            transactions_all, configs_paths.rename_config
-        )
-    else:
-        transactions_renamed: DataFrame[Transaction] = transactions_all
-    if configs_paths.drop_transactions_config.is_file():
-        transactions_relevant: DataFrame[Transaction] = drop_data(
-            transactions_renamed, configs_paths.drop_transactions_config
-        )
-    else:
-        transactions_relevant: DataFrame[Transaction] = transactions_renamed
+    transactions_renamed: DataFrame[Transaction] = rename_transactions(
+        transactions_all, configs_paths.rename_config
+    )
+    transactions_relevant: DataFrame[Transaction] = drop_data(
+        transactions_renamed, configs_paths.drop_transactions_config
+    )
     transactions_labled: DataFrame[TransactionLabeled] = set_all_labels(
         transactions_relevant, configs_paths.label_configs
-    )  # type:ignore
+    )
     return transactions_labled
 
 

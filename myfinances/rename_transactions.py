@@ -11,9 +11,12 @@ from myfinances.utils import get_rows_by_exact_string
 def rename_transactions(
     df: DataFrame[Transaction], rename_transaction_config: Path
 ) -> DataFrame[Transaction]:
-    rename_transactions_class: RenameConfigs = to_config(rename_transaction_config, RenameConfigs)
-    for transaction in rename_transactions_class.transactions:
-        rename_transaction(df, transaction.old_text, transaction.new_text)
+    if rename_transaction_config.is_file():
+        rename_transactions_class: RenameConfigs = to_config(
+            rename_transaction_config, RenameConfigs
+        )
+        for transaction in rename_transactions_class.transactions:
+            rename_transaction(df, transaction.old_text, transaction.new_text)
     return df
 
 

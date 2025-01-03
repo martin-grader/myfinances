@@ -54,6 +54,12 @@ class DropLabels(TransactionLabelsPrototype):
         ]
 
 
+class AddConfig(BaseModel):
+    Label: str
+    Sublabel: str
+    Amount: float
+
+
 class AddLabels(TransactionLabelsPrototype):
     def __init__(self, config_file) -> None:
         super().__init__(config_file)
@@ -84,12 +90,6 @@ def to_label_config(config: dict) -> LabelConfig:
     return label_config
 
 
-class AddConfig(BaseModel):
-    Label: str
-    Sublabel: str
-    Amount: float
-
-
 def to_add_config(config: dict) -> AddConfig:
     try:
         add_config: AddConfig = AddConfig(**config)
@@ -108,10 +108,11 @@ class RenameConfigs(BaseModel):
     transactions: list[RenameConfig]
 
 
-def to_rename_config(config_file: Path) -> RenameConfigs:
+def to_config(config_file: Path, config_definition):
     config: dict = load_yaml(config_file)
+    ta = TypeAdapter(config_definition)
     try:
-        rename_config: RenameConfigs = RenameConfigs(**config)
+        rename_config: RenameConfigs = ta.validate_python(config)
     except ValidationError as e:
         log.error(e.errors())
         raise

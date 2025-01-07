@@ -20,6 +20,7 @@ loguru = "^0.7.2"
 pydantic = "^2.9.2"
 pyyaml = "^6.0.2"
 requests = "^2.32.3"
+hypothesis = "^6.123.7"
 
 [tool.poetry.group.dev.dependencies]
 pytest-ruff = "^0.4.1"

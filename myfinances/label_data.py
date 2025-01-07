@@ -1,8 +1,8 @@
 # from typing import Literal
-import sys
 from pathlib import Path
 
 import pandas as pd
+import pandera as pa
 from loguru import logger as log
 from pandera.typing import DataFrame, Series
 
@@ -12,27 +12,24 @@ from myfinances.utils import get_rows_by_string
 
 
 class TransactionLabeled(Transaction):
-    Label: Series[pd.CategoricalDtype]
+    Label: Series[str]
     Sublabel: Series[str]
 
 
-# @pa.check_types
+@pa.check_types
 def set_all_labels(
     df: DataFrame[Transaction], label_configs: list[Path]
 ) -> DataFrame[TransactionLabeled]:
-    df_with_labels: DataFrame[TransactionLabeled] = prepare_labels(df)
+    df_with_labels: DataFrame[TransactionLabeled] = add_empty_labels_columns(df)
     df_all_labels_set: DataFrame[TransactionLabeled] = set_labels_by_config(
         df_with_labels, label_configs
     )
-    if df_all_labels_set[TransactionLabeled.Label].isna().sum() > 0:
-        log.error('Found unlabled transactions:')
-        log.error(df_all_labels_set[df_all_labels_set[TransactionLabeled.Label].isna()])
-        sys.exit()
+    check_for_unlabeled_transactions(df_all_labels_set)
 
     return df_all_labels_set
 
 
-def prepare_labels(df: DataFrame[Transaction]) -> DataFrame[TransactionLabeled]:
+def add_empty_labels_columns(df: DataFrame[Transaction]) -> DataFrame[TransactionLabeled]:
     df = df.assign(Label=None)  # type: ignore
     df = df.assign(Sublabel=None)  # type: ignore
     return df  # type: ignore
@@ -49,16 +46,31 @@ def set_labels_by_config(
     return df
 
 
-def set_string_label(df, string, label, sublabel) -> DataFrame[TransactionLabeled]:
-    to_label = get_rows_by_string(df, string)
-    if any(df[to_label][TransactionLabeled.Label].notna()):
-        log.error('Error: Found duplicated labels!')
-        log.error(label, sublabel)
-        log.error(df[to_label].to_string())
-        raise KeyError
+def set_string_label(
+    df: DataFrame[TransactionLabeled], identifier: str, label: str, sublabel: str
+) -> DataFrame[TransactionLabeled]:
+    to_label: pd.Series = get_rows_by_string(df, identifier)
+    check_for_duplicated_labels(df, to_label, label, sublabel)
     df.loc[to_label, TransactionLabeled.Label] = label
     df.loc[to_label, TransactionLabeled.Sublabel] = sublabel
     log.debug(df[to_label])
     log.debug('Labled ' + str(to_label.sum()) + ' entries with ' + label + '/' + sublabel)
 
     return df
+
+
+def check_for_duplicated_labels(
+    df: DataFrame[TransactionLabeled], to_label: pd.Series, label: str, sublabel: str
+) -> None:
+    if any(df[to_label][TransactionLabeled.Label].notna()):
+        log.error('Error: Found duplicated labels!')
+        log.error(label, sublabel)
+        log.error(df[to_label].to_string())
+        raise KeyError
+
+
+def check_for_unlabeled_transactions(df) -> None:
+    if df[TransactionLabeled.Label].isna().sum() > 0:
+        log.error('Found unlabled transactions:')
+        log.error(df[df[TransactionLabeled.Label].isna()])
+        raise KeyError

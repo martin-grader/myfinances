@@ -12,7 +12,7 @@ class Transaction(pa.DataFrameModel):
     Date: Series[pd.Timestamp]
     Text: Series[str]
     Amount: Series[float]
-    Account: Series[pd.CategoricalDtype]
+    Account: Series[str]
 
 
 @pa.check_types
@@ -37,8 +37,6 @@ def load_data(inputs_config: Path) -> DataFrame[Transaction]:
             dfs.append(df)
 
     df: DataFrame[Transaction] = pd.concat(dfs)  # type: ignore
-
-    df[Transaction.Account] = pd.Categorical(df['Account'])
 
     return df
 

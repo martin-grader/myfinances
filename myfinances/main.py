@@ -39,7 +39,6 @@ def get_labled_data(configs_paths) -> DataFrame[TransactionLabeled]:
     transactions_renamed: DataFrame[Transaction] = rename_transactions(
         transactions_all, configs_paths.rename_config
     )
-    print(configs_paths.drop_transactions_config)
     transactions_relevant: DataFrame[Transaction] = drop_data(
         transactions_renamed, configs_paths.drop_transactions_config
     )

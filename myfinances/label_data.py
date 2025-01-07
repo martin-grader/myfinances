@@ -62,7 +62,7 @@ def set_string_label(
 def check_for_duplicated_labels(
     df: DataFrame[TransactionLabeled], to_label: pd.Series, label: str, sublabel: str
 ) -> None:
-    if any(df[to_label][TransactionLabeled.Label].notna()):
+    if any(df.loc[to_label, TransactionLabeled.Label].notna()):
         log.error('Error: Found duplicated labels!')
         log.error(label, sublabel)
         log.error(df[to_label].to_string())

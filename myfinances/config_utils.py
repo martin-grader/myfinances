@@ -33,17 +33,6 @@ class TransactionLabelsPrototype:
         self.transactions: list[Label] = []
 
 
-class TransactionLabels(TransactionLabelsPrototype):
-    def __init__(self, config_file) -> None:
-        super().__init__(config_file)
-        transaction_config: LabelConfig = to_label_config(self.config)
-        self.transactions: list[Label] = [
-            Label(transaction_config.label, sublabel, identifier)
-            for sublabel, identifiers in transaction_config.sublabels.items()
-            for identifier in identifiers
-        ]
-
-
 class DropLabels(TransactionLabelsPrototype):
     def __init__(self, config_file) -> None:
         super().__init__(config_file)
@@ -79,15 +68,6 @@ class AddLabels(TransactionLabelsPrototype):
 class LabelConfig(BaseModel):
     label: str
     sublabels: dict[str, list[str]]
-
-
-def to_label_config(config: dict) -> LabelConfig:
-    try:
-        label_config: LabelConfig = LabelConfig(**config)
-    except ValidationError as e:
-        log.error(e.errors())
-        raise
-    return label_config
 
 
 def to_add_config(config: dict) -> AddConfig:

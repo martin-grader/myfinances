@@ -41,22 +41,20 @@ def set_labels_by_config(
     for config_file in label_config_files:
         transaction_labels = TransactionLabels(config_file)
         for label in transaction_labels.transactions:
-            df = set_string_label(df, label.Identifier, label.Label, label.Sublabel)
+            set_label(df, label.Identifier, label.Label, label.Sublabel)
 
     return df
 
 
-def set_string_label(
+def set_label(
     df: DataFrame[TransactionLabeled], identifier: str, label: str, sublabel: str
-) -> DataFrame[TransactionLabeled]:
+) -> None:
     to_label: pd.Series = get_rows_by_string(df, identifier)
     check_for_duplicated_labels(df, to_label, label, sublabel)
     df.loc[to_label, TransactionLabeled.Label] = label
     df.loc[to_label, TransactionLabeled.Sublabel] = sublabel
     log.debug(df[to_label])
     log.debug('Labled ' + str(to_label.sum()) + ' entries with ' + label + '/' + sublabel)
-
-    return df
 
 
 def check_for_duplicated_labels(

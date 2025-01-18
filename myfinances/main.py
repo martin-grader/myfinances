@@ -5,6 +5,7 @@ import pandas as pd
 from loguru import logger as log
 from pandera.typing import DataFrame
 
+from myfinances.dashboard import Dashboard
 from myfinances.drop_data import drop_data
 from myfinances.label_data import TransactionLabeled, set_all_labels
 from myfinances.monthly_costs import MonthlyCosts
@@ -32,6 +33,10 @@ def main() -> None:
     log.info(monthly_costs.get_averaged_expenses_by_label())
     log.info(monthly_costs.get_averaged_expenses_by_label().sum())
     log.info(monthly_costs.get_monthly_expenses())
+
+    if args.dashboard:
+        dashboard: Dashboard = Dashboard(monthly_costs)
+        dashboard.run()
 
 
 def get_labled_data(configs_paths) -> DataFrame[TransactionLabeled]:

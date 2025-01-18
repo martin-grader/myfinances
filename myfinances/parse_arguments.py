@@ -31,6 +31,11 @@ def parse_arguments() -> Namespace:
         required=False,
         type=str,
     )
+    parser.add_argument(
+        '-d',
+        '--dashboard',
+        action='store_true',
+    )
     args: Namespace = parser.parse_args()
     return args
 

@@ -27,6 +27,13 @@ class Dashboard:
                     names='Label',
                 )
             ),
+            html.Div(
+                [
+                    html.Label(
+                        f'Available: {monthly_costs.get_averaged_expenses_by_label().sum()}'
+                    ),
+                ]
+            ),
         ]
 
     def run(self) -> None:

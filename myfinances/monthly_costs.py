@@ -28,10 +28,25 @@ class MonthlyCosts(MonthlyTransactions):
         return income
 
     def get_averaged_expenses_by_label(self) -> pd.api.typing.DataFrameGroupBy:
-        total_grouped_expenses: pd.api.typing.DataFrameGroupBy = self.df.groupby(
-            [TransactionLabeled.Label]
-        )[TransactionLabeled.Amount].sum()  # type: ignore
-        return total_grouped_expenses.div(self.months_to_analyze).sort_values()
+        total_grouped_expenses: pd.api.typing.DataFrameGroupBy = (
+            self.df.groupby([TransactionLabeled.Label])[TransactionLabeled.Amount]
+            .sum()
+            .div(self.months_to_analyze)
+            .sort_values()
+        )  # type: ignore
+        return total_grouped_expenses
+
+    def get_averaged_expenses_by_sublabel(
+        self, label: TransactionLabeled.Label
+    ) -> pd.api.typing.DataFrameGroupBy:
+        total_grouped_expenses: pd.api.typing.DataFrameGroupBy = (
+            self.df[self.df[TransactionLabeled.Label] == label]
+            .groupby([TransactionLabeled.Sublabel])[TransactionLabeled.Amount]
+            .sum()
+            .div(self.months_to_analyze)
+            .sort_values()
+        )  # type: ignore
+        return total_grouped_expenses
 
     def get_monthly_expenses(self):
         df_monthly_expenses = pd.DataFrame()

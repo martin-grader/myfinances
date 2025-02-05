@@ -11,10 +11,13 @@ class Dashboard:
         self.app.layout = [
             html.Div(children='Finances Overview'),
             dcc.Graph(
-                figure=px.line(
+                figure=px.bar(
                     self.monthly_costs.get_monthly_expenses(),
                     x='Date',
                     y='Amount',
+                    color='Amount',
+                    color_continuous_scale='RdYlGn',
+                    color_continuous_midpoint=0,
                 )
             ),
             dcc.Graph(

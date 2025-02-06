@@ -42,7 +42,7 @@ class Dashboard:
                 ]
             ),
         ]
-        (
+        (  # type: ignore
             self.app.callback(
                 dependencies.Output('sublabel_pie', 'figure'),
                 dependencies.Input('label_pie', 'clickData'),

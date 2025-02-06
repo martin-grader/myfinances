@@ -36,9 +36,7 @@ class MonthlyCosts(MonthlyTransactions):
         )  # type: ignore
         return total_grouped_expenses
 
-    def get_averaged_expenses_by_sublabel(
-        self, label: TransactionLabeled.Label
-    ) -> pd.api.typing.DataFrameGroupBy:
+    def get_averaged_expenses_by_sublabel(self, label: str) -> pd.api.typing.DataFrameGroupBy:
         total_grouped_expenses: pd.api.typing.DataFrameGroupBy = (
             self.df[self.df[TransactionLabeled.Label] == label]
             .groupby([TransactionLabeled.Sublabel])[TransactionLabeled.Amount]

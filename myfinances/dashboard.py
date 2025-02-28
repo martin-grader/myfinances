@@ -41,6 +41,14 @@ class Dashboard:
                     ),
                 ]
             ),
+            dcc.Graph(
+                id='income_pie',
+                figure=px.pie(
+                    self.monthly_costs.get_averaged_income(),
+                    values='Amount',
+                    names='Sublabel',
+                ),
+            ),
         ]
         (  # type: ignore
             self.app.callback(

@@ -14,7 +14,7 @@ from myfinances.parse_configs import ConfigPaths, parse_all_configs
 from myfinances.parse_data import Transaction, load_data
 from myfinances.rename_transactions import rename_transactions
 
-pd.set_option('max_colwidth', None)
+pd.set_option('display.max_colwidth', None)
 log.remove(0)
 log.add(sys.stderr, level='INFO')
 

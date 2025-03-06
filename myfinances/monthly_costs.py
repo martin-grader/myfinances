@@ -34,7 +34,7 @@ class MonthlyCosts(MonthlyTransactions):
         total_grouped_income: pd.DataFrame = (
             df.groupby([TransactionLabeled.Sublabel])[TransactionLabeled.Amount]
             .sum()
-            .div(self.months_to_analyze)
+            .div(self.n_months_to_analyze)
             .reset_index()
         )
 
@@ -44,7 +44,7 @@ class MonthlyCosts(MonthlyTransactions):
         total_grouped_expenses: pd.api.typing.DataFrameGroupBy = (
             self.df.groupby([TransactionLabeled.Label])[TransactionLabeled.Amount]
             .sum()
-            .div(self.months_to_analyze)
+            .div(self.n_months_to_analyze)
             .sort_values()
         )  # type: ignore
         return total_grouped_expenses
@@ -54,7 +54,7 @@ class MonthlyCosts(MonthlyTransactions):
             self.df[self.df[TransactionLabeled.Label] == label]
             .groupby([TransactionLabeled.Sublabel])[TransactionLabeled.Amount]
             .sum()
-            .div(self.months_to_analyze)
+            .div(self.n_months_to_analyze)
             .sort_values()
         )  # type: ignore
         return total_grouped_expenses

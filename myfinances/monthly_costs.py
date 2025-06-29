@@ -16,23 +16,20 @@ class MonthlyCosts(MonthlyTransactions):
         self.income: float = self.get_income()
 
     def get_expenses(self) -> float:
-        expenses: float = self.df.loc[
-            self.df[TransactionLabeled.Amount] < 0, TransactionLabeled.Amount
-        ].sum()
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
+        expenses: float = df.loc[df[TransactionLabeled.Amount] < 0, TransactionLabeled.Amount].sum()
         return expenses
 
     def get_income(self) -> float:
-        income: float = self.df.loc[
-            self.df[TransactionLabeled.Amount] > 0, TransactionLabeled.Amount
-        ].sum()
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
+        income: float = df.loc[df[TransactionLabeled.Amount] > 0, TransactionLabeled.Amount].sum()
         return income
 
     def get_averaged_income(self) -> pd.DataFrame:
-        df: DataFrame[TransactionLabeled] = self.df[
-            self.df[TransactionLabeled.Label] == 'Einkommen'
-        ]  # type: ignore
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
+        income: DataFrame[TransactionLabeled] = df[self.df[TransactionLabeled.Label] == 'Einkommen']  # type: ignore
         total_grouped_income: pd.DataFrame = (
-            df.groupby([TransactionLabeled.Sublabel])[TransactionLabeled.Amount]
+            income.groupby([TransactionLabeled.Sublabel])[TransactionLabeled.Amount]
             .sum()
             .div(self.n_months_to_analyze)
             .reset_index()
@@ -41,8 +38,9 @@ class MonthlyCosts(MonthlyTransactions):
         return total_grouped_income
 
     def get_averaged_expenses_by_label(self) -> pd.api.typing.DataFrameGroupBy:
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
         total_grouped_expenses: pd.api.typing.DataFrameGroupBy = (
-            self.df.groupby([TransactionLabeled.Label])[TransactionLabeled.Amount]
+            df.groupby([TransactionLabeled.Label])[TransactionLabeled.Amount]
             .sum()
             .div(self.n_months_to_analyze)
             .sort_values()
@@ -50,8 +48,9 @@ class MonthlyCosts(MonthlyTransactions):
         return total_grouped_expenses
 
     def get_averaged_expenses_by_sublabel(self, label: str) -> pd.api.typing.DataFrameGroupBy:
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
         total_grouped_expenses: pd.api.typing.DataFrameGroupBy = (
-            self.df[self.df[TransactionLabeled.Label] == label]
+            df[df[TransactionLabeled.Label] == label]
             .groupby([TransactionLabeled.Sublabel])[TransactionLabeled.Amount]
             .sum()
             .div(self.n_months_to_analyze)
@@ -75,8 +74,9 @@ class MonthlyCosts(MonthlyTransactions):
         return df_monthly_expenses
 
     def drop_costs(self, label: str, sublabel: str) -> None:
-        to_drop: pd.Series = (self.df[TransactionLabeled.Label] == label) & (
-            self.df[TransactionLabeled.Sublabel] == sublabel
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
+        to_drop: pd.Series = (df[TransactionLabeled.Label] == label) & (
+            df[TransactionLabeled.Sublabel] == sublabel
         )
         if to_drop.sum() == 0:
             log.error(
@@ -84,7 +84,7 @@ class MonthlyCosts(MonthlyTransactions):
             )
             raise KeyError
         else:
-            self.df: DataFrame[TransactionLabeled] = self.df.loc[~to_drop]
+            self.df: DataFrame[TransactionLabeled] = df.loc[~to_drop]
 
     def drop_costs_by_config(self, file_name: Path) -> None:
         drop_labels = DropLabels(file_name)
@@ -94,6 +94,7 @@ class MonthlyCosts(MonthlyTransactions):
         self.income: float = self.get_income()
 
     def add_costs_by_config(self, file_name: Path) -> None:
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
         add_labels = AddLabels(file_name)
         all_dfs_to_add: list[DataFrame[TransactionLabeled]] = []
         for df in self.iterate_months():
@@ -103,4 +104,4 @@ class MonthlyCosts(MonthlyTransactions):
             df_to_add[TransactionLabeled.Text] = 'Zukunft'
             all_dfs_to_add.append(df_to_add)
         df_to_add_all_configs: DataFrame[TransactionLabeled] = pd.concat(all_dfs_to_add)  # type:ignore
-        self.df = pd.concat([self.df, df_to_add_all_configs])  # type: ignore
+        self.df = pd.concat([df, df_to_add_all_configs])  # type: ignore

@@ -1,4 +1,5 @@
 import datetime
+from pathlib import Path
 from typing import Generator
 
 import numpy as np
@@ -7,6 +8,7 @@ from dateutil.relativedelta import relativedelta
 from loguru import logger as log
 from pandera.typing import DataFrame
 
+from myfinances.config_utils import AddLabels, DropLabels
 from myfinances.label_data import TransactionLabeled
 
 
@@ -92,3 +94,34 @@ class MonthlyTransactions:
             yield month_dates
             month_to_analyze_start = month_to_analyze_start + delta
             month_to_analyze_end = month_to_analyze_end + delta
+
+    def drop_costs(self, label: str, sublabel: str) -> None:
+        to_drop: pd.Series = (self.df[TransactionLabeled.Label] == label) & (
+            self.df[TransactionLabeled.Sublabel] == sublabel
+        )
+        if to_drop.sum() == 0:
+            log.error(
+                f'Transaction not found in monthly costs! Label: {label}, Sublabel: {sublabel}'
+            )
+            raise KeyError
+        else:
+            self.df: DataFrame[TransactionLabeled] = self.df.loc[~to_drop]
+
+    def drop_costs_by_config(self, file_name: Path) -> None:
+        drop_labels = DropLabels(file_name)
+        for transaction in drop_labels.transactions:
+            self.drop_costs(transaction.Label, transaction.Sublabel)
+        # self.expenses: float = self.get_expenses()
+        # self.income: float = self.get_income()
+
+    def add_costs_by_config(self, file_name: Path) -> None:
+        add_labels = AddLabels(file_name)
+        all_dfs_to_add: list[DataFrame[TransactionLabeled]] = []
+        for df in self.iterate_months():
+            date_income: pd.Timestamp = df[TransactionLabeled.Date].min()
+            df_to_add: DataFrame[TransactionLabeled] = pd.DataFrame(add_labels.transactions_clean)  # type: ignore
+            df_to_add[TransactionLabeled.Date] = date_income
+            df_to_add[TransactionLabeled.Text] = 'Zukunft'
+            all_dfs_to_add.append(df_to_add)
+        df_to_add_all_configs: DataFrame[TransactionLabeled] = pd.concat(all_dfs_to_add)  # type:ignore
+        self.df = pd.concat([self.df, df_to_add_all_configs])  # type: ignore

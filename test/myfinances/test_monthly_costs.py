@@ -53,12 +53,12 @@ def monthly_costs(df_test, month_split_day):
 
 def test_income(monthly_costs) -> None:
     income_expected = 10 * 3
-    assert monthly_costs.income == income_expected
+    assert monthly_costs.get_income() == income_expected
 
 
 def test_expenses(monthly_costs) -> None:
     expenses_expected = -20 * 3
-    assert monthly_costs.expenses == expenses_expected
+    assert monthly_costs.get_expenses() == expenses_expected
 
 
 def test_drop_costs(monthly_costs):

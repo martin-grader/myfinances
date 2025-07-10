@@ -90,4 +90,4 @@ def test_df(monthly_transactions, df_test, start_date, end_date, month_split_day
     df_expected = df_test.iloc[
         (start_date.day + month_split_day - 2) : -(end_date.day - month_split_day + 1)
     ]
-    pd.testing.assert_frame_equal(monthly_transactions.df, df_expected)
+    pd.testing.assert_frame_equal(monthly_transactions.get_transactions(), df_expected)

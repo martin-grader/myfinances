@@ -23,26 +23,26 @@ class MonthlyTransactions:
         self.n_months_to_analyze: int = self._get_n_months_to_analyze()
         self._set_all_transactions(df)
         self.months_to_analyze: pd.Series = self._get_months_to_analyze()
-        self.set_transactions(self.date_to_start, self.date_to_end)
         log.info(
             f'Analyzing {self.n_months_to_analyze} months'
             f' ({self.date_to_start} - {self.date_to_end})'
         )
 
     def get_transactions(self) -> DataFrame[TransactionLabeled]:
-        return self.df
+        return self._df.loc[
+            (self._df[TransactionLabeled.Date] >= self.date_to_start)
+            & (self._df[TransactionLabeled.Date] <= self.date_to_end)
+        ]
+        # return self._df
 
     def _set_all_transactions(self, df) -> None:
-        self.df_all: DataFrame[TransactionLabeled] = df.loc[
-            (df[TransactionLabeled.Date] >= self.date_to_start)
-            & (df[TransactionLabeled.Date] <= self.date_to_end)
-        ]
+        self._df = df
 
-    def set_transactions(self, date_to_start, date_to_end) -> None:
-        self.df: DataFrame[TransactionLabeled] = self.df_all.loc[
-            (self.df_all[TransactionLabeled.Date] >= date_to_start)
-            & (self.df_all[TransactionLabeled.Date] <= date_to_end)
-        ]
+    # def set_transactions(self, date_to_start, date_to_end) -> None:
+    # self._df: DataFrame[TransactionLabeled] = self._df_all.loc[
+    # (self._df_all[TransactionLabeled.Date] >= date_to_start)
+    # & (self._df_all[TransactionLabeled.Date] <= date_to_end)
+    # ]
 
     def _day_to_start(self, df) -> pd.Timestamp:
         first_date: pd.Timestamp = (
@@ -76,7 +76,7 @@ class MonthlyTransactions:
         return time_period.n
 
     def _get_months_to_analyze(self) -> np.ndarray:
-        dates_sorted = self.df_all[TransactionLabeled.Date]
+        dates_sorted = self._df[TransactionLabeled.Date]
         time_period: pd.Series = dates_sorted.apply(lambda x: x.strftime('%B-%Y'))  # type: ignore
         time_period_unique: np.ndarray = time_period.sort_values().unique()
         ps = pd.to_datetime(time_period_unique, format='%B-%Y').sort_values()
@@ -87,17 +87,17 @@ class MonthlyTransactions:
         month_to_analyze_start = self.date_to_start
         month_to_analyze_end = self.date_to_start + delta - relativedelta(days=1)
         while month_to_analyze_end <= self.date_to_end:
-            month_dates = self.df[
-                (self.df[TransactionLabeled.Date] >= pd.Timestamp(month_to_analyze_start))
-                & (self.df[TransactionLabeled.Date] <= pd.Timestamp(month_to_analyze_end))
+            month_dates = self._df[
+                (self._df[TransactionLabeled.Date] >= pd.Timestamp(month_to_analyze_start))
+                & (self._df[TransactionLabeled.Date] <= pd.Timestamp(month_to_analyze_end))
             ]
             yield month_dates
             month_to_analyze_start = month_to_analyze_start + delta
             month_to_analyze_end = month_to_analyze_end + delta
 
     def drop_costs(self, label: str, sublabel: str) -> None:
-        to_drop: pd.Series = (self.df[TransactionLabeled.Label] == label) & (
-            self.df[TransactionLabeled.Sublabel] == sublabel
+        to_drop: pd.Series = (self._df[TransactionLabeled.Label] == label) & (
+            self._df[TransactionLabeled.Sublabel] == sublabel
         )
         if to_drop.sum() == 0:
             log.error(
@@ -105,14 +105,12 @@ class MonthlyTransactions:
             )
             raise KeyError
         else:
-            self.df: DataFrame[TransactionLabeled] = self.df.loc[~to_drop]
+            self._df: DataFrame[TransactionLabeled] = self._df.loc[~to_drop]
 
     def drop_costs_by_config(self, file_name: Path) -> None:
         drop_labels = DropLabels(file_name)
         for transaction in drop_labels.transactions:
             self.drop_costs(transaction.Label, transaction.Sublabel)
-        # self.expenses: float = self.get_expenses()
-        # self.income: float = self.get_income()
 
     def add_costs_by_config(self, file_name: Path) -> None:
         add_labels = AddLabels(file_name)
@@ -124,4 +122,4 @@ class MonthlyTransactions:
             df_to_add[TransactionLabeled.Text] = 'Zukunft'
             all_dfs_to_add.append(df_to_add)
         df_to_add_all_configs: DataFrame[TransactionLabeled] = pd.concat(all_dfs_to_add)  # type:ignore
-        self.df = pd.concat([self.df, df_to_add_all_configs])  # type: ignore
+        self._df = pd.concat([self._df, df_to_add_all_configs])  # type: ignore

@@ -63,7 +63,7 @@ def test_expenses(monthly_costs) -> None:
 
 def test_drop_costs(monthly_costs):
     monthly_costs.drop_costs('test_label', 'test_sublabel')
-    assert monthly_costs.df.empty
+    assert monthly_costs.get_transactions().empty
 
 
 @pytest.mark.parametrize(

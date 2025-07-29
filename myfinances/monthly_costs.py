@@ -17,21 +17,27 @@ class MonthlyCosts(MonthlyTransactions):
         return expenses
 
     def get_income(self) -> float:
-        df: DataFrame[TransactionLabeled] = self.get_transactions()
-        income: float = df.loc[df[TransactionLabeled.Amount] > 0, TransactionLabeled.Amount].sum()
+        positive_transactions: DataFrame[TransactionLabeled] = self._get_positive_transactions()
+        income: float = positive_transactions[TransactionLabeled.Amount].sum()
         return income
 
     def get_averaged_income(self) -> pd.DataFrame:
-        df: DataFrame[TransactionLabeled] = self.get_transactions()
-        income: DataFrame[TransactionLabeled] = df[self.df[TransactionLabeled.Label] == 'Einkommen']  # type: ignore
+        positive_transactions: DataFrame[TransactionLabeled] = self._get_positive_transactions()
         total_grouped_income: pd.DataFrame = (
-            income.groupby([TransactionLabeled.Sublabel])[TransactionLabeled.Amount]
+            positive_transactions.groupby([TransactionLabeled.Sublabel])[TransactionLabeled.Amount]
             .sum()
             .div(self.n_months_to_analyze)
             .reset_index()
         )
 
         return total_grouped_income
+
+    def _get_positive_transactions(self) -> DataFrame[TransactionLabeled]:
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
+        positive_transactions: DataFrame[TransactionLabeled] = df.loc[
+            df[TransactionLabeled.Amount] > 0, :
+        ]
+        return positive_transactions
 
     def get_averaged_expenses_by_label(self) -> pd.api.typing.DataFrameGroupBy:
         df: DataFrame[TransactionLabeled] = self.get_transactions()

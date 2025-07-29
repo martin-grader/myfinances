@@ -33,16 +33,9 @@ class MonthlyTransactions:
             (self._df[TransactionLabeled.Date] >= self.date_to_start)
             & (self._df[TransactionLabeled.Date] <= self.date_to_end)
         ]
-        # return self._df
 
     def _set_all_transactions(self, df) -> None:
         self._df = df
-
-    # def set_transactions(self, date_to_start, date_to_end) -> None:
-    # self._df: DataFrame[TransactionLabeled] = self._df_all.loc[
-    # (self._df_all[TransactionLabeled.Date] >= date_to_start)
-    # & (self._df_all[TransactionLabeled.Date] <= date_to_end)
-    # ]
 
     def _day_to_start(self, df) -> pd.Timestamp:
         first_date: pd.Timestamp = (

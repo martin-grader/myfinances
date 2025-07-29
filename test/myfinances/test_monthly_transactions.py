@@ -64,19 +64,19 @@ def test_month_split_day(monthly_transactions, month_split_day) -> None:
 
 def test_date_to_start(monthly_transactions, month_split_day, start_date) -> None:
     start_date_expected = start_date + pd.to_timedelta(month_split_day - 1, unit='d')
-    assert monthly_transactions.date_to_start == start_date_expected
+    assert monthly_transactions.get_date_to_start() == start_date_expected
 
 
 def test_date_to_start_two_accounts(
     monthly_transactions_two_accounts, month_split_day, start_date
 ) -> None:
-    assert monthly_transactions_two_accounts.date_to_start == pd.Timestamp(
+    assert monthly_transactions_two_accounts.get_date_to_start() == pd.Timestamp(
         year=start_date.year, month=start_date.month + 1, day=month_split_day
     )
 
 
 def test_date_to_end(monthly_transactions, month_split_day, end_date) -> None:
-    assert monthly_transactions.date_to_end == pd.Timestamp(
+    assert monthly_transactions.get_date_to_end() == pd.Timestamp(
         year=end_date.year, month=end_date.month, day=month_split_day - 1
     )
 

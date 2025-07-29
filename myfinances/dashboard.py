@@ -97,7 +97,7 @@ class Dashboard:
         return figure
 
     def plot_expenses_bar(self, begin_dropdown_data, end_dropdown_data):  # noqa: N803
-        self.monthly_costs.set_transactions(begin_dropdown_data, end_dropdown_data)
+        # self.monthly_costs.set_transactions(begin_dropdown_data, end_dropdown_data)
         figure = px.bar(
             self.monthly_costs.get_monthly_expenses(),
             x='Date',

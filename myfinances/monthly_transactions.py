@@ -15,24 +15,38 @@ from myfinances.label_data import TransactionLabeled
 class MonthlyTransactions:
     def __init__(self, df: DataFrame[TransactionLabeled], month_split_day: int = 1) -> None:
         self.month_split_day: int = month_split_day
-        self.date_to_start: pd.Timestamp = self._day_to_start(df)
-        self.date_to_end: pd.Timestamp = self._day_to_end(df)
+        self._date_to_start: pd.Timestamp = self._day_to_start(df)
+        self._date_to_end: pd.Timestamp = self._day_to_end(df)
+        self._min_date_to_start: pd.Timestamp = self._day_to_start(df)
+        self._max_date_to_end: pd.Timestamp = self._day_to_end(df)
 
-        print(self.date_to_start)
-        print(self.date_to_end)
+        print(self._date_to_start)
+        print(self._date_to_end)
         self.n_months_to_analyze: int = self._get_n_months_to_analyze()
         self._set_all_transactions(df)
         self.months_to_analyze: pd.Series = self._get_months_to_analyze()
         log.info(
             f'Analyzing {self.n_months_to_analyze} months'
-            f' ({self.date_to_start} - {self.date_to_end})'
+            f' ({self._date_to_start} - {self._date_to_end})'
         )
 
     def get_transactions(self) -> DataFrame[TransactionLabeled]:
         return self._df.loc[
-            (self._df[TransactionLabeled.Date] >= self.date_to_start)
-            & (self._df[TransactionLabeled.Date] <= self.date_to_end)
+            (self._df[TransactionLabeled.Date] >= self._date_to_start)
+            & (self._df[TransactionLabeled.Date] <= self._date_to_end)
         ]
+
+    def get_date_to_start(self) -> pd.Timestamp:
+        return self._date_to_start
+
+    def get_date_to_end(self) -> pd.Timestamp:
+        return self._date_to_end
+
+    def get_min_date_to_start(self) -> pd.Timestamp:
+        return self._min_date_to_start
+
+    def get_max_date_to_end(self) -> pd.Timestamp:
+        return self._max_date_to_end
 
     def _set_all_transactions(self, df) -> None:
         self._df = df
@@ -63,9 +77,9 @@ class MonthlyTransactions:
         )  # type:ignore
 
     def _get_n_months_to_analyze(self) -> int:
-        time_period: pd.tseries.offsets.BaseOffset = self.date_to_end.to_period(  # type:ignore
+        time_period: pd.tseries.offsets.BaseOffset = self._date_to_end.to_period(  # type:ignore
             'M'
-        ) - self.date_to_start.to_period('M')
+        ) - self._date_to_start.to_period('M')
         return time_period.n
 
     def _get_months_to_analyze(self) -> np.ndarray:
@@ -77,9 +91,9 @@ class MonthlyTransactions:
 
     def iterate_months(self) -> Generator:
         delta = relativedelta(months=1)
-        month_to_analyze_start = self.date_to_start
-        month_to_analyze_end = self.date_to_start + delta - relativedelta(days=1)
-        while month_to_analyze_end <= self.date_to_end:
+        month_to_analyze_start = self._date_to_start
+        month_to_analyze_end = self._date_to_start + delta - relativedelta(days=1)
+        while month_to_analyze_end <= self._date_to_end:
             month_dates = self._df[
                 (self._df[TransactionLabeled.Date] >= pd.Timestamp(month_to_analyze_start))
                 & (self._df[TransactionLabeled.Date] <= pd.Timestamp(month_to_analyze_end))

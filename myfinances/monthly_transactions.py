@@ -22,11 +22,11 @@ class MonthlyTransactions:
 
         print(self._date_to_start)
         print(self._date_to_end)
-        self.n_months_to_analyze: int = self._get_n_months_to_analyze()
+        # self.n_months_to_analyze: int = self._get_n_months_to_analyze()
         self._set_all_transactions(df)
         self.months_to_analyze: pd.Series = self._get_months_to_analyze()
         log.info(
-            f'Analyzing {self.n_months_to_analyze} months'
+            f'Analyzing {self.get_n_months_to_analyze()} months'
             f' ({self._date_to_start} - {self._date_to_end})'
         )
 
@@ -41,6 +41,12 @@ class MonthlyTransactions:
 
     def get_date_to_end(self) -> pd.Timestamp:
         return self._date_to_end
+
+    def set_date_to_start(self, date: pd.Timestamp) -> None:
+        self._date_to_start: pd.Timestamp = date
+
+    def set_date_to_end(self, date: pd.Timestamp) -> None:
+        self._date_to_end: pd.Timestamp = date
 
     def get_min_date_to_start(self) -> pd.Timestamp:
         return self._min_date_to_start
@@ -76,7 +82,7 @@ class MonthlyTransactions:
             datetime.date(last_date.year, last_date.month, self.month_split_day - 1)
         )  # type:ignore
 
-    def _get_n_months_to_analyze(self) -> int:
+    def get_n_months_to_analyze(self) -> int:
         time_period: pd.tseries.offsets.BaseOffset = self._date_to_end.to_period(  # type:ignore
             'M'
         ) - self._date_to_start.to_period('M')

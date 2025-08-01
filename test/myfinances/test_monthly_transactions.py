@@ -83,7 +83,7 @@ def test_date_to_end(monthly_transactions, month_split_day, end_date) -> None:
 
 def test_months_to_analyze(monthly_transactions, start_date, end_date) -> None:
     months_to_analyze_expected: int = end_date.month - start_date.month
-    assert monthly_transactions.n_months_to_analyze == months_to_analyze_expected
+    assert monthly_transactions.get_n_months_to_analyze() == months_to_analyze_expected
 
 
 def test_df(monthly_transactions, df_test, start_date, end_date, month_split_day) -> None:

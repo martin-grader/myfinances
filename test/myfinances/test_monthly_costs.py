@@ -50,7 +50,7 @@ def monthly_costs(df_test, month_split_day):
     return monthly_costs
 
 
-def test_income(monthly_costs) -> None:
+def test_get_income(monthly_costs) -> None:
     income_expected = 10 * 3
     assert monthly_costs.get_income() == income_expected
 
@@ -61,7 +61,7 @@ def test_get_averaged_income(monthly_costs) -> None:
     assert averaged_income.loc[0, TransactionLabeled.Amount] == averaged_income_expected
 
 
-def test_expenses(monthly_costs) -> None:
+def test_get_expenses(monthly_costs) -> None:
     expenses_expected = -20 * 3
     assert monthly_costs.get_expenses() == expenses_expected
 

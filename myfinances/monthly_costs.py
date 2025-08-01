@@ -60,11 +60,11 @@ class MonthlyCosts(MonthlyTransactions):
         )  # type: ignore
         return total_grouped_expenses
 
-    def get_monthly_expenses(self):
-        df_monthly_expenses = pd.DataFrame()
+    def get_monthly_expenses(self) -> pd.DataFrame:
+        df_monthly_expenses: pd.DataFrame = pd.DataFrame()
         for df in self.iterate_months():
             date_income: pd.Timestamp = df[TransactionLabeled.Date].min()
-            date_income = date_income.replace(day=1)
+            date_income: pd.Timestamp = date_income.replace(day=1)
             expenses: float = df[TransactionLabeled.Amount].sum()
             expenses_this_month: pd.DataFrame = pd.DataFrame(
                 {
@@ -72,5 +72,10 @@ class MonthlyCosts(MonthlyTransactions):
                     TransactionLabeled.Amount: [expenses],
                 }
             )
-            df_monthly_expenses = pd.concat([df_monthly_expenses, expenses_this_month])
+            df_monthly_expenses: pd.DataFrame = pd.concat(
+                [
+                    df_monthly_expenses,
+                    expenses_this_month,
+                ]
+            )
         return df_monthly_expenses

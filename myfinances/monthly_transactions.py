@@ -52,8 +52,8 @@ class MonthlyTransactions:
     def get_max_date_to_end(self) -> pd.Timestamp:
         return self._max_date_to_end
 
-    def _set_all_transactions(self, df) -> None:
-        self._df = df
+    def _set_all_transactions(self, df: DataFrame[TransactionLabeled]) -> None:
+        self._df: DataFrame[TransactionLabeled] = df
 
     def _day_to_start(self, df) -> pd.Timestamp:
         first_date: pd.Timestamp = (
@@ -76,9 +76,12 @@ class MonthlyTransactions:
         if last_date.day < self.month_split_day:
             last_date: pd.Timestamp = last_date - pd.DateOffset(months=1)
 
-        return pd.Timestamp(
-            datetime.date(last_date.year, last_date.month, self.month_split_day - 1)
-        )  # type:ignore
+        day_to_end: pd.Timestamp = pd.Timestamp(
+            datetime.date(last_date.year, last_date.month, self.month_split_day)
+        )  # type: ignore
+        return day_to_end - pd.tseries.offsets.Day()
+
+    # type:ignore
 
     def get_n_months_to_analyze(self) -> int:
         time_period: pd.tseries.offsets.BaseOffset = self._date_to_end.to_period(  # type:ignore
@@ -87,7 +90,8 @@ class MonthlyTransactions:
         return time_period.n
 
     def get_months_to_analyze(self) -> pd.DatetimeIndex:
-        dates_sorted: pd.Series = self._df.loc[:, TransactionLabeled.Date]
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
+        dates_sorted: pd.Series = df.loc[:, TransactionLabeled.Date]
         time_period: pd.Series = dates_sorted.apply(lambda x: x.strftime('%B-%Y'))  # type: ignore
         time_period_unique: ArrayLike = time_period.sort_values().unique()
         ps: pd.DatetimeIndex = pd.to_datetime(time_period_unique, format='%B-%Y').sort_values()

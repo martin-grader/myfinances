@@ -2,10 +2,10 @@ import datetime
 from pathlib import Path
 from typing import Generator
 
-import numpy as np
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 from loguru import logger as log
+from pandas._typing import ArrayLike
 from pandera.typing import DataFrame
 
 from myfinances.config_utils import AddLabels, DropLabels
@@ -22,9 +22,7 @@ class MonthlyTransactions:
 
         print(self._date_to_start)
         print(self._date_to_end)
-        # self.n_months_to_analyze: int = self._get_n_months_to_analyze()
         self._set_all_transactions(df)
-        self.months_to_analyze: pd.Series = self._get_months_to_analyze()
         log.info(
             f'Analyzing {self.get_n_months_to_analyze()} months'
             f' ({self._date_to_start} - {self._date_to_end})'
@@ -88,11 +86,11 @@ class MonthlyTransactions:
         ) - self._date_to_start.to_period('M')
         return time_period.n
 
-    def _get_months_to_analyze(self) -> np.ndarray:
-        dates_sorted = self._df[TransactionLabeled.Date]
+    def get_months_to_analyze(self) -> pd.DatetimeIndex:
+        dates_sorted: pd.Series = self._df.loc[:, TransactionLabeled.Date]
         time_period: pd.Series = dates_sorted.apply(lambda x: x.strftime('%B-%Y'))  # type: ignore
-        time_period_unique: np.ndarray = time_period.sort_values().unique()
-        ps = pd.to_datetime(time_period_unique, format='%B-%Y').sort_values()
+        time_period_unique: ArrayLike = time_period.sort_values().unique()
+        ps: pd.DatetimeIndex = pd.to_datetime(time_period_unique, format='%B-%Y').sort_values()
         return ps
 
     def iterate_months(self) -> Generator:

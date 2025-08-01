@@ -4,7 +4,7 @@ from dash import Dash, dcc, dependencies, html
 
 from myfinances.monthly_costs import MonthlyCosts
 
-px.defaults.template = 'plotly_dark'
+# px.defaults.template = 'plotly_dark'
 
 
 class Dashboard:
@@ -25,13 +25,13 @@ class Dashboard:
                 html.Div(
                     children=[
                         dcc.Dropdown(
-                            self.monthly_costs.months_to_analyze,
-                            self.monthly_costs.months_to_analyze[0],
+                            self.monthly_costs.get_months_to_analyze(),
+                            self.monthly_costs.get_months_to_analyze()[0],
                             id='begin-dropdown',
                         ),
                         dcc.Dropdown(
-                            self.monthly_costs.months_to_analyze,
-                            self.monthly_costs.months_to_analyze[-1],
+                            self.monthly_costs.get_months_to_analyze(),
+                            self.monthly_costs.get_months_to_analyze()[-1],
                             id='end-dropdown',
                         ),
                     ]

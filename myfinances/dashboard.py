@@ -27,15 +27,14 @@ class Dashboard:
                 html.Div(
                     children=[
                         dcc.Dropdown(
-                            self.monthly_costs.get_months_to_analyze(),
-                            self.monthly_costs.get_months_to_analyze()[0],
+                            options=self.monthly_costs.get_months_to_analyze(),
                             id='begin-dropdown',
                         ),
                         dcc.Dropdown(
-                            self.monthly_costs.get_months_to_analyze(),
-                            self.monthly_costs.get_months_to_analyze()[-1],
+                            options=self.monthly_costs.get_months_to_analyze(),
                             id='end-dropdown',
                         ),
+                        html.Button('Reset', id='reset-dates'),
                     ]
                 ),
                 html.Div(
@@ -64,6 +63,14 @@ class Dashboard:
         )
         (  # type: ignore
             self.app.callback(
+                dependencies.Output('begin-dropdown', 'value'),
+                dependencies.Input('expenses-bar', 'clickData'),
+            )(self.begin_dropdown),
+            self.app.callback(
+                dependencies.Output('end-dropdown', 'value'),
+                dependencies.Input('expenses-bar', 'clickData'),
+            )(self.end_dropdown),
+            self.app.callback(
                 dependencies.Output('available_amount', 'children'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
@@ -90,6 +97,19 @@ class Dashboard:
                 dependencies.Input('end-dropdown', 'value'),
             )(self.plot_expenses_bar),
         )
+
+    def begin_dropdown(self, clickData):  # noqa N803
+        if clickData:
+            return pd.to_datetime(clickData['points'][0]['label'])
+        else:
+            return self.monthly_costs.get_months_to_analyze()[0]
+
+    def end_dropdown(self, clickData):  # noqa N803
+        if clickData:
+            month_selected = pd.to_datetime(clickData['points'][0]['label'])
+            return month_selected + pd.DateOffset(months=1)
+        else:
+            return self.monthly_costs.get_months_to_analyze()[-1]
 
     def available_amount(self, *_) -> str:
         return f'Available: {self.monthly_costs.get_averaged_expenses_by_label().sum()}'

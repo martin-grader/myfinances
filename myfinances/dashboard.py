@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from dash import Dash, dcc, dependencies, html
+from dash import Dash, ctx, dcc, dependencies, html
 
 from myfinances.monthly_costs import MonthlyCosts
 
@@ -65,10 +65,12 @@ class Dashboard:
             self.app.callback(
                 dependencies.Output('begin-dropdown', 'value'),
                 dependencies.Input('expenses-bar', 'clickData'),
+                dependencies.Input('reset-dates', 'n_clicks'),
             )(self.begin_dropdown),
             self.app.callback(
                 dependencies.Output('end-dropdown', 'value'),
                 dependencies.Input('expenses-bar', 'clickData'),
+                dependencies.Input('reset-dates', 'n_clicks'),
             )(self.end_dropdown),
             self.app.callback(
                 dependencies.Output('available_amount', 'children'),
@@ -98,18 +100,23 @@ class Dashboard:
             )(self.plot_expenses_bar),
         )
 
-    def begin_dropdown(self, clickData):  # noqa N803
-        if clickData:
+    def begin_dropdown(self, clickData, _) -> pd.Timestamp:  # noqa N803
+        if 'reset-dates' == ctx.triggered_id:
+            return self.monthly_costs.get_min_date_to_start()
+        elif clickData:
             return pd.to_datetime(clickData['points'][0]['label'])
         else:
-            return self.monthly_costs.get_months_to_analyze()[0]
+            return self.monthly_costs.get_months_to_analyze()[0]  # type: ignore
 
-    def end_dropdown(self, clickData):  # noqa N803
-        if clickData:
+    def end_dropdown(self, clickData, _) -> pd.Timestamp:  # noqa N803
+        if 'reset-dates' == ctx.triggered_id:
+            print(self.monthly_costs.get_max_date_to_end())
+            return self.monthly_costs.get_max_date_to_end()
+        elif clickData:
             month_selected = pd.to_datetime(clickData['points'][0]['label'])
             return month_selected + pd.DateOffset(months=1)
         else:
-            return self.monthly_costs.get_months_to_analyze()[-1]
+            return self.monthly_costs.get_months_to_analyze()[-1]  # type: ignore
 
     def available_amount(self, *_) -> str:
         return f'Available: {self.monthly_costs.get_averaged_expenses_by_label().sum()}'

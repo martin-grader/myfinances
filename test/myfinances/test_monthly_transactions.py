@@ -7,13 +7,23 @@ from myfinances.monthly_transactions import MonthlyTransactions
 
 
 @pytest.fixture
-def start_date() -> pd.Timestamp:
-    return pd.Timestamp(year=2024, month=1, day=1)  # type:ignore
+def month_start() -> int:
+    return 1
 
 
 @pytest.fixture
-def end_date() -> pd.Timestamp:
-    return pd.Timestamp(year=2024, month=4, day=30)  # type:ignore
+def month_end() -> int:
+    return 4
+
+
+@pytest.fixture
+def start_date(month_start) -> pd.Timestamp:
+    return pd.Timestamp(year=2024, month=month_start, day=1)  # type:ignore
+
+
+@pytest.fixture
+def end_date(month_end) -> pd.Timestamp:
+    return pd.Timestamp(year=2024, month=month_end, day=30)  # type:ignore
 
 
 @pytest.fixture
@@ -81,9 +91,28 @@ def test_date_to_end(monthly_transactions, month_split_day, end_date) -> None:
     )
 
 
-def test_months_to_analyze(monthly_transactions, start_date, end_date) -> None:
-    months_to_analyze_expected: int = end_date.month - start_date.month
-    assert monthly_transactions.get_n_months_to_analyze() == months_to_analyze_expected
+def test_get_n_months_to_analyze(monthly_transactions, start_date, end_date) -> None:
+    n_months_to_analyze_expected: int = end_date.month - start_date.month
+    assert monthly_transactions.get_n_months_to_analyze() == n_months_to_analyze_expected
+
+
+def test_get_months_to_analyze_start(
+    monthly_transactions, month_split_day, month_start, month_end
+) -> None:
+    months_expected = [
+        pd.Timestamp(year=2024, month=m, day=month_split_day) for m in range(month_start, month_end)
+    ]
+    assert monthly_transactions.get_months_to_analyze_start() == months_expected
+
+
+def test_get_months_to_analyze_end(
+    monthly_transactions, month_split_day, month_start, month_end
+) -> None:
+    months_expected = [
+        pd.Timestamp(year=2024, month=m + 1, day=month_split_day - 1)
+        for m in range(month_start, month_end)
+    ]
+    assert monthly_transactions.get_months_to_analyze_end() == months_expected
 
 
 def test_df(monthly_transactions, df_test, start_date, end_date, month_split_day) -> None:

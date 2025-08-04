@@ -27,11 +27,11 @@ class Dashboard:
                 html.Div(
                     children=[
                         dcc.Dropdown(
-                            options=self.monthly_costs.get_months_to_analyze(),
+                            options=self.monthly_costs.get_months_to_analyze_start(),
                             id='begin-dropdown',
                         ),
                         dcc.Dropdown(
-                            options=self.monthly_costs.get_months_to_analyze(),
+                            options=self.monthly_costs.get_months_to_analyze_end(),
                             id='end-dropdown',
                         ),
                         html.Button('Reset', id='reset-dates'),
@@ -106,7 +106,7 @@ class Dashboard:
         elif clickData:
             return pd.to_datetime(clickData['points'][0]['label'])
         else:
-            return self.monthly_costs.get_months_to_analyze()[0]  # type: ignore
+            return self.monthly_costs.get_months_to_analyze_start()[0]  # type: ignore
 
     def end_dropdown(self, clickData, _) -> pd.Timestamp:  # noqa N803
         if 'reset-dates' == ctx.triggered_id:
@@ -116,7 +116,7 @@ class Dashboard:
             month_selected = pd.to_datetime(clickData['points'][0]['label'])
             return month_selected + pd.DateOffset(months=1)
         else:
-            return self.monthly_costs.get_months_to_analyze()[-1]  # type: ignore
+            return self.monthly_costs.get_months_to_analyze_end()[-1]  # type: ignore
 
     def available_amount(self, *_) -> str:
         return f'Available: {self.monthly_costs.get_averaged_expenses_by_label().sum()}'

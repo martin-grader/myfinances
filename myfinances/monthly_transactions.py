@@ -81,7 +81,22 @@ class MonthlyTransactions:
         )  # type: ignore
         return day_to_end - pd.tseries.offsets.Day()
 
-    # type:ignore
+    def get_months_to_analyze_start(self) -> list[pd.Timestamp]:
+        month: pd.Timestamp = self._date_to_start
+        return self._get_months_in_transactions(month)
+
+    def get_months_to_analyze_end(self) -> list[pd.Timestamp]:
+        month: pd.Timestamp = self._date_to_start + relativedelta(months=1) - relativedelta(days=1)
+        return self._get_months_in_transactions(month)
+
+    def _get_months_in_transactions(self, start_date: pd.Timestamp) -> list[pd.Timestamp]:
+        delta = relativedelta(months=1)
+        months_to_analyze_start: list[pd.Timestamp] = []
+        month: pd.Timestamp = start_date
+        while month <= self._date_to_end:
+            months_to_analyze_start.append(month)
+            month += delta
+        return months_to_analyze_start
 
     def get_n_months_to_analyze(self) -> int:
         time_period: pd.tseries.offsets.BaseOffset = self._date_to_end.to_period(  # type:ignore
@@ -98,17 +113,14 @@ class MonthlyTransactions:
         return ps
 
     def iterate_months(self) -> Generator:
-        delta = relativedelta(months=1)
-        month_to_analyze_start = self._date_to_start
-        month_to_analyze_end = self._date_to_start + delta - relativedelta(days=1)
-        while month_to_analyze_end <= self._date_to_end:
-            month_dates = self._df[
-                (self._df[TransactionLabeled.Date] >= pd.Timestamp(month_to_analyze_start))
-                & (self._df[TransactionLabeled.Date] <= pd.Timestamp(month_to_analyze_end))
+        months_to_analyze_start: list[pd.Timestamp] = self.get_months_to_analyze_start()
+        months_to_analyze_end: list[pd.Timestamp] = self.get_months_to_analyze_end()
+        for start, end in zip(months_to_analyze_start, months_to_analyze_end):
+            month_dates: DataFrame[TransactionLabeled] = self._df.loc[
+                (self._df[TransactionLabeled.Date] >= start)
+                & (self._df[TransactionLabeled.Date] <= end)
             ]
             yield month_dates
-            month_to_analyze_start = month_to_analyze_start + delta
-            month_to_analyze_end = month_to_analyze_end + delta
 
     def drop_costs(self, label: str, sublabel: str) -> None:
         to_drop: pd.Series = (self._df[TransactionLabeled.Label] == label) & (

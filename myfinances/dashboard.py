@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from dash import Dash, ctx, dcc, dependencies, html
 
 from myfinances.monthly_costs import MonthlyCosts
+from myfinances.utils import get_next_month, get_previous_day
 
 # px.defaults.template = 'plotly_dark'
 
@@ -110,11 +111,12 @@ class Dashboard:
 
     def end_dropdown(self, clickData, _) -> pd.Timestamp:  # noqa N803
         if 'reset-dates' == ctx.triggered_id:
-            print(self.monthly_costs.get_max_date_to_end())
             return self.monthly_costs.get_max_date_to_end()
         elif clickData:
-            month_selected = pd.to_datetime(clickData['points'][0]['label'])
-            return month_selected + pd.DateOffset(months=1)
+            month_selected = get_previous_day(
+                get_next_month(pd.to_datetime(clickData['points'][0]['label']))
+            )
+            return month_selected
         else:
             return self.monthly_costs.get_months_to_analyze_end()[-1]  # type: ignore
 

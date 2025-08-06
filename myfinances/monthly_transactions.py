@@ -3,17 +3,19 @@ from pathlib import Path
 from typing import Generator
 
 import pandas as pd
-from dateutil.relativedelta import relativedelta
 from loguru import logger as log
 from pandas._typing import ArrayLike
 from pandera.typing import DataFrame
 
 from myfinances.config_utils import AddLabels, DropLabels
 from myfinances.label_data import TransactionLabeled
+from myfinances.utils import get_next_month, get_previous_day, get_previous_month
 
 
 class MonthlyTransactions:
     def __init__(self, df: DataFrame[TransactionLabeled], month_split_day: int = 1) -> None:
+        assert month_split_day < 28
+        assert month_split_day > 0
         self.month_split_day: int = month_split_day
         self._date_to_start: pd.Timestamp = self._day_to_start(df)
         self._date_to_end: pd.Timestamp = self._day_to_end(df)
@@ -41,9 +43,11 @@ class MonthlyTransactions:
         return self._date_to_end
 
     def set_date_to_start(self, date: pd.Timestamp) -> None:
+        assert date.day == self.month_split_day
         self._date_to_start: pd.Timestamp = date
 
     def set_date_to_end(self, date: pd.Timestamp) -> None:
+        assert date.day == self.month_split_day - 1
         self._date_to_end: pd.Timestamp = date
 
     def get_min_date_to_start(self) -> pd.Timestamp:
@@ -62,8 +66,8 @@ class MonthlyTransactions:
             .max()
         )
 
-        if first_date.day >= self.month_split_day:
-            first_date: pd.Timestamp = first_date + pd.DateOffset(months=1)
+        if first_date.day > self.month_split_day:
+            first_date: pd.Timestamp = get_next_month(first_date)
 
         return pd.Timestamp(datetime.date(first_date.year, first_date.month, self.month_split_day))  # type: ignore
 
@@ -73,36 +77,44 @@ class MonthlyTransactions:
             .max()
             .min()
         )
-        if last_date.day < self.month_split_day:
-            last_date: pd.Timestamp = last_date - pd.DateOffset(months=1)
-
         day_to_end: pd.Timestamp = pd.Timestamp(
             datetime.date(last_date.year, last_date.month, self.month_split_day)
         )  # type: ignore
-        return day_to_end - pd.tseries.offsets.Day()
+        if self.month_split_day == 1:
+            if get_previous_day(get_next_month(day_to_end)) == last_date:
+                return get_previous_day(get_next_month(day_to_end))
+            else:
+                return get_previous_day(day_to_end)
+        else:
+            if get_previous_day(day_to_end) <= last_date:
+                return get_previous_day(day_to_end)
+            else:
+                return get_previous_day(get_previous_month(day_to_end))
 
     def get_months_to_analyze_start(self) -> list[pd.Timestamp]:
+        months_to_analyze_start: list[pd.Timestamp] = []
         month: pd.Timestamp = self._date_to_start
-        return self._get_months_in_transactions(month)
+        while month <= self._date_to_end:
+            months_to_analyze_start.append(month)
+            month: pd.Timestamp = get_next_month(month)
+        return months_to_analyze_start
 
     def get_months_to_analyze_end(self) -> list[pd.Timestamp]:
-        month: pd.Timestamp = self._date_to_start + relativedelta(months=1) - relativedelta(days=1)
-        return self._get_months_in_transactions(month)
+        months: list[pd.Timestamp] = self.get_months_to_analyze_start()
+        months.append(get_next_month(months[-1]))
+        months: list[pd.Timestamp] = [get_previous_day(month) for month in months]
+        return months[1:]
 
     def _get_months_in_transactions(self, start_date: pd.Timestamp) -> list[pd.Timestamp]:
-        delta = relativedelta(months=1)
         months_to_analyze_start: list[pd.Timestamp] = []
         month: pd.Timestamp = start_date
         while month <= self._date_to_end:
             months_to_analyze_start.append(month)
-            month += delta
+            month: pd.Timestamp = get_next_month(month)
         return months_to_analyze_start
 
     def get_n_months_to_analyze(self) -> int:
-        time_period: pd.tseries.offsets.BaseOffset = self._date_to_end.to_period(  # type:ignore
-            'M'
-        ) - self._date_to_start.to_period('M')
-        return time_period.n
+        return len(self.get_months_to_analyze_start())
 
     def get_months_to_analyze(self) -> pd.DatetimeIndex:
         df: DataFrame[TransactionLabeled] = self.get_transactions()

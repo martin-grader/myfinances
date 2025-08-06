@@ -25,7 +25,7 @@ def main() -> None:
 
     transactions_labled: DataFrame[TransactionLabeled] = get_labled_data(configs_paths)
 
-    monthly_costs: MonthlyCosts = MonthlyCosts(transactions_labled, 3)
+    monthly_costs: MonthlyCosts = MonthlyCosts(transactions_labled, 1)
     for drop_config in configs_paths.drop_configs:
         monthly_costs.drop_costs_by_config(drop_config)
     for add_config in configs_paths.add_configs:

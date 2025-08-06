@@ -4,7 +4,6 @@ from typing import Generator
 
 import pandas as pd
 from loguru import logger as log
-from pandas._typing import ArrayLike
 from pandera.typing import DataFrame
 
 from myfinances.config_utils import AddLabels, DropLabels
@@ -17,14 +16,12 @@ class MonthlyTransactions:
         assert month_split_day < 28
         assert month_split_day > 0
         self.month_split_day: int = month_split_day
+        self._set_all_transactions(df)
         self._date_to_start: pd.Timestamp = self._day_to_start(df)
         self._date_to_end: pd.Timestamp = self._day_to_end(df)
         self._min_date_to_start: pd.Timestamp = self._day_to_start(df)
         self._max_date_to_end: pd.Timestamp = self._day_to_end(df)
 
-        print(self._date_to_start)
-        print(self._date_to_end)
-        self._set_all_transactions(df)
         log.info(
             f'Analyzing {self.get_n_months_to_analyze()} months'
             f' ({self._date_to_start} - {self._date_to_end})'
@@ -47,7 +44,7 @@ class MonthlyTransactions:
         self._date_to_start: pd.Timestamp = date
 
     def set_date_to_end(self, date: pd.Timestamp) -> None:
-        assert date.day == self.month_split_day - 1
+        # assert date.day == self.month_split_day - 1
         self._date_to_end: pd.Timestamp = date
 
     def get_min_date_to_start(self) -> pd.Timestamp:
@@ -69,7 +66,7 @@ class MonthlyTransactions:
         if first_date.day > self.month_split_day:
             first_date: pd.Timestamp = get_next_month(first_date)
 
-        return pd.Timestamp(datetime.date(first_date.year, first_date.month, self.month_split_day))  # type: ignore
+        return pd.Timestamp(first_date.year, first_date.month, self.month_split_day)  # type: ignore
 
     def _day_to_end(self, df) -> pd.Timestamp:
         last_date: pd.Timestamp = (
@@ -105,24 +102,8 @@ class MonthlyTransactions:
         months: list[pd.Timestamp] = [get_previous_day(month) for month in months]
         return months[1:]
 
-    def _get_months_in_transactions(self, start_date: pd.Timestamp) -> list[pd.Timestamp]:
-        months_to_analyze_start: list[pd.Timestamp] = []
-        month: pd.Timestamp = start_date
-        while month <= self._date_to_end:
-            months_to_analyze_start.append(month)
-            month: pd.Timestamp = get_next_month(month)
-        return months_to_analyze_start
-
     def get_n_months_to_analyze(self) -> int:
         return len(self.get_months_to_analyze_start())
-
-    def get_months_to_analyze(self) -> pd.DatetimeIndex:
-        df: DataFrame[TransactionLabeled] = self.get_transactions()
-        dates_sorted: pd.Series = df.loc[:, TransactionLabeled.Date]
-        time_period: pd.Series = dates_sorted.apply(lambda x: x.strftime('%B-%Y'))  # type: ignore
-        time_period_unique: ArrayLike = time_period.sort_values().unique()
-        ps: pd.DatetimeIndex = pd.to_datetime(time_period_unique, format='%B-%Y').sort_values()
-        return ps
 
     def iterate_months(self) -> Generator:
         months_to_analyze_start: list[pd.Timestamp] = self.get_months_to_analyze_start()

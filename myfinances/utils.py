@@ -13,12 +13,15 @@ def get_rows_by_exact_string(df, string) -> pd.Series:
 
 
 def get_previous_day(date: pd.Timestamp) -> pd.Timestamp:
-    return date - relativedelta(days=1)
+    previous_day: pd.Timestamp = date - relativedelta(days=1)  # type: ignore
+    return previous_day
 
 
 def get_previous_month(date: pd.Timestamp) -> pd.Timestamp:
-    return date - relativedelta(months=1)
+    previous_month: pd.Timestamp = date - relativedelta(months=1)  # type: ignore
+    return previous_month
 
 
 def get_next_month(date: pd.Timestamp) -> pd.Timestamp:
-    return date + relativedelta(months=1)
+    next_month: pd.Timestamp = date + relativedelta(months=1)  # type: ignore
+    return next_month

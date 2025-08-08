@@ -8,14 +8,13 @@ from pandera.typing import DataFrame
 
 from myfinances.config_utils import AddLabels, DropLabels
 from myfinances.label_data import TransactionLabeled
-from myfinances.utils import get_next_month, get_previous_day, get_previous_month
+from myfinances.utils import get_next_day, get_next_month, get_previous_day, get_previous_month
 
 
 class MonthlyTransactions:
     def __init__(self, df: DataFrame[TransactionLabeled], month_split_day: int = 1) -> None:
-        assert month_split_day < 28
-        assert month_split_day > 0
-        self.month_split_day: int = month_split_day
+        self._check_month_split_day(month_split_day)
+        self._month_split_day: int = month_split_day
         self._set_all_transactions(df)
         self._date_to_start: pd.Timestamp = self._day_to_start(df)
         self._date_to_end: pd.Timestamp = self._day_to_end(df)
@@ -26,6 +25,22 @@ class MonthlyTransactions:
             f'Analyzing {self.get_n_months_to_analyze()} months'
             f' ({self._date_to_start} - {self._date_to_end})'
         )
+
+    def set_date_to_start(self, date: pd.Timestamp) -> None:
+        self._check_date_day_matches_split_day(date)
+        self._check_date_ge_minimum_date(date)
+        self._check_date_le_max_date(date)
+        self._check_start_date_less_end_date(date, self._date_to_end)
+
+        self._date_to_start: pd.Timestamp = date
+
+    def set_date_to_end(self, date: pd.Timestamp) -> None:
+        self._check_date_day_matches_split_day(get_next_day(date))
+        self._check_date_ge_minimum_date(date)
+        self._check_date_le_max_date(date)
+        self._check_start_date_less_end_date(self._date_to_start, date)
+
+        self._date_to_end: pd.Timestamp = date
 
     def get_transactions(self) -> DataFrame[TransactionLabeled]:
         return self._df.loc[
@@ -39,54 +54,14 @@ class MonthlyTransactions:
     def get_date_to_end(self) -> pd.Timestamp:
         return self._date_to_end
 
-    def set_date_to_start(self, date: pd.Timestamp) -> None:
-        assert date.day == self.month_split_day
-        self._date_to_start: pd.Timestamp = date
-
-    def set_date_to_end(self, date: pd.Timestamp) -> None:
-        # assert date.day == self.month_split_day - 1
-        self._date_to_end: pd.Timestamp = date
+    def get_month_split_day(self) -> int:
+        return self._month_split_day
 
     def get_min_date_to_start(self) -> pd.Timestamp:
         return self._min_date_to_start
 
     def get_max_date_to_end(self) -> pd.Timestamp:
         return self._max_date_to_end
-
-    def _set_all_transactions(self, df: DataFrame[TransactionLabeled]) -> None:
-        self._df: DataFrame[TransactionLabeled] = df
-
-    def _day_to_start(self, df) -> pd.Timestamp:
-        first_date: pd.Timestamp = (
-            df.groupby(TransactionLabeled.Account, observed=True)[TransactionLabeled.Date]
-            .min()
-            .max()
-        )
-
-        if first_date.day > self.month_split_day:
-            first_date: pd.Timestamp = get_next_month(first_date)
-
-        return pd.Timestamp(first_date.year, first_date.month, self.month_split_day)  # type: ignore
-
-    def _day_to_end(self, df) -> pd.Timestamp:
-        last_date: pd.Timestamp = (
-            df.groupby(TransactionLabeled.Account, observed=True)[TransactionLabeled.Date]
-            .max()
-            .min()
-        )
-        day_to_end: pd.Timestamp = pd.Timestamp(
-            datetime.date(last_date.year, last_date.month, self.month_split_day)
-        )  # type: ignore
-        if self.month_split_day == 1:
-            if get_previous_day(get_next_month(day_to_end)) == last_date:
-                return get_previous_day(get_next_month(day_to_end))
-            else:
-                return get_previous_day(day_to_end)
-        else:
-            if get_previous_day(day_to_end) <= last_date:
-                return get_previous_day(day_to_end)
-            else:
-                return get_previous_day(get_previous_month(day_to_end))
 
     def get_months_to_analyze_start(self) -> list[pd.Timestamp]:
         months_to_analyze_start: list[pd.Timestamp] = []
@@ -114,6 +89,82 @@ class MonthlyTransactions:
                 & (self._df[TransactionLabeled.Date] <= end)
             ]
             yield month_dates
+
+    def _set_all_transactions(self, df: DataFrame[TransactionLabeled]) -> None:
+        self._df: DataFrame[TransactionLabeled] = df
+
+    def _day_to_start(self, df) -> pd.Timestamp:
+        first_date: pd.Timestamp = (
+            df.groupby(TransactionLabeled.Account, observed=True)[TransactionLabeled.Date]
+            .min()
+            .max()
+        )
+
+        if first_date.day > self._month_split_day:
+            first_date: pd.Timestamp = get_next_month(first_date)
+
+        return pd.Timestamp(first_date.year, first_date.month, self._month_split_day)  # type: ignore
+
+    def _day_to_end(self, df) -> pd.Timestamp:
+        last_date: pd.Timestamp = (
+            df.groupby(TransactionLabeled.Account, observed=True)[TransactionLabeled.Date]
+            .max()
+            .min()
+        )
+        day_to_end: pd.Timestamp = pd.Timestamp(
+            datetime.date(last_date.year, last_date.month, self._month_split_day)
+        )  # type: ignore
+        if self._month_split_day == 1:
+            if get_previous_day(get_next_month(day_to_end)) == last_date:
+                return get_previous_day(get_next_month(day_to_end))
+            else:
+                return get_previous_day(day_to_end)
+        else:
+            if get_previous_day(day_to_end) <= last_date:
+                return get_previous_day(day_to_end)
+            else:
+                return get_previous_day(get_previous_month(day_to_end))
+
+    def _check_date_day_matches_split_day(self, date: pd.Timestamp) -> None:
+        if date.day != self._month_split_day:
+            log.error(
+                f'Day in date ({date}) must equal the month_split_day ({self._month_split_day})'
+            )
+            raise AttributeError
+
+    def _check_date_ge_minimum_date(self, date: pd.Timestamp) -> None:
+        if date < self.get_min_date_to_start():
+            log.error(
+                f'Date set ({date}) must greater or equal',
+                f' the minimum date in data ({self.get_min_date_to_start()})',
+            )
+            raise AttributeError
+
+    def _check_date_le_max_date(self, date: pd.Timestamp) -> None:
+        if date > self.get_max_date_to_end():
+            log.error(
+                f'Date set ({date}) must be less or equal the',
+                f' maximum date in data ({self.get_max_date_to_end()})',
+            )
+            raise AttributeError
+
+    def _check_start_date_less_end_date(
+        self, start_date: pd.Timestamp, end_date: pd.Timestamp
+    ) -> None:
+        if start_date > end_date:
+            log.error(f'Start date ({start_date}) must be less end data ({end_date})')
+            raise AttributeError
+
+    def _check_month_split_day(self, month_split_day: int) -> None:
+        if month_split_day <= 0:
+            log.error(f'Month split day ({month_split_day}) must be greater zero')
+            raise AttributeError
+        if month_split_day >= 28:
+            log.error(f'Month split day ({month_split_day}) must be less 28')
+            raise AttributeError
+        if not isinstance(month_split_day, int):
+            log.error(f'Type of month split day ({month_split_day}) must be integer')
+            raise AttributeError
 
     def drop_costs(self, label: str, sublabel: str) -> None:
         to_drop: pd.Series = (self._df[TransactionLabeled.Label] == label) & (

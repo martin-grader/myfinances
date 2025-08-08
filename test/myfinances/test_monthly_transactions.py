@@ -138,11 +138,11 @@ def date_to_end_expected(end_date, month_split_day) -> pd.Timestamp | NaTType | 
             assert False
 
 
-def test_month_split_day(monthly_transactions, month_split_day) -> None:
-    assert monthly_transactions.month_split_day == month_split_day
+def test_get_month_split_day(monthly_transactions, month_split_day) -> None:
+    assert monthly_transactions.get_month_split_day() == month_split_day
 
 
-def test_date_to_start(monthly_transactions, date_to_start_expected) -> None:
+def test_get_date_to_start(monthly_transactions, date_to_start_expected) -> None:
     assert monthly_transactions.get_date_to_start() == date_to_start_expected
 
 
@@ -163,7 +163,7 @@ def test_get_n_months_to_analyze(
 ) -> None:
     n_months_to_analyze_expected: int = date_to_end_expected.month - date_to_start_expected.month
     n_months_to_analyze_expected += 12 * (date_to_end_expected.year - date_to_start_expected.year)
-    if monthly_transactions.month_split_day == 1:
+    if monthly_transactions.get_month_split_day() == 1:
         n_months_to_analyze_expected += 1
     assert monthly_transactions.get_n_months_to_analyze() == n_months_to_analyze_expected
 

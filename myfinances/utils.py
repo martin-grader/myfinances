@@ -25,3 +25,8 @@ def get_previous_month(date: pd.Timestamp) -> pd.Timestamp:
 def get_next_month(date: pd.Timestamp) -> pd.Timestamp:
     next_month: pd.Timestamp = date + relativedelta(months=1)  # type: ignore
     return next_month
+
+
+def get_next_day(date: pd.Timestamp) -> pd.Timestamp:
+    next_day: pd.Timestamp = date + relativedelta(days=1)  # type: ignore
+    return next_day

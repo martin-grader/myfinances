@@ -1,8 +1,7 @@
-import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from dash import Dash, ctx, dcc, dependencies, html
+from dash import Dash, ctx, dash_table, dcc, dependencies, html
 
 from myfinances.monthly_costs import MonthlyCosts
 from myfinances.utils import get_next_month, get_previous_day
@@ -12,9 +11,10 @@ from myfinances.utils import get_next_month, get_previous_day
 
 class Dashboard:
     def __init__(self, monthly_costs: MonthlyCosts) -> None:
-        self.app: Dash = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
+        # self.app: Dash = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
+        self.app: Dash = Dash(__name__)
         self.monthly_costs: MonthlyCosts = monthly_costs
-        self.colors = {'background': '#111111', 'text': '#7FDBFF'}
+        # self.colors = {'background': '#111111', 'text': '#7FDBFF'}
         self.app.layout = html.Div(
             # style={'backgroundColor': self.colors['background']},
             children=[
@@ -55,6 +55,7 @@ class Dashboard:
                         html.Label(
                             id='available_amount',
                         ),
+                        dash_table.DataTable(id='all-data'),
                     ]
                 ),
                 dcc.Graph(
@@ -73,6 +74,11 @@ class Dashboard:
                 dependencies.Input('expenses-bar', 'clickData'),
                 dependencies.Input('reset-dates', 'n_clicks'),
             )(self.end_dropdown),
+            self.app.callback(
+                dependencies.Output('all-data', 'data'),
+                dependencies.Input('begin-dropdown', 'value'),
+                dependencies.Input('end-dropdown', 'value'),
+            )(self.all_data),
             self.app.callback(
                 dependencies.Output('available_amount', 'children'),
                 dependencies.Input('begin-dropdown', 'value'),
@@ -119,6 +125,9 @@ class Dashboard:
             return month_selected
         else:
             return self.monthly_costs.get_months_to_analyze_end()[-1]  # type: ignore
+
+    def all_data(self, *_) -> list[dict]:
+        return self.monthly_costs.get_transactions().to_dict('records')
 
     def available_amount(self, *_) -> str:
         return f'Available: {self.monthly_costs.get_averaged_expenses_by_label().sum()}'

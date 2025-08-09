@@ -42,6 +42,20 @@ class MonthlyTransactions:
 
         self._date_to_end: pd.Timestamp = date
 
+    def set_start_and_end_date(
+        self, date_to_start: pd.Timestamp, date_to_end: pd.Timestamp
+    ) -> None:
+        self._check_date_day_matches_split_day(date_to_start)
+        self._check_date_day_matches_split_day(get_next_day(date_to_end))
+        self._check_date_ge_minimum_date(date_to_start)
+        self._check_date_ge_minimum_date(date_to_end)
+        self._check_date_le_max_date(date_to_start)
+        self._check_date_le_max_date(date_to_end)
+        self._check_start_date_less_end_date(date_to_start, date_to_end)
+
+        self._date_to_start: pd.Timestamp = date_to_start
+        self._date_to_end: pd.Timestamp = date_to_end
+
     def get_transactions(self) -> DataFrame[TransactionLabeled]:
         return self._df.loc[
             (self._df[TransactionLabeled.Date] >= self._date_to_start)

@@ -79,3 +79,10 @@ class MonthlyCosts(MonthlyTransactions):
                 ]
             )
         return df_monthly_expenses
+
+    def get_daily_expenses(self) -> pd.DataFrame:
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
+        df_daily_expenses: pd.DataFrame = df.loc[
+            :, [TransactionLabeled.Date, TransactionLabeled.Amount]
+        ]
+        return df_daily_expenses.groupby(by=[TransactionLabeled.Date]).sum().reset_index()

@@ -146,6 +146,28 @@ def test_get_date_to_start(monthly_transactions, date_to_start_expected) -> None
     assert monthly_transactions.get_date_to_start() == date_to_start_expected
 
 
+def test_set_date_to_start(monthly_transactions, date_to_start_expected) -> None:
+    date_to_start = get_next_month(date_to_start_expected)
+    monthly_transactions.set_date_to_start(date_to_start)
+    assert monthly_transactions.get_date_to_start() == date_to_start
+
+
+def test_set_date_to_end(monthly_transactions, date_to_start_expected) -> None:
+    date_to_end: pd.Timestamp = get_previous_day(get_next_month(date_to_start_expected))
+    monthly_transactions.set_date_to_end(date_to_end)
+    assert monthly_transactions.get_date_to_end() == date_to_end
+
+
+def test_set_start_and_end_date(monthly_transactions, date_to_start_expected) -> None:
+    date_to_end: pd.Timestamp = get_previous_day(
+        get_next_month(get_next_month(date_to_start_expected))
+    )
+    date_to_start = get_next_month(date_to_start_expected)
+    monthly_transactions.set_start_and_end_date(date_to_start, date_to_end)
+    assert monthly_transactions.get_date_to_start() == date_to_start
+    assert monthly_transactions.get_date_to_end() == date_to_end
+
+
 def test_date_to_start_two_accounts(
     monthly_transactions_two_accounts, month_split_day, start_date
 ) -> None:

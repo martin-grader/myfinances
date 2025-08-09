@@ -162,10 +162,15 @@ class Dashboard:
         return figure
 
     def plot_expenses_bar(self, begin_dropdown_data, end_dropdown_data) -> go.Figure:  # noqa: N803
-        self.monthly_costs.set_date_to_start(pd.to_datetime(begin_dropdown_data))
-        self.monthly_costs.set_date_to_end(pd.to_datetime(end_dropdown_data))
+        self.monthly_costs.set_start_and_end_date(
+            pd.to_datetime(begin_dropdown_data), pd.to_datetime(end_dropdown_data)
+        )
+        if self.monthly_costs.get_n_months_to_analyze() == 1:
+            df: pd.DataFrame = self.monthly_costs.get_daily_expenses()
+        else:
+            df: pd.DataFrame = self.monthly_costs.get_monthly_expenses()
         figure: go.Figure = px.bar(
-            self.monthly_costs.get_monthly_expenses(),
+            data_frame=df,
             x='Date',
             y='Amount',
             color='Amount',

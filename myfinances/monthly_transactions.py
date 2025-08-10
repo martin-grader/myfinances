@@ -13,13 +13,8 @@ from myfinances.utils import get_next_day, get_next_month, get_previous_day, get
 
 class MonthlyTransactions:
     def __init__(self, df: DataFrame[TransactionLabeled], month_split_day: int = 1) -> None:
-        self._check_month_split_day(month_split_day)
-        self._month_split_day: int = month_split_day
         self._set_all_transactions(df)
-        self._date_to_start: pd.Timestamp = self._day_to_start(df)
-        self._date_to_end: pd.Timestamp = self._day_to_end(df)
-        self._min_date_to_start: pd.Timestamp = self._day_to_start(df)
-        self._max_date_to_end: pd.Timestamp = self._day_to_end(df)
+        self.set_month_split_day(month_split_day)
 
         log.info(
             f'Analyzing {self.get_n_months_to_analyze()} months'
@@ -28,16 +23,14 @@ class MonthlyTransactions:
 
     def set_date_to_start(self, date: pd.Timestamp) -> None:
         self._check_date_day_matches_split_day(date)
-        self._check_date_ge_minimum_date(date)
-        self._check_date_le_max_date(date)
+        self._check_date_limits(date)
         self._check_start_date_less_end_date(date, self._date_to_end)
 
         self._date_to_start: pd.Timestamp = date
 
     def set_date_to_end(self, date: pd.Timestamp) -> None:
         self._check_date_day_matches_split_day(get_next_day(date))
-        self._check_date_ge_minimum_date(date)
-        self._check_date_le_max_date(date)
+        self._check_date_limits(date)
         self._check_start_date_less_end_date(self._date_to_start, date)
 
         self._date_to_end: pd.Timestamp = date
@@ -47,14 +40,20 @@ class MonthlyTransactions:
     ) -> None:
         self._check_date_day_matches_split_day(date_to_start)
         self._check_date_day_matches_split_day(get_next_day(date_to_end))
-        self._check_date_ge_minimum_date(date_to_start)
-        self._check_date_ge_minimum_date(date_to_end)
-        self._check_date_le_max_date(date_to_start)
-        self._check_date_le_max_date(date_to_end)
+        self._check_date_limits(date_to_start)
+        self._check_date_limits(date_to_end)
         self._check_start_date_less_end_date(date_to_start, date_to_end)
 
         self._date_to_start: pd.Timestamp = date_to_start
         self._date_to_end: pd.Timestamp = date_to_end
+
+    def _check_date_limits(self, date: pd.Timestamp) -> None:
+        self._check_date_ge_minimum_date(date)
+        self._check_date_le_max_date(date)
+
+    def set_month_split_day(self, month_split_day: int) -> None:
+        self._set_month_split_day(month_split_day)
+        self._reset_start_end_dates()
 
     def get_transactions(self) -> DataFrame[TransactionLabeled]:
         return self._df.loc[
@@ -77,19 +76,38 @@ class MonthlyTransactions:
     def get_max_date_to_end(self) -> pd.Timestamp:
         return self._max_date_to_end
 
+    def get_all_months_to_analyze_start(self) -> list[pd.Timestamp]:
+        return self._calculate_months_to_analyze_start(
+            self._min_date_to_start, self._max_date_to_end
+        )
+
     def get_months_to_analyze_start(self) -> list[pd.Timestamp]:
+        return self._calculate_months_to_analyze_start(self._date_to_start, self._date_to_end)
+
+    def _calculate_months_to_analyze_start(
+        self, date_to_start: pd.Timestamp, date_to_end: pd.Timestamp
+    ) -> list[pd.Timestamp]:
         months_to_analyze_start: list[pd.Timestamp] = []
-        month: pd.Timestamp = self._date_to_start
-        while month <= self._date_to_end:
+        month: pd.Timestamp = date_to_start
+        while month <= date_to_end:
             months_to_analyze_start.append(month)
             month: pd.Timestamp = get_next_month(month)
         return months_to_analyze_start
 
+    def get_all_months_to_analyze_end(self) -> list[pd.Timestamp]:
+        return self._get_months_to_analyze_end(self.get_all_months_to_analyze_start())
+
     def get_months_to_analyze_end(self) -> list[pd.Timestamp]:
-        months: list[pd.Timestamp] = self.get_months_to_analyze_start()
-        months.append(get_next_month(months[-1]))
-        months: list[pd.Timestamp] = [get_previous_day(month) for month in months]
-        return months[1:]
+        return self._get_months_to_analyze_end(self.get_months_to_analyze_start())
+
+    def _get_months_to_analyze_end(
+        self, months_to_analyze_start: list[pd.Timestamp]
+    ) -> list[pd.Timestamp]:
+        months: list[pd.Timestamp] = [
+            get_previous_day(month) for month in months_to_analyze_start[1:]
+        ]
+        months.append(get_previous_day(get_next_month(months_to_analyze_start[-1])))
+        return months
 
     def get_n_months_to_analyze(self) -> int:
         return len(self.get_months_to_analyze_start())
@@ -107,9 +125,19 @@ class MonthlyTransactions:
     def _set_all_transactions(self, df: DataFrame[TransactionLabeled]) -> None:
         self._df: DataFrame[TransactionLabeled] = df
 
-    def _day_to_start(self, df) -> pd.Timestamp:
+    def _set_month_split_day(self, month_split_day) -> None:
+        self._check_month_split_day(month_split_day)
+        self._month_split_day: int = month_split_day
+
+    def _reset_start_end_dates(self) -> None:
+        self._date_to_start: pd.Timestamp = self._min_day_to_start()
+        self._date_to_end: pd.Timestamp = self._max_day_to_end()
+        self._min_date_to_start: pd.Timestamp = self._min_day_to_start()
+        self._max_date_to_end: pd.Timestamp = self._max_day_to_end()
+
+    def _min_day_to_start(self) -> pd.Timestamp:
         first_date: pd.Timestamp = (
-            df.groupby(TransactionLabeled.Account, observed=True)[TransactionLabeled.Date]
+            self._df.groupby(TransactionLabeled.Account, observed=True)[TransactionLabeled.Date]
             .min()
             .max()
         )
@@ -119,9 +147,9 @@ class MonthlyTransactions:
 
         return pd.Timestamp(first_date.year, first_date.month, self._month_split_day)  # type: ignore
 
-    def _day_to_end(self, df) -> pd.Timestamp:
+    def _max_day_to_end(self) -> pd.Timestamp:
         last_date: pd.Timestamp = (
-            df.groupby(TransactionLabeled.Account, observed=True)[TransactionLabeled.Date]
+            self._df.groupby(TransactionLabeled.Account, observed=True)[TransactionLabeled.Date]
             .max()
             .min()
         )

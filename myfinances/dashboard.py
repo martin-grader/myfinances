@@ -28,12 +28,17 @@ class Dashboard:
                 html.Div(
                     children=[
                         dcc.Dropdown(
-                            options=self.monthly_costs.get_months_to_analyze_start(),
+                            # options=self.monthly_costs.get_months_to_analyze_start(),
                             id='begin-dropdown',
                         ),
                         dcc.Dropdown(
                             options=self.monthly_costs.get_months_to_analyze_end(),
                             id='end-dropdown',
+                        ),
+                        dcc.Dropdown(
+                            options=list(range(1, 28)),
+                            value=self.monthly_costs.get_month_split_day(),
+                            id='month-split-date',
                         ),
                         html.Button('Reset', id='reset-dates'),
                     ]
@@ -66,12 +71,16 @@ class Dashboard:
         (  # type: ignore
             self.app.callback(
                 dependencies.Output('begin-dropdown', 'value'),
+                dependencies.Output('begin-dropdown', 'options'),
                 dependencies.Input('expenses-bar', 'clickData'),
+                dependencies.Input('month-split-date', 'value'),
                 dependencies.Input('reset-dates', 'n_clicks'),
             )(self.begin_dropdown),
             self.app.callback(
                 dependencies.Output('end-dropdown', 'value'),
+                dependencies.Output('end-dropdown', 'options'),
                 dependencies.Input('expenses-bar', 'clickData'),
+                dependencies.Input('month-split-date', 'value'),
                 dependencies.Input('reset-dates', 'n_clicks'),
             )(self.end_dropdown),
             self.app.callback(
@@ -107,24 +116,51 @@ class Dashboard:
             )(self.plot_expenses_bar),
         )
 
-    def begin_dropdown(self, clickData, _) -> pd.Timestamp:  # noqa N803
-        if 'reset-dates' == ctx.triggered_id:
-            return self.monthly_costs.get_min_date_to_start()
-        elif clickData:
-            return pd.to_datetime(clickData['points'][0]['label'])
-        else:
-            return self.monthly_costs.get_months_to_analyze_start()[0]  # type: ignore
+    def set_month_split_day(self, month_split_day) -> None:
+        self.monthly_costs.set_month_split_day(month_split_day)
 
-    def end_dropdown(self, clickData, _) -> pd.Timestamp:  # noqa N803
+    def begin_dropdown(
+        self,
+        clickData,  # noqa N803
+        month_split_day,
+        _,
+    ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:  # noqa N803
         if 'reset-dates' == ctx.triggered_id:
-            return self.monthly_costs.get_max_date_to_end()
-        elif clickData:
-            month_selected = get_previous_day(
-                get_next_month(pd.to_datetime(clickData['points'][0]['label']))
-            )
-            return month_selected
+            value: pd.Timestamp = self.monthly_costs.get_min_date_to_start()
+        elif 'expenses-bar' == ctx.triggered_id:
+            clicked_date = pd.to_datetime(clickData['points'][0]['label'])
+            value: pd.Timestamp = pd.Timestamp(
+                year=clicked_date.year, month=clicked_date.month, day=month_split_day
+            )  # type: ignore
+        elif 'month-split-date' == ctx.triggered_id:
+            self.monthly_costs.set_month_split_day(month_split_day)
+            value: pd.Timestamp = self.monthly_costs.get_min_date_to_start()
         else:
-            return self.monthly_costs.get_months_to_analyze_end()[-1]  # type: ignore
+            value: pd.Timestamp = self.monthly_costs.get_months_to_analyze_start()[0]  # type: ignore
+        options: list[pd.Timestamp] = self.monthly_costs.get_all_months_to_analyze_start()
+        return (value, options)
+
+    def end_dropdown(
+        self,
+        clickData,  # noqa N803
+        month_split_day,
+        _,
+    ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:  # noqa N803
+        if 'reset-dates' == ctx.triggered_id:
+            value: pd.Timestamp = self.monthly_costs.get_max_date_to_end()
+        elif 'expenses-bar' == ctx.triggered_id:
+            clicked_date = pd.to_datetime(clickData['points'][0]['label'])
+            value: pd.Timestamp = pd.Timestamp(
+                year=clicked_date.year, month=clicked_date.month, day=month_split_day
+            )  # type: ignore
+            value = get_previous_day(get_next_month(value))
+        elif 'month-split-date' == ctx.triggered_id:
+            self.monthly_costs.set_month_split_day(month_split_day)
+            value: pd.Timestamp = self.monthly_costs.get_max_date_to_end()
+        else:
+            value: pd.Timestamp = self.monthly_costs.get_months_to_analyze_end()[-1]  # type: ignore
+        options: list[pd.Timestamp] = self.monthly_costs.get_all_months_to_analyze_end()
+        return (value, options)
 
     def all_data(self, *_) -> list[dict]:
         return self.monthly_costs.get_transactions().to_dict('records')

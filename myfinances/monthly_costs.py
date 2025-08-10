@@ -64,7 +64,7 @@ class MonthlyCosts(MonthlyTransactions):
         df_monthly_expenses: pd.DataFrame = pd.DataFrame()
         for df in self.iterate_months():
             date_income: pd.Timestamp = df[TransactionLabeled.Date].min()
-            date_income: pd.Timestamp = date_income.replace(day=1)
+            date_income: pd.Timestamp = date_income.replace(day=self._month_split_day)
             expenses: float = df[TransactionLabeled.Amount].sum()
             expenses_this_month: pd.DataFrame = pd.DataFrame(
                 {

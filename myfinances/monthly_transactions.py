@@ -140,7 +140,7 @@ class MonthlyTransactions:
             self._df.groupby(TransactionLabeled.Account, observed=True)[TransactionLabeled.Date]
             .min()
             .max()
-        )
+        )  # type:ignore
 
         if first_date.day > self._month_split_day:
             first_date: pd.Timestamp = get_next_month(first_date)
@@ -152,7 +152,7 @@ class MonthlyTransactions:
             self._df.groupby(TransactionLabeled.Account, observed=True)[TransactionLabeled.Date]
             .max()
             .min()
-        )
+        )  # type: ignore
         day_to_end: pd.Timestamp = pd.Timestamp(
             datetime.date(last_date.year, last_date.month, self._month_split_day)
         )  # type: ignore

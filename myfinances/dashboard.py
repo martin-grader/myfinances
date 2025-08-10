@@ -55,16 +55,26 @@ class Dashboard:
                         ),
                     ],
                 ),
+                dcc.Graph(
+                    id='income_pie',
+                ),
                 html.Div(
                     [
                         html.Label(
                             id='available_amount',
                         ),
-                        dash_table.DataTable(id='all-data'),
-                    ]
-                ),
-                dcc.Graph(
-                    id='income_pie',
+                        dash_table.DataTable(
+                            sort_action='native',
+                            style_data={
+                                'whiteSpace': 'normal',
+                                'height': 'auto',
+                            },
+                            # fixed_rows={'headers': True},
+                            # style_table={'height': 500},
+                            id='all-data',
+                        ),
+                    ],
+                    style={'width': '90vw', 'margin': 'auto'},
                 ),
             ],
         )

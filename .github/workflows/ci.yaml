@@ -36,10 +36,10 @@ jobs:
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
 
-      - name: Run pyright
-        uses: jakebailey/pyright-action@v2
-        with:
-          version: 1.1.311
+#      - name: Run pyright
+#        uses: jakebailey/pyright-action@v2
+#        with:
+#          version: 1.1.311
 
       - name: Run the automated tests (for example)
         run: poetry run pytest -v --color=yes

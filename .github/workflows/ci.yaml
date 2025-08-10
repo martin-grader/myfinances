@@ -16,9 +16,6 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Run pre-commit
-        uses: pre-commit/action@v3.0.1
-
       - name: Install poetry
         uses: abatilo/actions-poetry@v4
 
@@ -35,6 +32,9 @@ jobs:
 
       - name: Install the project dependencies
         run: poetry install
+
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.1
 
       - name: Run pyright
         uses: jakebailey/pyright-action@v2

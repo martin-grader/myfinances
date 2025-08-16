@@ -4,7 +4,7 @@ from pandas._libs import NaTType
 from pandera.typing import DataFrame
 
 from myfinances.label_data import TransactionLabeled
-from myfinances.monthly_transactions import MonthlyTransactions
+from myfinances.monthly_transactions import MonthlyTransactions, StartDateError
 from myfinances.utils import get_next_day, get_previous_day, get_previous_month
 
 
@@ -63,24 +63,32 @@ def date_to_end_expected() -> pd.Timestamp | NaTType | None:
 
 
 def test_set_date_to_start_below_data(monthly_transactions, date_to_start_expected) -> None:
-    with pytest.raises(AttributeError):
+    date_to_start_valid: pd.Timestamp = monthly_transactions.get_date_to_start()
+    with pytest.raises(StartDateError):
         monthly_transactions.set_date_to_start(get_previous_month(date_to_start_expected))
+    assert monthly_transactions.get_date_to_start() == date_to_start_valid
 
 
 def test_set_date_to_start_above_data(monthly_transactions, date_to_end_expected) -> None:
-    with pytest.raises(AttributeError):
+    date_to_start_valid: pd.Timestamp = monthly_transactions.get_date_to_start()
+    with pytest.raises(StartDateError):
         monthly_transactions.set_date_to_start(get_next_day(date_to_end_expected))
+    assert monthly_transactions.get_date_to_start() == date_to_start_valid
 
 
 def test_set_date_to_start_wrong_day(monthly_transactions, date_to_start_expected) -> None:
-    with pytest.raises(AttributeError):
+    date_to_start_valid: pd.Timestamp = monthly_transactions.get_date_to_start()
+    with pytest.raises(StartDateError):
         monthly_transactions.set_date_to_start(get_next_day(date_to_start_expected))
+    assert monthly_transactions.get_date_to_start() == date_to_start_valid
 
 
 def test_set_date_to_start_ge_date_to_end(monthly_transactions) -> None:
+    date_to_start_valid: pd.Timestamp = monthly_transactions.get_date_to_start()
     monthly_transactions.set_date_to_end(pd.Timestamp(year=2024, month=2, day=29))
-    with pytest.raises(AttributeError):
+    with pytest.raises(StartDateError):
         monthly_transactions.set_date_to_start(pd.Timestamp(year=2024, month=3, day=1))
+    assert monthly_transactions.get_date_to_start() == date_to_start_valid
 
 
 def test_set_end_to_start_below_data(monthly_transactions, date_to_start_expected) -> None:

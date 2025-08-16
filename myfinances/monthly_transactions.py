@@ -22,11 +22,13 @@ class MonthlyTransactions:
         )
 
     def set_date_to_start(self, date: pd.Timestamp) -> None:
-        self._check_date_day_matches_split_day(date)
-        self._check_date_limits(date)
-        self._check_start_date_less_end_date(date, self._date_to_end)
-
-        self._date_to_start: pd.Timestamp = date
+        valid_date: pd.Timestamp = self.get_date_to_start()
+        try:
+            self._date_to_start = date
+            IntegrityChecker(self).check_start_date()
+        except StartDateError:
+            self._date_to_start = valid_date
+            raise
 
     def set_date_to_end(self, date: pd.Timestamp) -> None:
         self._check_date_day_matches_split_day(get_next_day(date))
@@ -47,13 +49,13 @@ class MonthlyTransactions:
         self._date_to_start: pd.Timestamp = date_to_start
         self._date_to_end: pd.Timestamp = date_to_end
 
-    def _check_date_limits(self, date: pd.Timestamp) -> None:
-        self._check_date_ge_minimum_date(date)
-        self._check_date_le_max_date(date)
-
     def set_month_split_day(self, month_split_day: int) -> None:
         self._set_month_split_day(month_split_day)
         self._reset_start_end_dates()
+
+    def _check_date_limits(self, date: pd.Timestamp) -> None:
+        self._check_date_ge_minimum_date(date)
+        self._check_date_le_max_date(date)
 
     def get_transactions(self) -> DataFrame[TransactionLabeled]:
         return self._df.loc[
@@ -236,3 +238,54 @@ class MonthlyTransactions:
             all_dfs_to_add.append(df_to_add)
         df_to_add_all_configs: DataFrame[TransactionLabeled] = pd.concat(all_dfs_to_add)  # type:ignore
         self._df = pd.concat([self._df, df_to_add_all_configs])  # type: ignore
+
+
+class StartDateError(Exception):
+    pass
+
+
+class IntegrityChecker:
+    def __init__(self, target: MonthlyTransactions) -> None:
+        self.start_date: pd.Timestamp = target.get_date_to_start()
+        self.end_date: pd.Timestamp = target.get_date_to_end()
+        self.month_split_day: int = target.get_month_split_day()
+        self.min_date_to_start: pd.Timestamp = target.get_min_date_to_start()
+        self.max_date_to_end: pd.Timestamp = target.get_max_date_to_end()
+        self.error_state: type[Exception] = AttributeError
+
+    def check_start_date(self) -> None:
+        self.error_state = StartDateError
+        self._check_date_day_matches_split_day(self.start_date)
+        self._check_date_ge_minimum_date(self.start_date)
+        self._check_date_le_max_date(self.start_date)
+        self._check_start_date_less_end_date(self.start_date, self.end_date)
+
+    def _check_date_day_matches_split_day(self, start_date: pd.Timestamp) -> None:
+        if start_date.day != self.month_split_day:
+            log.error(
+                f'Day in date ({start_date}) not equal month_split_day ({self.month_split_day})'
+            )
+            raise self.error_state
+
+    def _check_date_ge_minimum_date(self, date: pd.Timestamp) -> None:
+        if date < self.min_date_to_start:
+            log.error(
+                f'Date ({date}) must greater or equal',
+                f' the minimum date in data ({self.min_date_to_start})',
+            )
+            raise self.error_state
+
+    def _check_date_le_max_date(self, date: pd.Timestamp) -> None:
+        if date > self.max_date_to_end:
+            log.error(
+                f'Date set ({date}) must be less or equal the',
+                f' maximum date in data ({self.max_date_to_end})',
+            )
+            raise self.error_state
+
+    def _check_start_date_less_end_date(
+        self, start_date: pd.Timestamp, end_date: pd.Timestamp
+    ) -> None:
+        if start_date > end_date:
+            log.error(f'Start date ({start_date}) must be less end data ({end_date})')
+            raise self.error_state

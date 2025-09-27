@@ -60,70 +60,31 @@ class MonthlyCosts(MonthlyTransactions):
         )  # type: ignore
         return total_grouped_expenses
 
-    def get_monthly_expenses(self) -> pd.DataFrame:
-        df_monthly_expenses: pd.DataFrame = pd.DataFrame()
+    def get_monthly_expenses(self, additional_labels=[]) -> pd.DataFrame:
+        monthly_expenses: list = []
+        groupby_labels: list = [TransactionLabeled.Date] + additional_labels
         for df in self.iterate_months():
             date_income: pd.Timestamp = df[TransactionLabeled.Date].min()
             date_income: pd.Timestamp = date_income.replace(day=self._month_split_day)
-            expenses: float = df[TransactionLabeled.Amount].sum()
-            expenses_this_month: pd.DataFrame = pd.DataFrame(
-                {
-                    TransactionLabeled.Date: [date_income],
-                    TransactionLabeled.Amount: [expenses],
-                }
-            )
-            df_monthly_expenses: pd.DataFrame = pd.concat(
-                [
-                    df_monthly_expenses,
-                    expenses_this_month,
-                ]
-            )
-        return df_monthly_expenses
+            df.loc[:, TransactionLabeled.Date] = str(date_income)
+            monthly_expenses.append(df.groupby(groupby_labels).sum().reset_index())
+        return pd.concat(monthly_expenses)
 
     def get_monthly_expenses_by_label(self, label: str) -> pd.DataFrame:
-        df_monthly_expenses: pd.DataFrame = pd.DataFrame()
-        for df in self.iterate_months():
-            df_label = df.loc[df[TransactionLabeled.Label] == label]
-            date_income: pd.Timestamp = df_label[TransactionLabeled.Date].min()
-            date_income: pd.Timestamp = date_income.replace(day=self._month_split_day)
-            expenses: float = df_label[TransactionLabeled.Amount].sum()
-            expenses_this_month: pd.DataFrame = pd.DataFrame(
-                {
-                    TransactionLabeled.Date: [date_income],
-                    TransactionLabeled.Amount: [expenses],
-                }
-            )
-            df_monthly_expenses: pd.DataFrame = pd.concat(
-                [
-                    df_monthly_expenses,
-                    expenses_this_month,
-                ]
-            )
-        return df_monthly_expenses
+        expenses = self.get_monthly_expenses([TransactionLabeled.Label])
+        return expenses.loc[expenses[TransactionLabeled.Label] == label]
 
     def get_monthly_expenses_by_sublabel(self, label: str, sublabel: str) -> pd.DataFrame:
-        df_monthly_expenses: pd.DataFrame = pd.DataFrame()
-        for df in self.iterate_months():
-            df_label = df.loc[
-                (df[TransactionLabeled.Label] == label)
-                & (df[TransactionLabeled.Sublabel] == sublabel)
+        expenses = self.get_monthly_expenses(
+            [
+                TransactionLabeled.Label,
+                TransactionLabeled.Sublabel,
             ]
-            date_income: pd.Timestamp = df_label[TransactionLabeled.Date].min()
-            date_income: pd.Timestamp = date_income.replace(day=self._month_split_day)
-            expenses: float = df_label[TransactionLabeled.Amount].sum()
-            expenses_this_month: pd.DataFrame = pd.DataFrame(
-                {
-                    TransactionLabeled.Date: [date_income],
-                    TransactionLabeled.Amount: [expenses],
-                }
-            )
-            df_monthly_expenses: pd.DataFrame = pd.concat(
-                [
-                    df_monthly_expenses,
-                    expenses_this_month,
-                ]
-            )
-        return df_monthly_expenses
+        )
+        return expenses.loc[
+            (expenses[TransactionLabeled.Label] == label)
+            & (expenses[TransactionLabeled.Sublabel] == sublabel)
+        ]
 
     def get_daily_expenses(self) -> pd.DataFrame:
         df: DataFrame[TransactionLabeled] = self.get_transactions()

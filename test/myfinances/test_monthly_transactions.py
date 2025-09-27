@@ -219,3 +219,18 @@ def test_df(monthly_transactions, df_test, date_to_start_expected, date_to_end_e
         & (df_test[TransactionLabeled.Date] <= date_to_end_expected)
     ]
     pd.testing.assert_frame_equal(monthly_transactions.get_transactions(), df_expected)
+
+
+def test_iterate_months(monthly_transactions, month_split_day) -> None:
+    df_org: DataFrame[TransactionLabeled] = monthly_transactions._df
+    for df in monthly_transactions.iterate_months():
+        start_date: pd.Timestamp = df[TransactionLabeled.Date].min()
+        end_date: pd.Timestamp = df[TransactionLabeled.Date].max()
+        df_expected: DataFrame[TransactionLabeled] = df_org.loc[
+            (df_org[TransactionLabeled.Date] >= start_date)
+            & (df_org[TransactionLabeled.Date] <= end_date)
+        ]
+
+        assert start_date.day == month_split_day
+        assert end_date.day == get_previous_day(get_next_month(start_date)).day
+        pd.testing.assert_frame_equal(df, df_expected)

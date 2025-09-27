@@ -34,7 +34,7 @@ def df_test(dates) -> DataFrame[TransactionLabeled]:
             TransactionLabeled.Sublabel: ['test_sublabel'] * days,
         }
     )
-    df.loc[21:23, TransactionLabeled.Amount] = 10.0
+    df.loc[20:22, TransactionLabeled.Amount] = 10.0
     df.loc[26:28, TransactionLabeled.Amount] = -20.0
     return df  # type:ignore
 
@@ -82,3 +82,10 @@ def test_drop_costs(monthly_costs):
 def test_drop_costs_fails(monthly_costs, label, sublabel) -> None:
     with pytest.raises(KeyError):
         monthly_costs.drop_costs(label, sublabel)
+
+
+def test_get_monthly_expenses(monthly_costs, month_split_day) -> None:
+    monthly_expenses: pd.DataFrame = monthly_costs.get_monthly_expenses()
+    assert monthly_expenses['Amount'].to_list() == [-30, 0, 0]
+    for _, row in monthly_expenses.iterrows():
+        row['Date'].day == month_split_day  # pyright: ignore

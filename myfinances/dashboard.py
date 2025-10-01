@@ -41,7 +41,35 @@ class Dashboard:
                             id='month-split-date',
                         ),
                         html.Button('Reset', id='reset-dates'),
+                        html.Details(
+                            dcc.Checklist(
+                                sorted(self.monthly_costs.get_all_labels()),
+                                self.monthly_costs.get_active_labels(),
+                                id='labels-checklist',
+                            )
+                        ),
+                        html.Button('Apply', id='apply-labels'),
                     ]
+                ),
+                html.Div(
+                    children=[
+                        html.Details(
+                            [
+                                html.Summary(key),
+                                html.Div(
+                                    children=[
+                                        dcc.Checklist(
+                                            values,
+                                            self.monthly_costs.get_active_sublabels(key),
+                                            id=f'{key}',
+                                        )
+                                    ],
+                                ),
+                            ],
+                        )
+                        for key, values in self.monthly_costs.get_all_sublabels().items()
+                    ],
+                    style={'display': 'flex', 'flexDirection': 'row'},
                 ),
                 html.Div(
                     children=[
@@ -97,11 +125,22 @@ class Dashboard:
         )
         (  # type: ignore
             self.app.callback(
+                inputs={
+                    'apply_labels': dependencies.Input('apply-labels', 'n_clicks'),
+                    'labels': dependencies.Input('labels-checklist', 'value'),
+                    'sublabels': {
+                        key: dependencies.Input(key, 'value')
+                        for key in self.monthly_costs.get_all_labels()
+                    },
+                }
+            )(self.set_active_labels),
+            self.app.callback(
                 dependencies.Output('begin-dropdown', 'value'),
                 dependencies.Output('begin-dropdown', 'options'),
                 dependencies.Input('expenses-bar', 'clickData'),
                 dependencies.Input('month-split-date', 'value'),
                 dependencies.Input('reset-dates', 'n_clicks'),
+                dependencies.Input('apply-labels', 'n_clicks'),
             )(self.begin_dropdown),
             self.app.callback(
                 dependencies.Output('end-dropdown', 'value'),
@@ -109,6 +148,7 @@ class Dashboard:
                 dependencies.Input('expenses-bar', 'clickData'),
                 dependencies.Input('month-split-date', 'value'),
                 dependencies.Input('reset-dates', 'n_clicks'),
+                dependencies.Input('apply-labels', 'n_clicks'),
             )(self.end_dropdown),
             self.app.callback(
                 dependencies.Output('all-data', 'data'),
@@ -168,11 +208,16 @@ class Dashboard:
     def set_month_split_day(self, month_split_day) -> None:
         self.monthly_costs.set_month_split_day(month_split_day)
 
+    def set_active_labels(self, apply_labels, labels, sublabels) -> None:
+        if apply_labels > 0:
+            sublabels_to_set = {k: v for k, v in sublabels.items() if k in labels}
+            self.monthly_costs.set_active_sublabels(sublabels_to_set)
+
     def begin_dropdown(
         self,
         click_data,
         month_split_day,
-        _,
+        *_,
     ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:  # noqa N803
         if 'reset-dates' == ctx.triggered_id:
             value: pd.Timestamp = self.monthly_costs.get_min_date_to_start()
@@ -193,7 +238,7 @@ class Dashboard:
         self,
         click_data,
         month_split_day,
-        _,
+        *_,
     ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:
         if 'reset-dates' == ctx.triggered_id:
             value: pd.Timestamp = self.monthly_costs.get_max_date_to_end()
@@ -218,14 +263,22 @@ class Dashboard:
         return f'Available: {self.monthly_costs.get_averaged_expenses_by_label().sum()}'
 
     def plot_label_pie(self, *_) -> go.Figure:
-        figure: go.Figure = px.pie(
-            self.monthly_costs.get_averaged_expenses_by_label()
-            .drop('Einkommen')
-            .mul(-1)
-            .reset_index(),
-            values='Amount',
-            names='Label',
-        )
+        active_labels = self.monthly_costs.get_active_labels()
+        if 'Einkommen' in active_labels:
+            figure: go.Figure = px.pie(
+                self.monthly_costs.get_averaged_expenses_by_label()
+                .drop('Einkommen')
+                .mul(-1)
+                .reset_index(),
+                values='Amount',
+                names='Label',
+            )
+        else:
+            figure: go.Figure = px.pie(
+                self.monthly_costs.get_averaged_expenses_by_label().mul(-1).reset_index(),
+                values='Amount',
+                names='Label',
+            )
 
         return figure
 
@@ -316,7 +369,7 @@ class Dashboard:
         )
         return figure
 
-    def plot_expenses_bar(self, begin_dropdown_data, end_dropdown_data) -> go.Figure:
+    def plot_expenses_bar(self, begin_dropdown_data, end_dropdown_data, *_) -> go.Figure:
         self.monthly_costs.set_start_and_end_date(
             pd.to_datetime(begin_dropdown_data), pd.to_datetime(end_dropdown_data)
         )

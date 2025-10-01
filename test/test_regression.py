@@ -25,12 +25,9 @@ def df_all_labels() -> DataFrame[TransactionLabeled]:
 
 @pytest.fixture
 def monthly_costs(df_all_labels) -> MonthlyCosts:
-    print(df_all_labels)
     return MonthlyCosts(df_all_labels, 1)
 
 
 def test_monthly_costs_regression(monthly_costs) -> None:
-    print(monthly_costs.get_date_to_start())
-    print(monthly_costs.get_date_to_end())
     np.testing.assert_equal(monthly_costs.get_expenses(), -1300.0)
     np.testing.assert_equal(monthly_costs.get_income(), 5300.0)

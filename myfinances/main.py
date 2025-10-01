@@ -32,7 +32,11 @@ def main() -> None:
         monthly_costs.add_costs_by_config(add_config)
     log.info(monthly_costs.get_averaged_expenses_by_label())
     log.info(monthly_costs.get_averaged_expenses_by_label().sum())
-    log.info(monthly_costs.get_monthly_expenses())
+    log.info(
+        monthly_costs.get_monthly_expenses().loc[
+            :, [TransactionLabeled.Date, TransactionLabeled.Amount]
+        ]
+    )
 
     if args.dashboard:
         dashboard: Dashboard = Dashboard(monthly_costs)

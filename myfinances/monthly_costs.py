@@ -65,10 +65,9 @@ class MonthlyCosts(MonthlyTransactions):
         groupby_labels: list = [TransactionLabeled.Date] + additional_labels
         for df in self.iterate_months():
             date_income: pd.Timestamp = df[TransactionLabeled.Date].min()
-            date_income: pd.Timestamp = date_income.replace(day=self._month_split_day)
-            df.loc[:, TransactionLabeled.Date] = str(date_income)
+            df.loc[:, TransactionLabeled.Date] = date_income.replace(day=self._month_split_day)
             monthly_expenses.append(df.groupby(groupby_labels).sum().reset_index())
-        return pd.concat(monthly_expenses)
+        return pd.concat(monthly_expenses).reset_index(drop=True)
 
     def get_monthly_expenses_by_label(self, label: str) -> pd.DataFrame:
         expenses = self.get_monthly_expenses([TransactionLabeled.Label])

@@ -14,6 +14,7 @@ from myfinances.utils import get_next_day, get_next_month, get_previous_day, get
 class MonthlyTransactions:
     def __init__(self, df: DataFrame[TransactionLabeled], month_split_day: int = 1) -> None:
         self._set_all_transactions(df)
+        self._mask: pd.Series = pd.Series([True] * df.shape[0])
         self.set_month_split_day(month_split_day)
 
         log.info(
@@ -49,8 +50,11 @@ class MonthlyTransactions:
 
     def get_transactions(self) -> DataFrame[TransactionLabeled]:
         return self._df.loc[
-            (self._df[TransactionLabeled.Date] >= self._date_to_start)
-            & (self._df[TransactionLabeled.Date] <= self._date_to_end)
+            (
+                (self._df[TransactionLabeled.Date] >= self._date_to_start)
+                & (self._df[TransactionLabeled.Date] <= self._date_to_end)
+                & self._mask
+            )
         ]
 
     def get_date_to_start(self) -> pd.Timestamp:
@@ -107,15 +111,16 @@ class MonthlyTransactions:
     def iterate_months(self) -> Generator:
         months_to_analyze_start: list[pd.Timestamp] = self.get_months_to_analyze_start()
         months_to_analyze_end: list[pd.Timestamp] = self.get_months_to_analyze_end()
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
         for start, end in zip(months_to_analyze_start, months_to_analyze_end):
-            month_dates: DataFrame[TransactionLabeled] = self._df.loc[
-                (self._df[TransactionLabeled.Date] >= start)
-                & (self._df[TransactionLabeled.Date] <= end)
+            month_dates: DataFrame[TransactionLabeled] = df.loc[
+                (df[TransactionLabeled.Date] >= start) & (df[TransactionLabeled.Date] <= end)
             ]
             yield month_dates
 
     def _set_all_transactions(self, df: DataFrame[TransactionLabeled]) -> None:
         self._df: DataFrame[TransactionLabeled] = df
+        self._df = self._df.reset_index(drop=True)  # pyright: ignore
 
     def _reset_start_end_dates(self) -> None:
         self._date_to_start: pd.Timestamp = self._min_day_to_start()
@@ -165,7 +170,7 @@ class MonthlyTransactions:
             )
             raise KeyError
         else:
-            self._df: DataFrame[TransactionLabeled] = self._df.loc[~to_drop]
+            self._mask: pd.Series = self._mask & ~to_drop
 
     def drop_costs_by_config(self, file_name: Path) -> None:
         drop_labels = DropLabels(file_name)
@@ -182,7 +187,51 @@ class MonthlyTransactions:
             df_to_add[TransactionLabeled.Text] = 'Zukunft'
             all_dfs_to_add.append(df_to_add)
         df_to_add_all_configs: DataFrame[TransactionLabeled] = pd.concat(all_dfs_to_add)  # type:ignore
-        self._df = pd.concat([self._df, df_to_add_all_configs])  # type: ignore
+        _df: DataFrame[TransactionLabeled] = pd.concat([self._df, df_to_add_all_configs])  # type: ignore
+        self._set_all_transactions(_df)
+        self._mask: pd.Series = pd.concat(
+            [
+                self._mask,
+                pd.Series([True] * df_to_add_all_configs.shape[0]),
+            ]
+        )
+        self._mask.reset_index(drop=True, inplace=True)
+        self._reset_start_end_dates()
+
+    def get_all_labels(self):
+        return self._df[TransactionLabeled.Label].unique()
+
+    def get_active_labels(self):
+        return self.get_transactions()[TransactionLabeled.Label].unique()
+
+    def set_active_labels(self, values: list[str]) -> None:
+        self._mask: pd.Series = self._df.loc[:, TransactionLabeled.Label].isin(values)
+
+    def get_all_sublabels(self) -> dict:
+        all_labels = self.get_all_labels()
+        all_sublabels: dict = {}
+        for label in all_labels:
+            sublabels = self._df.loc[
+                self._df[TransactionLabeled.Label] == label, TransactionLabeled.Sublabel
+            ].unique()
+            all_sublabels[label] = sublabels
+        return all_sublabels
+
+    def get_active_sublabels(self, label: str) -> list[str]:
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
+        sublabels = df.loc[
+            df[TransactionLabeled.Label] == label, TransactionLabeled.Sublabel
+        ].unique()
+        return sublabels
+
+    def set_active_sublabels(self, sublabels: dict) -> None:
+        mask: pd.Series = pd.Series([False] * self._df.shape[0])
+        for active_label, active_sublabels in sublabels.items():
+            mask += (self._df.loc[:, TransactionLabeled.Label] == active_label) & (
+                self._df.loc[:, TransactionLabeled.Sublabel].isin(active_sublabels)
+            )
+
+        self._mask = mask
 
 
 class DateError(Exception):

@@ -27,6 +27,9 @@ dash-bootstrap-components = "^1.7.1"
 [tool.poetry.group.dev.dependencies]
 pytest-ruff = "^0.4.1"
 pytest = "^8.3.3"
+ty = "^0.0.5"
+pyright = "^1.1.407"
+pre-commit = "^4.5.1"
 
 [build-system]
 requires = ["poetry-core"]

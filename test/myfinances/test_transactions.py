@@ -1,17 +1,21 @@
 from pathlib import Path
+from typing import cast
 
 import pandas as pd
 import pytest
 from pandera.typing import DataFrame
 
 from myfinances.label_data import TransactionLabeled
-from myfinances.parse_configs import ConfigPaths
+
+# from myfinances.parse_configs import ConfigPaths
+# from myfinances.parse_configs import ConfigPaths
 from myfinances.transaction_loader import TransactionLoader
 
 
 @pytest.fixture()
 def test_df() -> DataFrame[TransactionLabeled]:
-    return TransactionLabeled.example(size=1)
+    df = TransactionLabeled.example(size=1)
+    return cast(DataFrame[TransactionLabeled], df)
 
 
 class ConfigPathsMock:
@@ -24,9 +28,9 @@ class ConfigPathsMock:
         self.add_configs: list[Path] = [Path()]
 
 
-@pytest.fixture()
-def configs_paths_mock() -> ConfigPaths:
-    return ConfigPathsMock()
+# @pytest.fixture()
+# def configs_paths_mock() -> ConfigPaths:
+#    return ConfigPathsMock()
 
 
 class TestTransactionLoader:

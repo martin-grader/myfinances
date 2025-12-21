@@ -1,4 +1,5 @@
 import datetime
+from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Generator
 
@@ -9,6 +10,194 @@ from pandera.typing import DataFrame
 from myfinances.config_utils import AddLabels, DropLabels
 from myfinances.label_data import TransactionLabeled
 from myfinances.utils import get_next_day, get_next_month, get_previous_day, get_previous_month
+
+
+class TransactionsInterface(ABC):
+    @property
+    @abstractmethod
+    def df(self) -> DataFrame[TransactionLabeled]:
+        pass
+
+
+class TransactionLoader(TransactionsInterface):
+    def __init__(self) -> None:
+        self._df: DataFrame[TransactionLabeled]
+
+    def load_labled_data(self, config) -> None:
+        pass
+
+    @property
+    def df(self) -> DataFrame[TransactionLabeled]:
+        return self._df
+
+
+class LabelHandler(TransactionsInterface):
+    def __init__(self, transaction: TransactionsInterface) -> None:
+        self._df: TransactionsInterface = transaction
+        self._mask: pd.Series
+
+    @property
+    def df(self) -> DataFrame[TransactionLabeled]:
+        return self._df.df.loc[self._mask]
+
+    def drop_costs_by_config(self, file_name: Path) -> None:
+        pass
+
+    def add_costs_by_config(self, file_name: Path) -> None:
+        pass
+
+    def get_all_labels(self):
+        pass
+
+    def get_active_labels(self):
+        pass
+
+    def set_active_labels(self, values: list[str]) -> None:
+        pass
+
+    def get_all_sublabels(self) -> dict:
+        pass
+
+    def get_active_sublabels(self, label: str) -> list[str]:
+        pass
+
+    def set_active_sublabels(self, sublabels: dict) -> None:
+        pass
+
+
+class DateTransactions(TransactionsInterface, ABC):
+    @property
+    @abstractmethod
+    def iterate(self):
+        pass
+
+    @property
+    @abstractmethod
+    def n_dates(self):
+        pass
+
+
+class MT(DateTransactions):
+    def __init__(self, transaction: TransactionsInterface, month_split_day: int = 1) -> None:
+        self.transactions: TransactionsInterface = transaction
+        self._mask: pd.Series
+        self.set_month_split_day(month_split_day)
+
+    @property
+    def df(self) -> DataFrame[TransactionLabeled]:
+        return self.transactions.df.loc[self._mask]
+
+    def set_date_to_start(self, date: pd.Timestamp) -> None:
+        pass
+
+    def set_date_to_end(self, date: pd.Timestamp) -> None:
+        pass
+
+    def set_start_and_end_date(
+        self, date_to_start: pd.Timestamp, date_to_end: pd.Timestamp
+    ) -> None:
+        pass
+
+    def set_month_split_day(self, month_split_day: int) -> None:
+        pass
+
+    def get_date_to_start(self) -> pd.Timestamp:
+        pass
+
+    def get_date_to_end(self) -> pd.Timestamp:
+        pass
+
+    def get_month_split_day(self) -> int:
+        pass
+
+    def get_min_date_to_start(self) -> pd.Timestamp:
+        pass
+
+    def get_max_date_to_end(self) -> pd.Timestamp:
+        pass
+
+    def get_all_months_to_analyze_start(self) -> list[pd.Timestamp]:
+        pass
+
+    def get_months_to_analyze_start(self) -> list[pd.Timestamp]:
+        pass
+
+    def _calculate_months_to_analyze_start(
+        self, date_to_start: pd.Timestamp, date_to_end: pd.Timestamp
+    ) -> list[pd.Timestamp]:
+        pass
+
+    def get_all_months_to_analyze_end(self) -> list[pd.Timestamp]:
+        pass
+
+    def get_months_to_analyze_end(self) -> list[pd.Timestamp]:
+        pass
+
+    def _get_months_to_analyze_end(
+        self, months_to_analyze_start: list[pd.Timestamp]
+    ) -> list[pd.Timestamp]:
+        pass
+
+    def get_n_months_to_analyze(self) -> int:
+        pass
+
+    def iterate_months(self) -> Generator:
+        pass
+
+    def _set_all_transactions(self, df: DataFrame[TransactionLabeled]) -> None:
+        pass
+
+    def _reset_start_end_dates(self) -> None:
+        pass
+
+    def _min_day_to_start(self) -> pd.Timestamp:
+        pass
+
+    def _max_day_to_end(self) -> pd.Timestamp:
+        pass
+
+
+class MonthlyCosts:
+    def __init__(self, transaction: DateTransactions) -> None:
+        self.transactions: TransactionsInterface = transaction
+
+    def get_expenses(self) -> float:
+        df: DataFrame[TransactionLabeled] = self.transactions.df
+        expenses: float = df.loc[df[TransactionLabeled.Amount] < 0, TransactionLabeled.Amount].sum()
+        return expenses
+
+    def get_income(self) -> float:
+        positive_transactions: DataFrame[TransactionLabeled] = self._get_positive_transactions()
+        income: float = positive_transactions[TransactionLabeled.Amount].sum()
+        return income
+
+    def get_averaged_income(self) -> pd.DataFrame:
+        pass
+
+    def _get_positive_transactions(self) -> DataFrame[TransactionLabeled]:
+        df: DataFrame[TransactionLabeled] = self.transactions.df
+        positive_transactions: DataFrame[TransactionLabeled] = df.loc[
+            df[TransactionLabeled.Amount] > 0, :
+        ]
+        return positive_transactions
+
+    def get_averaged_expenses_by_label(self) -> pd.api.typing.DataFrameGroupBy:
+        pass
+
+    def get_averaged_expenses_by_sublabel(self, label: str) -> pd.api.typing.DataFrameGroupBy:
+        pass
+
+    def get_monthly_expenses(self, additional_labels=[]) -> pd.DataFrame:
+        pass
+
+    def get_monthly_expenses_by_label(self, label: str) -> pd.DataFrame:
+        pass
+
+    def get_monthly_expenses_by_sublabel(self, label: str, sublabel: str) -> pd.DataFrame:
+        pass
+
+    def get_daily_expenses(self) -> pd.DataFrame:
+        pass
 
 
 class MonthlyTransactions:

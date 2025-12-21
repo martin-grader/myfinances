@@ -8,8 +8,6 @@ from myfinances.monthly_transactions import MonthlyTransactions
 class MonthlyCosts(MonthlyTransactions):
     def __init__(self, df: DataFrame[TransactionLabeled], month_split_day: int = 1) -> None:
         super().__init__(df, month_split_day)
-        # self.expenses: float = self.get_expenses()
-        # self.income: float = self.get_income()
 
     def get_expenses(self) -> float:
         df: DataFrame[TransactionLabeled] = self.get_transactions()

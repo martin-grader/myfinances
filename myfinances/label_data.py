@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pandas as pd
-import pandera as pa
+import pandera.pandas as pa
 from loguru import logger as log
 from pandera.typing import DataFrame, Series
 

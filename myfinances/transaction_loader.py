@@ -17,7 +17,7 @@ class TransactionsInterface(ABC):
 
 class TransactionLoader(TransactionsInterface):
     def __init__(self) -> None:
-        self._df: DataFrame[TransactionLabeled]
+        self._df: DataFrame[TransactionLabeled] = TransactionLabeled.empty()
 
     def load_labled_data(self, configs_paths) -> None:
         transactions_all: DataFrame[Transaction] = load_data(configs_paths.inputs_config)
@@ -38,4 +38,4 @@ class TransactionLoader(TransactionsInterface):
 
     @df.setter
     def df(self, df: DataFrame[TransactionLabeled]) -> None:
-        self._df = df
+        self._df: DataFrame[TransactionLabeled] = df

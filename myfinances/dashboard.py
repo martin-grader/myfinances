@@ -48,7 +48,7 @@ class Dashboard:
                                 id='labels-checklist',
                             )
                         ),
-                        html.Button('Apply', id='apply-labels'),
+                        html.Button('Apply', id='apply-labels', n_clicks=0),
                     ]
                 ),
                 html.Div(
@@ -209,6 +209,8 @@ class Dashboard:
         self.monthly_costs.set_month_split_day(month_split_day)
 
     def set_active_labels(self, apply_labels, labels, sublabels) -> None:
+        print(apply_labels)
+        print(labels)
         if apply_labels > 0:
             sublabels_to_set = {k: v for k, v in sublabels.items() if k in labels}
             self.monthly_costs.set_active_sublabels(sublabels_to_set)

@@ -44,7 +44,9 @@ def load_data(inputs_config: Path) -> DataFrame[Transaction]:
 def get_all_data_files(input_config: InputConfig) -> list[Path]:
     all_data_files: list[Path] = []
     for files in input_config.Files:
-        for file in Path().cwd().rglob(files):
+        base_path: Path = Path().cwd() / Path(files).parent
+        file_name: str = Path(files).name
+        for file in base_path.rglob(file_name):
             all_data_files.append(file)
 
     return all_data_files

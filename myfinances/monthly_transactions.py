@@ -376,13 +376,16 @@ class MonthlyTransactions:
             df_to_add[TransactionLabeled.Text] = 'Zukunft'
             all_dfs_to_add.append(df_to_add)
         df_to_add_all_configs: DataFrame[TransactionLabeled] = pd.concat(all_dfs_to_add)  # type:ignore
-        _df: DataFrame[TransactionLabeled] = pd.concat([self._df, df_to_add_all_configs])  # type: ignore
+        _df: DataFrame[TransactionLabeled] = pd.concat(
+            [self._df, df_to_add_all_configs], ignore_index=True
+        )  # type: ignore
         self._set_all_transactions(_df)
         self._mask: pd.Series = pd.concat(
             [
                 self._mask,
                 pd.Series([True] * df_to_add_all_configs.shape[0]),
-            ]
+            ],
+            ignore_index=True,
         )
         self._reset_start_end_dates()
 

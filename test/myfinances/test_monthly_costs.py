@@ -58,7 +58,7 @@ def test_get_income(monthly_costs) -> None:
 def test_get_averaged_income(monthly_costs) -> None:
     averaged_income_expected: float = 10 * 3 / 3
     averaged_income: DataFrame[TransactionLabeled] = monthly_costs.get_averaged_income()
-    assert averaged_income.loc[0, TransactionLabeled.Amount] == averaged_income_expected
+    assert averaged_income.loc['test_sublabel'] == averaged_income_expected
 
 
 def test_get_expenses(monthly_costs) -> None:

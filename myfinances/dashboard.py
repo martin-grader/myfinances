@@ -297,7 +297,9 @@ class Dashboard:
 
     def plot_income_pie(self, *_) -> go.Figure:
         figure: go.Figure = px.pie(
-            self.monthly_costs.get_averaged_income(), values='Amount', names='Sublabel'
+            self.monthly_costs.get_averaged_income().reset_index(),
+            values='Amount',
+            names='Sublabel',
         )
         return figure
 
@@ -309,15 +311,9 @@ class Dashboard:
             color = [click_data['points'][0]['color']]
         df = self.monthly_costs.get_monthly_expenses_by_label(label)
         df.loc[:, 'Amount'] = df.loc[:, 'Amount'] * -1
+        mean: float = self.monthly_costs.get_averaged_expenses_by_label().loc[label] * -1
 
-        figure: go.Figure = px.line(
-            df,
-            x='Date',
-            y='Amount',
-            title=label,
-            markers=True,
-            color_discrete_sequence=color,
-        )
+        figure: go.Figure = self.create_line_plot_figure(df, mean, label, color)
         return figure
 
     def plot_sublabel_line_chart(
@@ -343,14 +339,8 @@ class Dashboard:
 
         df = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
         df.loc[:, 'Amount'] = df.loc[:, 'Amount'] * -1
-        figure: go.Figure = px.line(
-            df,
-            x='Date',
-            y='Amount',
-            title=sublabel,
-            markers=True,
-            color_discrete_sequence=color,
-        )
+        mean: float = self.monthly_costs.get_averaged_expenses_by_sublabel(label).loc[sublabel] * -1
+        figure: go.Figure = self.create_line_plot_figure(df, mean, sublabel, color)
         return figure
 
     def plot_income_line_chart(self, click_data, figure_pie, *_) -> go.Figure:
@@ -361,14 +351,11 @@ class Dashboard:
             sublabel: str = click_data['points'][0]['label']
             color = [click_data['points'][0]['color']]
 
-        figure: go.Figure = px.line(
-            self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel),
-            x='Date',
-            y='Amount',
-            title=sublabel,
-            markers=True,
-            color_discrete_sequence=color,
-        )
+        df = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
+        mean: float = self.monthly_costs.get_averaged_income().loc[sublabel]
+
+        figure: go.Figure = self.create_line_plot_figure(df, mean, sublabel, color)
+
         return figure
 
     def plot_expenses_bar(self, begin_dropdown_data, end_dropdown_data, *_) -> go.Figure:
@@ -386,6 +373,20 @@ class Dashboard:
             color='Amount',
             color_continuous_scale='RdYlGn',
             color_continuous_midpoint=0,
+        )
+        return figure
+
+    def create_line_plot_figure(self, df, mean: float, title: str, color) -> go.Figure:
+        figure: go.Figure = px.line(
+            data_frame=df,
+            x='Date',
+            y='Amount',
+            title=title,
+            markers=True,
+            color_discrete_sequence=color,
+        )
+        figure.add_hline(
+            mean, line_dash='dot', line_color=color[0], annotation_text=f'Mittel: {mean:.0f}'
         )
         return figure
 

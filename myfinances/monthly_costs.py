@@ -25,8 +25,8 @@ class MonthlyCosts(MonthlyTransactions):
             positive_transactions.groupby([TransactionLabeled.Sublabel])[TransactionLabeled.Amount]
             .sum()
             .div(self.get_n_months_to_analyze())
-            .reset_index()
-        )
+            .sort_values()
+        )  # type: ignore
 
         return total_grouped_income
 

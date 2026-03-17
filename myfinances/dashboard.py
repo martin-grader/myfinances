@@ -209,8 +209,6 @@ class Dashboard:
         self.monthly_costs.set_month_split_day(month_split_day)
 
     def set_active_labels(self, apply_labels, labels, sublabels) -> None:
-        print(apply_labels)
-        print(labels)
         if apply_labels > 0:
             sublabels_to_set = {k: v for k, v in sublabels.items() if k in labels}
             self.monthly_costs.set_active_sublabels(sublabels_to_set)
@@ -305,10 +303,10 @@ class Dashboard:
 
     def plot_label_line_chart(self, click_data, figure_pie, *_) -> go.Figure:
         label: str = figure_pie['data'][0]['labels'][0]
-        color = [figure_pie['layout']['template']['layout']['colorway'][0]]
+        color: str = figure_pie['layout']['template']['layout']['colorway'][0]
         if click_data:
             label: str = click_data['points'][0]['label']
-            color = [click_data['points'][0]['color']]
+            color = click_data['points'][0]['color']
         df = self.monthly_costs.get_monthly_expenses_by_label(label)
         df.loc[:, 'Amount'] = df.loc[:, 'Amount'] * -1
         mean: float = self.monthly_costs.get_averaged_expenses_by_label().loc[label] * -1
@@ -321,7 +319,7 @@ class Dashboard:
     ) -> go.Figure:
         all_sublabels: list[str] = figure_pie['data'][0]['labels']
         default_sublabel = all_sublabels[0]
-        default_color = [figure_pie['layout']['template']['layout']['colorway'][0]]
+        default_color: str = figure_pie['layout']['template']['layout']['colorway'][0]
 
         if click_data_label:
             label: str = click_data_label['points'][0]['label']
@@ -329,7 +327,7 @@ class Dashboard:
             label = 'Sonstiges'
         if click_data_sublabel:
             sublabel: str = click_data_sublabel['points'][0]['label']
-            color: list[str] = [click_data_sublabel['points'][0]['color']]
+            color: str = click_data_sublabel['points'][0]['color']
             if sublabel not in all_sublabels:
                 sublabel: str = default_sublabel
                 color = default_color
@@ -346,10 +344,10 @@ class Dashboard:
     def plot_income_line_chart(self, click_data, figure_pie, *_) -> go.Figure:
         label = 'Einkommen'
         sublabel: str = figure_pie['data'][0]['labels'][0]
-        color = [figure_pie['layout']['template']['layout']['colorway'][0]]
+        color: str = figure_pie['layout']['template']['layout']['colorway'][0]
         if click_data:
             sublabel: str = click_data['points'][0]['label']
-            color = [click_data['points'][0]['color']]
+            color: str = click_data['points'][0]['color']
 
         df = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
         mean: float = self.monthly_costs.get_averaged_income().loc[sublabel]
@@ -376,17 +374,17 @@ class Dashboard:
         )
         return figure
 
-    def create_line_plot_figure(self, df, mean: float, title: str, color) -> go.Figure:
+    def create_line_plot_figure(self, df, mean: float, title: str, color: str) -> go.Figure:
         figure: go.Figure = px.line(
             data_frame=df,
             x='Date',
             y='Amount',
             title=title,
             markers=True,
-            color_discrete_sequence=color,
+            color_discrete_sequence=[color],
         )
         figure.add_hline(
-            mean, line_dash='dot', line_color=color[0], annotation_text=f'Mittel: {mean:.0f}'
+            mean, line_dash='dot', line_color=color, annotation_text=f'Mittel: {mean:.0f}'
         )
         return figure
 

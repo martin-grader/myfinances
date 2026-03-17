@@ -64,7 +64,8 @@ def check_for_duplicated_labels(
 ) -> None:
     if any(df.loc[to_label, TransactionLabeled.Label].notna()):
         log.error('Error: Found duplicated labels!')
-        log.error(label, sublabel)
+        log.error(f'label: {label}, sublabel: {sublabel}')
+        log.error('Rows to label:')
         log.error(df[to_label].to_string())
         raise KeyError
 

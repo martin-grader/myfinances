@@ -2,12 +2,11 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from dash import Dash, ctx, dash_table, dcc, dependencies, html
+from pandera.typing import DataFrame
 
 from myfinances.label_data import TransactionLabeled
 from myfinances.monthly_costs import MonthlyCosts
 from myfinances.utils import get_next_month, get_previous_day
-
-# px.defaults.template = 'plotly_dark'
 
 
 class Dashboard:
@@ -38,8 +37,8 @@ class Dashboard:
                         html.Button('Reset', id='reset-dates'),
                         html.Details(
                             dcc.Checklist(
-                                sorted(self.monthly_costs.get_all_labels()),
-                                self.monthly_costs.get_active_labels(),
+                                options=sorted(self.monthly_costs.get_all_labels()),
+                                value=self.monthly_costs.get_active_labels(),
                                 id='labels-checklist',
                             )
                         ),
@@ -178,7 +177,7 @@ class Dashboard:
                 dependencies.Output('all-data', 'data'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
-            )(self.all_data),
+            )(self.get_transactions_table),
             self.app.callback(
                 dependencies.Output('available_amount', 'children'),
                 dependencies.Input('begin-dropdown', 'value'),
@@ -188,7 +187,7 @@ class Dashboard:
                 dependencies.Output('label_pie', 'figure'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
-            )(self.plot_label_pie),
+            )(self.plot_transactions_by_label_pie),
             self.app.callback(
                 dependencies.Output('income_pie', 'figure'),
                 dependencies.Input('begin-dropdown', 'value'),
@@ -197,9 +196,10 @@ class Dashboard:
             self.app.callback(
                 dependencies.Output('sublabel_pie', 'figure'),
                 dependencies.Input('label_pie', 'clickData'),
+                dependencies.Input('label_pie', 'figure'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
-            )(self.plot_sublabel_pie),
+            )(self.plot_transactions_by_sublabel_pie),
             self.app.callback(
                 dependencies.Output('label_line', 'figure'),
                 dependencies.Input('label_pie', 'clickData'),
@@ -234,7 +234,7 @@ class Dashboard:
                 dependencies.Input('label_pie', 'figure'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
-            )(self.label_data),
+            )(self.get_transactions_table_by_label),
             self.app.callback(
                 dependencies.Output('sublabel-data', 'data'),
                 dependencies.Input('label_pie', 'clickData'),
@@ -243,7 +243,7 @@ class Dashboard:
                 dependencies.Input('sublabel_pie', 'figure'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
-            )(self.sublabel_data),
+            )(self.get_transactions_table_by_sublabel),
         )
 
     def set_month_split_day(self, month_split_day: int) -> None:
@@ -307,78 +307,88 @@ class Dashboard:
         )  # type: ignore
         return value
 
-    def all_data(self, *_) -> list[dict]:
+    def get_transactions_table(self, *_) -> list[dict]:
         return self.monthly_costs.get_transactions().to_dict('records')
 
-    def label_data(self, click_data, figure_pie, *_) -> list[dict]:
-        label, _ = self.get_active_label_and_color(click_data, figure_pie)
-        df = self.monthly_costs.get_transactions()
-        df: pd.DataFrame = df.loc[df[TransactionLabeled.Label] == label]
-        return df.to_dict('records')
-
-    def sublabel_data(
-        self, click_data_label, figure_pie_label, click_data_sublabel, figure_pie, *_
+    def get_transactions_table_by_label(
+        self, transactions_by_label_pie_click_data: dict, transactions_by_label_pie: dict, *_
     ) -> list[dict]:
-        label, _ = self.get_active_label_and_color(click_data_label, figure_pie_label)
-        sublabel, _ = self.get_active_sublabel_and_color(click_data_sublabel, figure_pie)
-        df = self.monthly_costs.get_transactions()
-        df: pd.DataFrame = df.loc[
+        label, _ = self.get_active_label_and_color(
+            transactions_by_label_pie_click_data, transactions_by_label_pie
+        )
+        df: DataFrame[TransactionLabeled] = self.monthly_costs.get_transactions()
+        return df.loc[df[TransactionLabeled.Label] == label].to_dict('records')
+
+    def get_transactions_table_by_sublabel(
+        self,
+        transactions_by_label_pie_click_data: dict,
+        transactions_by_label_pie: dict,
+        transactions_by_sublabel_pie_click_data: dict,
+        transactions_by_sublabel_pie: dict,
+        *_,
+    ) -> list[dict]:
+        label, _ = self.get_active_label_and_color(
+            transactions_by_label_pie_click_data, transactions_by_label_pie
+        )
+        sublabel, _ = self.get_active_sublabel_and_color(
+            transactions_by_sublabel_pie_click_data, transactions_by_sublabel_pie
+        )
+        df: DataFrame[TransactionLabeled] = self.monthly_costs.get_transactions()
+        return df.loc[
             (df[TransactionLabeled.Label] == label) & (df[TransactionLabeled.Sublabel] == sublabel)
-        ]
-        return df.to_dict('records')
+        ].to_dict('records')
 
     def available_amount(self, *_) -> str:
         return f'Available: {self.monthly_costs.get_averaged_expenses_by_label().sum()}'
 
-    def plot_label_pie(self, *_) -> go.Figure:
-        active_labels = self.monthly_costs.get_active_labels()
-        if 'Einkommen' in active_labels:
-            figure: go.Figure = px.pie(
-                self.monthly_costs.get_averaged_expenses_by_label()
-                .drop('Einkommen')
-                .mul(-1)
-                .reset_index(),
-                values='Amount',
-                names='Label',
-            )
-        else:
-            figure: go.Figure = px.pie(
-                self.monthly_costs.get_averaged_expenses_by_label().mul(-1).reset_index(),
-                values='Amount',
-                names='Label',
-            )
-
+    def plot_transactions_by_label_pie(self, *_) -> go.Figure:
+        figure: go.Figure = px.pie(
+            self.monthly_costs.get_averaged_expenses_by_label()
+            .drop('Einkommen', errors='ignore')
+            .mul(-1)
+            .reset_index(),
+            values=TransactionLabeled.Amount,
+            names=TransactionLabeled.Label,
+        )
         return figure
 
-    def plot_sublabel_pie(self, click_data, *_) -> go.Figure:
-        label = 'Sonstiges'
-        if click_data:
-            label: str = click_data['points'][0]['label']
+    def plot_transactions_by_sublabel_pie(
+        self, transactions_by_label_pie_click_data: dict, transactions_by_label_pie: dict, *_
+    ) -> go.Figure:
+        label, _ = self.get_active_label_and_color(
+            transactions_by_label_pie_click_data, transactions_by_label_pie
+        )
         figure: go.Figure = px.pie(
             self.monthly_costs.get_averaged_expenses_by_sublabel(label).mul(-1).reset_index(),
-            values='Amount',
-            names='Sublabel',
+            values=TransactionLabeled.Amount,
+            names=TransactionLabeled.Sublabel,
         )
         return figure
 
     def plot_income_pie(self, *_) -> go.Figure:
         figure: go.Figure = px.pie(
-            self.monthly_costs.get_averaged_income().reset_index(),
-            values='Amount',
-            names='Sublabel',
+            self.monthly_costs.get_averaged_income()
+            .reset_index()
+            .sort_values(by=TransactionLabeled.Amount, ascending=False),
+            values=TransactionLabeled.Amount,
+            names=TransactionLabeled.Sublabel,
         )
         return figure
 
-    def plot_label_line_chart(self, click_data, figure_pie, *_) -> go.Figure:
-        label, color = self.get_active_label_and_color(click_data, figure_pie)
-        df = self.monthly_costs.get_monthly_expenses_by_label(label)
-        df.loc[:, 'Amount'] = df.loc[:, 'Amount'] * -1
+    def plot_label_line_chart(
+        self, transactions_by_label_pie_click_data: dict, transactions_by_label_pie: dict, *_
+    ) -> go.Figure:
+        label, color = self.get_active_label_and_color(
+            transactions_by_label_pie_click_data, transactions_by_label_pie
+        )
+        df: pd.DataFrame = self.monthly_costs.get_monthly_expenses_by_label(label)
+        df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount] * -1
         mean: float = self.monthly_costs.get_averaged_expenses_by_label().loc[label] * -1
 
         figure: go.Figure = self.create_line_plot_figure(df, mean, label, color)
         return figure
 
-    def get_active_label_and_color(self, click_data, figure_pie) -> tuple[str, str]:
+    def get_active_label_and_color(self, click_data: dict, figure_pie: dict) -> tuple[str, str]:
         label: str = figure_pie['data'][0]['labels'][0]
         color: str = figure_pie['layout']['template']['layout']['colorway'][0]
         if click_data:
@@ -386,9 +396,11 @@ class Dashboard:
             color = click_data['points'][0]['color']
         return label, color
 
-    def get_active_sublabel_and_color(self, click_data_sublabel, figure_pie) -> tuple[str, str]:
+    def get_active_sublabel_and_color(
+        self, click_data_sublabel: dict, figure_pie: dict
+    ) -> tuple[str, str]:
         all_sublabels: list[str] = figure_pie['data'][0]['labels']
-        default_sublabel = all_sublabels[0]
+        default_sublabel: str = all_sublabels[0]
         default_color: str = figure_pie['layout']['template']['layout']['colorway'][0]
 
         if click_data_sublabel:
@@ -396,40 +408,47 @@ class Dashboard:
             color: str = click_data_sublabel['points'][0]['color']
             if sublabel not in all_sublabels:
                 sublabel: str = default_sublabel
-                color = default_color
+                color: str = default_color
         else:
             sublabel: str = default_sublabel
-            color = default_color
+            color: str = default_color
         return sublabel, color
 
     def plot_sublabel_line_chart(
-        self, click_data_label, figure_pie_label, click_data_sublabel, figure_pie, *_
+        self,
+        transactions_by_label_pie_click_data: dict,
+        transactions_by_label_pie: dict,
+        transactions_by_sublabel_pie_click_data: dict,
+        transactions_by_sublabel_pie: dict,
+        *_,
     ) -> go.Figure:
-        label, _ = self.get_active_label_and_color(click_data_label, figure_pie_label)
-        sublabel, color = self.get_active_sublabel_and_color(click_data_sublabel, figure_pie)
+        label, _ = self.get_active_label_and_color(
+            transactions_by_label_pie_click_data, transactions_by_label_pie
+        )
+        sublabel, color = self.get_active_sublabel_and_color(
+            transactions_by_sublabel_pie_click_data, transactions_by_sublabel_pie
+        )
 
-        df = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
-        df.loc[:, 'Amount'] = df.loc[:, 'Amount'] * -1
+        df: pd.DataFrame = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
+        df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount] * -1
         mean: float = self.monthly_costs.get_averaged_expenses_by_sublabel(label).loc[sublabel] * -1
         figure: go.Figure = self.create_line_plot_figure(df, mean, sublabel, color)
         return figure
 
-    def plot_income_line_chart(self, click_data, figure_pie, *_) -> go.Figure:
+    def plot_income_line_chart(
+        self, income_pie_click_data: dict, income_pie: dict, *_
+    ) -> go.Figure:
         label = 'Einkommen'
-        sublabel: str = figure_pie['data'][0]['labels'][0]
-        color: str = figure_pie['layout']['template']['layout']['colorway'][0]
-        if click_data:
-            sublabel: str = click_data['points'][0]['label']
-            color: str = click_data['points'][0]['color']
+        sublabel, color = self.get_active_sublabel_and_color(income_pie_click_data, income_pie)
 
-        df = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
+        df: pd.DataFrame = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
         mean: float = self.monthly_costs.get_averaged_income().loc[sublabel]
 
         figure: go.Figure = self.create_line_plot_figure(df, mean, sublabel, color)
 
         return figure
 
-    def plot_expenses_bar(self, begin_dropdown_data, end_dropdown_data, *_) -> go.Figure:
+    def plot_expenses_bar(self, begin_dropdown_data: str, end_dropdown_data: str, *_) -> go.Figure:
         self.monthly_costs.set_start_and_end_date(
             pd.to_datetime(begin_dropdown_data), pd.to_datetime(end_dropdown_data)
         )

@@ -389,11 +389,11 @@ class MonthlyTransactions:
         )
         self._reset_start_end_dates()
 
-    def get_all_labels(self):
-        return self._df[TransactionLabeled.Label].unique()
+    def get_all_labels(self) -> list[str]:
+        return self._df[TransactionLabeled.Label].unique().tolist()
 
-    def get_active_labels(self):
-        return self.get_transactions()[TransactionLabeled.Label].unique()
+    def get_active_labels(self) -> list[str]:
+        return self.get_transactions()[TransactionLabeled.Label].unique().tolist()
 
     def set_active_labels(self, values: list[str]) -> None:
         self._mask: pd.Series = self._df.loc[:, TransactionLabeled.Label].isin(values)

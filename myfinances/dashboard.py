@@ -20,7 +20,7 @@ class Dashboard:
                     children='Finances Overview',
                 ),
                 dcc.Graph(
-                    id='expenses-bar',
+                    id='monthly-transactions-plot',
                 ),
                 html.Div(
                     children=[
@@ -161,7 +161,7 @@ class Dashboard:
             self.app.callback(
                 dependencies.Output('begin-dropdown', 'value'),
                 dependencies.Output('begin-dropdown', 'options'),
-                dependencies.Input('expenses-bar', 'clickData'),
+                dependencies.Input('monthly-transactions-plot', 'clickData'),
                 dependencies.Input('month-split-date', 'value'),
                 dependencies.Input('reset-dates', 'n_clicks'),
                 dependencies.Input('apply-labels', 'n_clicks'),
@@ -169,7 +169,7 @@ class Dashboard:
             self.app.callback(
                 dependencies.Output('end-dropdown', 'value'),
                 dependencies.Output('end-dropdown', 'options'),
-                dependencies.Input('expenses-bar', 'clickData'),
+                dependencies.Input('monthly-transactions-plot', 'clickData'),
                 dependencies.Input('month-split-date', 'value'),
                 dependencies.Input('reset-dates', 'n_clicks'),
                 dependencies.Input('apply-labels', 'n_clicks'),
@@ -224,7 +224,7 @@ class Dashboard:
                 dependencies.Input('end-dropdown', 'value'),
             )(self.plot_income_line_chart),
             self.app.callback(
-                dependencies.Output('expenses-bar', 'figure'),
+                dependencies.Output('monthly-transactions-plot', 'figure'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
             )(self.plot_expenses_bar),
@@ -265,46 +265,47 @@ class Dashboard:
 
     def begin_dropdown(
         self,
-        click_data,
-        month_split_day,
+        monthly_transactions_plot_click_data: dict,
+        month_split_day: int,
         *_,
-    ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:  # noqa N803
-        if 'reset-dates' == ctx.triggered_id:
-            value: pd.Timestamp = self.monthly_costs.get_min_date_to_start()
-        elif 'expenses-bar' == ctx.triggered_id:
-            clicked_date = pd.to_datetime(click_data['points'][0]['label'])
-            value: pd.Timestamp = pd.Timestamp(
-                year=clicked_date.year, month=clicked_date.month, day=month_split_day
-            )  # type: ignore
-        elif 'month-split-date' == ctx.triggered_id:
+    ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:
+        if 'month-split-date' == ctx.triggered_id:
             self.monthly_costs.set_month_split_day(month_split_day)
-            value: pd.Timestamp = self.monthly_costs.get_min_date_to_start()
-        else:
-            value: pd.Timestamp = self.monthly_costs.get_months_to_analyze_start()[0]  # type: ignore
         options: list[pd.Timestamp] = self.monthly_costs.get_all_months_to_analyze_start()
+        value: pd.Timestamp = self.monthly_costs.get_min_date_to_start()
+        if 'monthly-transactions-plot' == ctx.triggered_id:
+            value: pd.Timestamp = self.extract_date_from_click_data(
+                monthly_transactions_plot_click_data, month_split_day
+            )
         return (value, options)
 
     def end_dropdown(
         self,
-        click_data,
-        month_split_day,
+        monthly_transactions_plot_click_data: dict,
+        month_split_day: int,
         *_,
     ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:
-        if 'reset-dates' == ctx.triggered_id:
-            value: pd.Timestamp = self.monthly_costs.get_max_date_to_end()
-        elif 'expenses-bar' == ctx.triggered_id:
-            clicked_date = pd.to_datetime(click_data['points'][0]['label'])
-            value: pd.Timestamp = pd.Timestamp(
-                year=clicked_date.year, month=clicked_date.month, day=month_split_day
-            )  # type: ignore
-            value = get_previous_day(get_next_month(value))
-        elif 'month-split-date' == ctx.triggered_id:
+        if 'month-split-date' == ctx.triggered_id:
             self.monthly_costs.set_month_split_day(month_split_day)
-            value: pd.Timestamp = self.monthly_costs.get_max_date_to_end()
-        else:
-            value: pd.Timestamp = self.monthly_costs.get_months_to_analyze_end()[-1]  # type: ignore
         options: list[pd.Timestamp] = self.monthly_costs.get_all_months_to_analyze_end()
+        value: pd.Timestamp = self.monthly_costs.get_max_date_to_end()
+        if 'monthly-transactions-plot' == ctx.triggered_id:
+            first_day_last_month: pd.Timestamp = self.extract_date_from_click_data(
+                monthly_transactions_plot_click_data, month_split_day
+            )
+            value: pd.Timestamp = get_previous_day(get_next_month(first_day_last_month))
         return (value, options)
+
+    def extract_date_from_click_data(
+        self,
+        monthly_transactions_plot_click_data: dict,
+        month_split_day: int,
+    ) -> pd.Timestamp:
+        clicked_date = pd.to_datetime(monthly_transactions_plot_click_data['points'][0]['label'])
+        value: pd.Timestamp = pd.Timestamp(
+            year=clicked_date.year, month=clicked_date.month, day=month_split_day
+        )  # type: ignore
+        return value
 
     def all_data(self, *_) -> list[dict]:
         return self.monthly_costs.get_transactions().to_dict('records')

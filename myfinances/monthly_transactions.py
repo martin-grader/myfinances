@@ -415,7 +415,7 @@ class MonthlyTransactions:
         ].unique()
         return sublabels
 
-    def set_active_sublabels(self, sublabels: dict) -> None:
+    def set_active_sublabels(self, sublabels: dict[str, list[str]]) -> None:
         mask: pd.Series = pd.Series([False] * self._df.shape[0])
         for active_label, active_sublabels in sublabels.items():
             mask += (self._df.loc[:, TransactionLabeled.Label] == active_label) & (

@@ -12,16 +12,12 @@ from myfinances.utils import get_next_month, get_previous_day
 
 class Dashboard:
     def __init__(self, monthly_costs: MonthlyCosts) -> None:
-        # self.app: Dash = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
         self.app: Dash = Dash(__name__)
         self.monthly_costs: MonthlyCosts = monthly_costs
-        # self.colors = {'background': '#111111', 'text': '#7FDBFF'}
         self.app.layout = html.Div(
-            # style={'backgroundColor': self.colors['background']},
             children=[
                 html.H1(
                     children='Finances Overview',
-                    # style={'textAlign': 'center', 'color': self.colors['text']},
                 ),
                 dcc.Graph(
                     id='expenses-bar',
@@ -29,11 +25,9 @@ class Dashboard:
                 html.Div(
                     children=[
                         dcc.Dropdown(
-                            # options=self.monthly_costs.get_months_to_analyze_start(),
                             id='begin-dropdown',
                         ),
                         dcc.Dropdown(
-                            options=self.monthly_costs.get_months_to_analyze_end(),
                             id='end-dropdown',
                         ),
                         dcc.Dropdown(
@@ -156,9 +150,9 @@ class Dashboard:
         (  # type: ignore
             self.app.callback(
                 inputs={
-                    'apply_labels': dependencies.Input('apply-labels', 'n_clicks'),
-                    'labels': dependencies.Input('labels-checklist', 'value'),
-                    'sublabels': {
+                    'times_apply_button_pushed': dependencies.Input('apply-labels', 'n_clicks'),
+                    'active_labels': dependencies.Input('labels-checklist', 'value'),
+                    'active_sublabels': {
                         key: dependencies.Input(key, 'value')
                         for key in self.monthly_costs.get_all_labels()
                     },
@@ -252,12 +246,21 @@ class Dashboard:
             )(self.sublabel_data),
         )
 
-    def set_month_split_day(self, month_split_day) -> None:
+    def set_month_split_day(self, month_split_day: int) -> None:
         self.monthly_costs.set_month_split_day(month_split_day)
 
-    def set_active_labels(self, apply_labels, labels, sublabels) -> None:
-        if apply_labels > 0:
-            sublabels_to_set = {k: v for k, v in sublabels.items() if k in labels}
+    def set_active_labels(
+        self,
+        times_apply_button_pushed: int,
+        active_labels: list[str],
+        active_sublabels: dict[str, list[str]],
+    ) -> None:
+        if times_apply_button_pushed > 0:
+            sublabels_to_set: dict[str, list[str]] = {
+                label: sublabels
+                for label, sublabels in active_sublabels.items()
+                if label in active_labels
+            }
             self.monthly_costs.set_active_sublabels(sublabels_to_set)
 
     def begin_dropdown(
@@ -321,10 +324,9 @@ class Dashboard:
         df: pd.DataFrame = df.loc[
             (df[TransactionLabeled.Label] == label) & (df[TransactionLabeled.Sublabel] == sublabel)
         ]
-        print(df)
         return df.to_dict('records')
 
-    def available_amount(self, click_data, figure_pie, *_) -> str:
+    def available_amount(self, *_) -> str:
         return f'Available: {self.monthly_costs.get_averaged_expenses_by_label().sum()}'
 
     def plot_label_pie(self, *_) -> go.Figure:

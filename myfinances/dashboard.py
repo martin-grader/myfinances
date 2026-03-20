@@ -1,3 +1,4 @@
+import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -11,30 +12,42 @@ from myfinances.utils import get_next_month, get_previous_day
 
 class Dashboard:
     def __init__(self, monthly_costs: MonthlyCosts) -> None:
-        self.app: Dash = Dash(__name__)
+        self.app: Dash = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
         self.monthly_costs: MonthlyCosts = monthly_costs
         self.app.layout = html.Div(
             children=[
                 html.H1(
                     children='Finances Overview',
                 ),
-                dcc.Graph(
-                    id='monthly-transactions-plot',
-                ),
                 html.Div(
                     children=[
-                        dcc.Dropdown(
-                            id='begin-dropdown',
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    dcc.Dropdown(
+                                        id='begin-dropdown',
+                                    ),
+                                ),
+                                dbc.Col(
+                                    dcc.Dropdown(
+                                        id='end-dropdown',
+                                    ),
+                                ),
+                                dbc.Col(
+                                    dcc.Dropdown(
+                                        options=list(range(1, 28)),
+                                        value=self.monthly_costs.get_month_split_day(),
+                                        id='month-split-date',
+                                    ),
+                                ),
+                                dbc.Col(
+                                    html.Button('Reset', id='reset-dates'),
+                                ),
+                            ]
                         ),
-                        dcc.Dropdown(
-                            id='end-dropdown',
+                        dcc.Graph(
+                            id='monthly-transactions-plot',
                         ),
-                        dcc.Dropdown(
-                            options=list(range(1, 28)),
-                            value=self.monthly_costs.get_month_split_day(),
-                            id='month-split-date',
-                        ),
-                        html.Button('Reset', id='reset-dates'),
                         html.Details(
                             dcc.Checklist(
                                 options=sorted(self.monthly_costs.get_all_labels()),

@@ -14,6 +14,57 @@ class Dashboard:
     def __init__(self, monthly_costs: MonthlyCosts) -> None:
         self.app: Dash = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
         self.monthly_costs: MonthlyCosts = monthly_costs
+        self.monthly_transactions_plot = html.Div(
+            [
+                dcc.Graph(
+                    id='monthly-transactions-plot',
+                ),
+            ]
+        )
+        self.date_control = dbc.Card(
+            [
+                html.Div(
+                    [
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    [
+                                        dbc.Label('Start:'),
+                                        dcc.Dropdown(
+                                            id='begin-dropdown',
+                                        ),
+                                    ]
+                                ),
+                                dbc.Col(
+                                    [
+                                        dbc.Label('Ende:'),
+                                        dcc.Dropdown(
+                                            id='end-dropdown',
+                                        ),
+                                    ]
+                                ),
+                                dbc.Col(
+                                    [
+                                        dbc.Label('Monatssplittag:'),
+                                        dcc.Dropdown(
+                                            options=list(range(1, 28)),
+                                            value=self.monthly_costs.get_month_split_day(),
+                                            id='month-split-date',
+                                        ),
+                                    ]
+                                ),
+                                dbc.Col(
+                                    dbc.Button('Reset', id='reset-dates'),
+                                    align='end',
+                                ),
+                            ]
+                        )
+                    ]
+                ),
+            ],
+            body=True,
+        )
+
         self.app.layout = html.Div(
             children=[
                 html.H1(
@@ -21,33 +72,8 @@ class Dashboard:
                 ),
                 html.Div(
                     children=[
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    dcc.Dropdown(
-                                        id='begin-dropdown',
-                                    ),
-                                ),
-                                dbc.Col(
-                                    dcc.Dropdown(
-                                        id='end-dropdown',
-                                    ),
-                                ),
-                                dbc.Col(
-                                    dcc.Dropdown(
-                                        options=list(range(1, 28)),
-                                        value=self.monthly_costs.get_month_split_day(),
-                                        id='month-split-date',
-                                    ),
-                                ),
-                                dbc.Col(
-                                    html.Button('Reset', id='reset-dates'),
-                                ),
-                            ]
-                        ),
-                        dcc.Graph(
-                            id='monthly-transactions-plot',
-                        ),
+                        self.date_control,
+                        self.monthly_transactions_plot,
                         html.Details(
                             dcc.Checklist(
                                 options=sorted(self.monthly_costs.get_all_labels()),

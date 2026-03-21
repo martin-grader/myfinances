@@ -64,9 +64,22 @@ class Dashboard:
             ],
             body=True,
         )
+        self.available_amount_card = dbc.Col(
+            [
+                dbc.Card(
+                    [
+                        dbc.CardHeader('Availabel amount'),
+                        dbc.CardBody(
+                            id='available_amount',
+                        ),
+                    ]
+                ),
+            ],
+            width=1,
+        )
 
-        self.app.layout = html.Div(
-            children=[
+        self.app.layout = dbc.Container(
+            [
                 html.H1(
                     children='Finances Overview',
                 ),
@@ -74,6 +87,7 @@ class Dashboard:
                     children=[
                         self.date_control,
                         self.monthly_transactions_plot,
+                        self.available_amount_card,
                         html.Details(
                             dcc.Checklist(
                                 options=sorted(self.monthly_costs.get_all_labels()),
@@ -136,14 +150,10 @@ class Dashboard:
                         ),
                     ],
                 ),
-                html.Div(
+                dbc.Tabs(
                     [
-                        html.Label(
-                            id='available_amount',
-                        ),
-                        html.Details(
+                        dbc.Tab(
                             [
-                                html.Summary('Alle Überweisungen'),
                                 dash_table.DataTable(
                                     sort_action='native',
                                     style_data={
@@ -153,10 +163,10 @@ class Dashboard:
                                     id='all-data',
                                 ),
                             ],
+                            label='All Transactions',
                         ),
-                        html.Details(
+                        dbc.Tab(
                             [
-                                html.Summary('Überweisungen: Label'),
                                 dash_table.DataTable(
                                     sort_action='native',
                                     style_data={
@@ -166,10 +176,10 @@ class Dashboard:
                                     id='label-data',
                                 ),
                             ],
+                            label='Transactions of selected label',
                         ),
-                        html.Details(
+                        dbc.Tab(
                             [
-                                html.Summary('Überweisungen: Sublabel'),
                                 dash_table.DataTable(
                                     sort_action='native',
                                     style_data={
@@ -179,11 +189,12 @@ class Dashboard:
                                     id='sublabel-data',
                                 ),
                             ],
+                            label='Transactions of selected sublabel',
                         ),
                     ],
-                    style={'width': '90vw', 'margin': 'auto'},
                 ),
             ],
+            fluid=True,
         )
         (  # type: ignore
             self.app.callback(
@@ -370,7 +381,7 @@ class Dashboard:
         ].to_dict('records')
 
     def available_amount(self, *_) -> str:
-        return f'Available: {self.monthly_costs.get_averaged_expenses_by_label().sum()}'
+        return f'{self.monthly_costs.get_averaged_expenses_by_label().sum():.2f} € '
 
     def plot_transactions_by_label_pie(self, *_) -> go.Figure:
         df: pd.DataFrame = (

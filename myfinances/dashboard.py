@@ -2,7 +2,8 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from dash import Dash, ctx, dash_table, dcc, dependencies, html
+from dash import Dash, Input, Output, clientside_callback, ctx, dash_table, dcc, dependencies, html
+from dash_bootstrap_templates import load_figure_template
 from pandera.typing import DataFrame
 
 from myfinances.label_data import TransactionLabeled
@@ -12,8 +13,26 @@ from myfinances.utils import get_next_month, get_previous_day
 
 class Dashboard:
     def __init__(self, monthly_costs: MonthlyCosts) -> None:
-        self.app: Dash = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+        self.dbc_css = 'https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css'
+        self.theme = 'bootstrap'
+        load_figure_template([self.theme, self.theme + '_dark'])  # type:ignore
+        self.app: Dash = Dash(
+            __name__,
+            external_stylesheets=[dbc.themes.BOOTSTRAP, self.dbc_css, dbc.icons.FONT_AWESOME],
+        )
         self.monthly_costs: MonthlyCosts = monthly_costs
+        self.color_mode_switch = html.Span(
+            [
+                dbc.Label(className='fa fa-moon', html_for='color-mode-switch'),
+                dbc.Switch(
+                    id='color-mode-switch',
+                    value=False,
+                    className='d-inline-block ms-1',
+                    persistence=True,
+                ),
+                dbc.Label(className='fa fa-sun', html_for='color-mode-switch'),
+            ]
+        )
         self.monthly_transactions_plot = html.Div(
             [
                 dcc.Graph(
@@ -59,7 +78,7 @@ class Dashboard:
                                 ),
                             ]
                         )
-                    ]
+                    ],
                 ),
             ],
             body=True,
@@ -83,6 +102,7 @@ class Dashboard:
                 html.H1(
                     children='Finances Overview',
                 ),
+                self.color_mode_switch,
                 html.Div(
                     children=[
                         self.date_control,
@@ -192,9 +212,11 @@ class Dashboard:
                             label='Transactions of selected sublabel',
                         ),
                     ],
+                    # className='dbc dbc-row-selectable',
                 ),
             ],
             fluid=True,
+            className='dbc',
         )
         (  # type: ignore
             self.app.callback(
@@ -235,11 +257,13 @@ class Dashboard:
             )(self.available_amount),
             self.app.callback(
                 dependencies.Output('label_pie', 'figure'),
+                dependencies.Input('color-mode-switch', 'value'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
             )(self.plot_transactions_by_label_pie),
             self.app.callback(
                 dependencies.Output('income_pie', 'figure'),
+                dependencies.Input('color-mode-switch', 'value'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
             )(self.plot_income_pie),
@@ -247,6 +271,7 @@ class Dashboard:
                 dependencies.Output('sublabel_pie', 'figure'),
                 dependencies.Input('label_pie', 'clickData'),
                 dependencies.Input('label_pie', 'figure'),
+                dependencies.Input('color-mode-switch', 'value'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
             )(self.plot_transactions_by_sublabel_pie),
@@ -254,6 +279,7 @@ class Dashboard:
                 dependencies.Output('label_line', 'figure'),
                 dependencies.Input('label_pie', 'clickData'),
                 dependencies.Input('label_pie', 'figure'),
+                dependencies.Input('color-mode-switch', 'value'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
             )(self.plot_label_line_chart),
@@ -263,6 +289,7 @@ class Dashboard:
                 dependencies.Input('label_pie', 'figure'),
                 dependencies.Input('sublabel_pie', 'clickData'),
                 dependencies.Input('sublabel_pie', 'figure'),
+                dependencies.Input('color-mode-switch', 'value'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
             )(self.plot_sublabel_line_chart),
@@ -270,6 +297,7 @@ class Dashboard:
                 dependencies.Output('income_line', 'figure'),
                 dependencies.Input('income_pie', 'clickData'),
                 dependencies.Input('income_pie', 'figure'),
+                dependencies.Input('color-mode-switch', 'value'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
             )(self.plot_income_line_chart),
@@ -277,6 +305,7 @@ class Dashboard:
                 dependencies.Output('monthly-transactions-plot', 'figure'),
                 dependencies.Input('begin-dropdown', 'value'),
                 dependencies.Input('end-dropdown', 'value'),
+                dependencies.Input('color-mode-switch', 'value'),
             )(self.plot_expenses_bar),
             self.app.callback(
                 dependencies.Output('label-data', 'data'),
@@ -295,6 +324,17 @@ class Dashboard:
                 dependencies.Input('end-dropdown', 'value'),
             )(self.get_transactions_table_by_sublabel),
         )
+
+    clientside_callback(
+        """
+    (switchOn) => {
+       document.documentElement.setAttribute('data-bs-theme', switchOn ? 'light' : 'dark');
+       return window.dash_clientside.no_update
+    }
+    """,
+        Output('color-mode-switch', 'id'),
+        Input('color-mode-switch', 'value'),
+    )
 
     def set_month_split_day(self, month_split_day: int) -> None:
         self.monthly_costs.set_month_split_day(month_split_day)
@@ -383,20 +423,21 @@ class Dashboard:
     def available_amount(self, *_) -> str:
         return f'{self.monthly_costs.get_averaged_expenses_by_label().sum():.2f} € '
 
-    def plot_transactions_by_label_pie(self, *_) -> go.Figure:
+    def plot_transactions_by_label_pie(self, theme, *_) -> go.Figure:
         df: pd.DataFrame = (
             self.monthly_costs.get_averaged_expenses_by_label()
             .drop('Einkommen', errors='ignore')
             .mul(-1)
             .reset_index()
         )
-        figure: go.Figure = create_pie_plot_figure(df, TransactionLabeled.Label)
+        figure: go.Figure = create_pie_plot_figure(df, TransactionLabeled.Label, theme)
         return figure
 
     def plot_transactions_by_sublabel_pie(
         self,
         transactions_by_label_pie_click_data: dict,
         transactions_by_label_pie: dict,
+        theme,
         *_,
     ) -> go.Figure:
         label, _ = get_active_label_and_color(
@@ -405,22 +446,23 @@ class Dashboard:
         df: pd.DataFrame = (
             self.monthly_costs.get_averaged_expenses_by_sublabel(label).mul(-1).reset_index()
         )
-        figure: go.Figure = create_pie_plot_figure(df, TransactionLabeled.Sublabel)
+        figure: go.Figure = create_pie_plot_figure(df, TransactionLabeled.Sublabel, theme)
         return figure
 
-    def plot_income_pie(self, *_) -> go.Figure:
+    def plot_income_pie(self, theme, *_) -> go.Figure:
         df: pd.DataFrame = (
             self.monthly_costs.get_averaged_income()
             .reset_index()
             .sort_values(by=TransactionLabeled.Amount, ascending=False)
         )
-        figure: go.Figure = create_pie_plot_figure(df, TransactionLabeled.Sublabel)
+        figure: go.Figure = create_pie_plot_figure(df, TransactionLabeled.Sublabel, theme)
         return figure
 
     def plot_label_line_chart(
         self,
         transactions_by_label_pie_click_data: dict,
         transactions_by_label_pie: dict,
+        dark_mode_off: bool,
         *_,
     ) -> go.Figure:
         label, color = get_active_label_and_color(
@@ -429,7 +471,7 @@ class Dashboard:
         df: pd.DataFrame = self.monthly_costs.get_monthly_expenses_by_label(label)
         df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount] * -1
         mean: float = self.monthly_costs.get_averaged_expenses_by_label().loc[label] * -1
-        figure: go.Figure = create_line_plot_figure(df, mean, label, color)
+        figure: go.Figure = create_line_plot_figure(df, mean, label, color, dark_mode_off)
         return figure
 
     def plot_sublabel_line_chart(
@@ -438,6 +480,7 @@ class Dashboard:
         transactions_by_label_pie: dict,
         transactions_by_sublabel_pie_click_data: dict,
         transactions_by_sublabel_pie: dict,
+        dark_mode_off: bool,
         *_,
     ) -> go.Figure:
         label, _ = get_active_label_and_color(
@@ -449,20 +492,21 @@ class Dashboard:
         df: pd.DataFrame = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
         df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount] * -1
         mean: float = self.monthly_costs.get_averaged_expenses_by_sublabel(label).loc[sublabel] * -1
-        figure: go.Figure = create_line_plot_figure(df, mean, sublabel, color)
+        figure: go.Figure = create_line_plot_figure(df, mean, sublabel, color, dark_mode_off)
         return figure
 
     def plot_income_line_chart(
         self,
         income_pie_click_data: dict,
         income_pie: dict,
+        dark_mode_off: bool,
         *_,
     ) -> go.Figure:
         label = 'Einkommen'
         sublabel, color = get_active_sublabel_and_color(income_pie_click_data, income_pie)
         df: pd.DataFrame = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
         mean: float = self.monthly_costs.get_averaged_income().loc[sublabel]
-        figure: go.Figure = create_line_plot_figure(df, mean, sublabel, color)
+        figure: go.Figure = create_line_plot_figure(df, mean, sublabel, color, dark_mode_off)
 
         return figure
 
@@ -470,6 +514,7 @@ class Dashboard:
         self,
         begin_dropdown_data: str,
         end_dropdown_data: str,
+        dark_mode_off: bool,
         *_,
     ) -> go.Figure:
         self.monthly_costs.set_start_and_end_date(
@@ -479,14 +524,14 @@ class Dashboard:
             df: pd.DataFrame = self.monthly_costs.get_daily_expenses()
         else:
             df: pd.DataFrame = self.monthly_costs.get_monthly_expenses()
-        figure: go.Figure = create_bar_plot_figure(df)
+        figure: go.Figure = create_bar_plot_figure(df, dark_mode_off)
         return figure
 
     def run(self) -> None:
         self.app.run(debug=True)
 
 
-def create_bar_plot_figure(df: pd.DataFrame) -> go.Figure:
+def create_bar_plot_figure(df: pd.DataFrame, dark_mode_off: bool) -> go.Figure:
     figure: go.Figure = px.bar(
         data_frame=df,
         x=TransactionLabeled.Date,
@@ -494,11 +539,14 @@ def create_bar_plot_figure(df: pd.DataFrame) -> go.Figure:
         color=TransactionLabeled.Amount,
         color_continuous_scale='RdYlGn',
         color_continuous_midpoint=0,
+        template=extract_theme_from_mode(dark_mode_off),
     )
     return figure
 
 
-def create_line_plot_figure(df: pd.DataFrame, mean: float, title: str, color: str) -> go.Figure:
+def create_line_plot_figure(
+    df: pd.DataFrame, mean: float, title: str, color: str, dark_mode_off: bool
+) -> go.Figure:
     figure: go.Figure = px.line(
         data_frame=df,
         x=TransactionLabeled.Date,
@@ -506,18 +554,27 @@ def create_line_plot_figure(df: pd.DataFrame, mean: float, title: str, color: st
         title=title,
         markers=True,
         color_discrete_sequence=[color],
+        template=extract_theme_from_mode(dark_mode_off),
     )
     figure.add_hline(mean, line_dash='dot', line_color=color, annotation_text=f'Mittel: {mean:.0f}')
     return figure
 
 
-def create_pie_plot_figure(df: pd.DataFrame, names: str) -> go.Figure:
+def create_pie_plot_figure(df: pd.DataFrame, names: str, dark_mode_off: bool) -> go.Figure:
     figure: go.Figure = px.pie(
         df,
         values=TransactionLabeled.Amount,
         names=names,
+        template=extract_theme_from_mode(dark_mode_off),
     )
     return figure
+
+
+def extract_theme_from_mode(dark_mode_off: bool) -> str:
+    theme: str = 'bootstrap'
+    if not dark_mode_off:
+        theme += '_dark'
+    return theme
 
 
 def extract_date_from_click_data(

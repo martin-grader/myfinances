@@ -108,30 +108,29 @@ class Dashboard:
                         self.date_control,
                         self.monthly_transactions_plot,
                         self.available_amount_card,
-                        html.Details(
-                            dcc.Checklist(
-                                options=sorted(self.monthly_costs.get_all_labels()),
-                                value=self.monthly_costs.get_active_labels(),
-                                id='labels-checklist',
-                            )
+                        dbc.Button('Apply', id='apply-labels', n_clicks=0),
+                        dbc.DropdownMenu(
+                            label='Label',
+                            children=[
+                                dbc.Checklist(
+                                    options=sorted(self.monthly_costs.get_all_labels()),
+                                    value=self.monthly_costs.get_active_labels(),
+                                    id='labels-checklist',
+                                )
+                            ],
                         ),
-                        html.Button('Apply', id='apply-labels', n_clicks=0),
                     ]
                 ),
                 html.Div(
                     children=[
-                        html.Details(
-                            [
-                                html.Summary(key),
-                                html.Div(
-                                    children=[
-                                        dcc.Checklist(
-                                            values,
-                                            self.monthly_costs.get_active_sublabels(key),
-                                            id=f'{key}',
-                                        )
-                                    ],
-                                ),
+                        dbc.DropdownMenu(
+                            label=key,
+                            children=[
+                                dbc.Checklist(
+                                    values,
+                                    self.monthly_costs.get_active_sublabels(key),
+                                    id=f'{key}',
+                                )
                             ],
                         )
                         for key, values in self.monthly_costs.get_all_sublabels().items()

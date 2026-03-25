@@ -44,6 +44,7 @@ def set_labels_by_config(
 
 def set_labels_this_config(df: DataFrame[TransactionLabeled], label_config: LabelConfig) -> None:
     for sublabel, identifiers in label_config.sublabels.items():
+        check_sublabel_for_whitespace(sublabel)
         for identifier in identifiers:
             rows_to_label: pd.Series = get_rows_by_string(df, identifier)
             check_for_duplicated_labels(df, rows_to_label, label_config.label, sublabel)
@@ -75,3 +76,8 @@ def check_for_unlabeled_transactions(df) -> None:
         log.error('Found unlabled transactions:')
         log.error(df[df[TransactionLabeled.Label].isna()])
         raise KeyError
+
+
+def check_sublabel_for_whitespace(key: str):
+    if ' ' in key:
+        raise KeyError(f'Sublabel contains whitespace: {key}')

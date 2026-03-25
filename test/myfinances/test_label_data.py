@@ -64,3 +64,10 @@ def test_check_for_unlabeled_transactions(df_no_labels: DataFrame[TransactionLab
 
 def test_check_for_unlabeled_transactions_no_raise(df: DataFrame[TransactionLabeled]) -> None:
     ld.check_for_unlabeled_transactions(df)
+
+
+def test_check_sublabel_for_whitespace() -> None:
+    bad_label: str = 'bad label'
+    with pytest.raises(KeyError) as error:
+        ld.check_sublabel_for_whitespace(bad_label)
+    assert bad_label in str(error.value)

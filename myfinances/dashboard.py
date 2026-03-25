@@ -104,11 +104,15 @@ class Dashboard:
                 ),
                 self.color_mode_switch,
                 html.Div(
+                    [
+                        dbc.Spinner(dbc.Badge(id='set-db-state', color='success')),
+                    ]
+                ),
+                html.Div(
                     children=[
                         self.date_control,
                         self.monthly_transactions_plot,
                         self.available_amount_card,
-                        dbc.Button('Apply', id='apply-labels', n_clicks=0),
                         dbc.DropdownMenu(
                             label='Label',
                             children=[
@@ -220,13 +224,13 @@ class Dashboard:
         (  # type: ignore
             self.app.callback(
                 inputs={
-                    'times_apply_button_pushed': dependencies.Input('apply-labels', 'n_clicks'),
                     'active_labels': dependencies.Input('labels-checklist', 'value'),
                     'active_sublabels': {
                         key: dependencies.Input(key, 'value')
                         for key in self.monthly_costs.get_all_labels()
                     },
-                }
+                },
+                output=dependencies.Output('set-db-state', 'children'),
             )(self.set_active_labels),
             self.app.callback(
                 dependencies.Output('begin-dropdown', 'value'),
@@ -234,7 +238,7 @@ class Dashboard:
                 dependencies.Input('monthly-transactions-plot', 'clickData'),
                 dependencies.Input('month-split-date', 'value'),
                 dependencies.Input('reset-dates', 'n_clicks'),
-                dependencies.Input('apply-labels', 'n_clicks'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.begin_dropdown),
             self.app.callback(
                 dependencies.Output('end-dropdown', 'value'),
@@ -242,7 +246,7 @@ class Dashboard:
                 dependencies.Input('monthly-transactions-plot', 'clickData'),
                 dependencies.Input('month-split-date', 'value'),
                 dependencies.Input('reset-dates', 'n_clicks'),
-                dependencies.Input('apply-labels', 'n_clicks'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.end_dropdown),
             self.app.callback(
                 dependencies.Output('all-data', 'data'),
@@ -340,17 +344,16 @@ class Dashboard:
 
     def set_active_labels(
         self,
-        times_apply_button_pushed: int,
         active_labels: list[str],
         active_sublabels: dict[str, list[str]],
-    ) -> None:
-        if times_apply_button_pushed > 0:
-            sublabels_to_set: dict[str, list[str]] = {
-                label: sublabels
-                for label, sublabels in active_sublabels.items()
-                if label in active_labels
-            }
-            self.monthly_costs.set_active_sublabels(sublabels_to_set)
+    ) -> str:
+        sublabels_to_set: dict[str, list[str]] = {
+            label: sublabels
+            for label, sublabels in active_sublabels.items()
+            if label in active_labels
+        }
+        self.monthly_costs.set_active_sublabels(sublabels_to_set)
+        return 'Data Loaded'
 
     def begin_dropdown(
         self,

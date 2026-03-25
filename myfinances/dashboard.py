@@ -229,23 +229,26 @@ class Dashboard:
                         key: dependencies.Input(key, 'value')
                         for key in self.monthly_costs.get_all_labels()
                     },
+                    'month_split_day': dependencies.Input('month-split-date', 'value'),
+                    'reset_dates': dependencies.Input('reset-dates', 'n_clicks'),
                 },
-                output=dependencies.Output('set-db-state', 'children'),
-            )(self.set_active_labels),
+                output=[
+                    dependencies.Output('set-db-state', 'children'),
+                    dependencies.Output('month-split-date', 'value'),
+                ],
+            )(self.set_database_state),
             self.app.callback(
                 dependencies.Output('begin-dropdown', 'value'),
                 dependencies.Output('begin-dropdown', 'options'),
                 dependencies.Input('monthly-transactions-plot', 'clickData'),
-                dependencies.Input('month-split-date', 'value'),
-                dependencies.Input('reset-dates', 'n_clicks'),
+                dependencies.State('month-split-date', 'value'),
                 dependencies.Input('set-db-state', 'children'),
             )(self.begin_dropdown),
             self.app.callback(
                 dependencies.Output('end-dropdown', 'value'),
                 dependencies.Output('end-dropdown', 'options'),
                 dependencies.Input('monthly-transactions-plot', 'clickData'),
-                dependencies.Input('month-split-date', 'value'),
-                dependencies.Input('reset-dates', 'n_clicks'),
+                dependencies.State('month-split-date', 'value'),
                 dependencies.Input('set-db-state', 'children'),
             )(self.end_dropdown),
             self.app.callback(
@@ -342,18 +345,23 @@ class Dashboard:
     def set_month_split_day(self, month_split_day: int) -> None:
         self.monthly_costs.set_month_split_day(month_split_day)
 
-    def set_active_labels(
+    def set_database_state(
         self,
         active_labels: list[str],
         active_sublabels: dict[str, list[str]],
-    ) -> str:
+        month_split_day: int,
+        reset_dates: int,
+    ) -> tuple[str, int]:
         sublabels_to_set: dict[str, list[str]] = {
             label: sublabels
             for label, sublabels in active_sublabels.items()
             if label in active_labels
         }
         self.monthly_costs.set_active_sublabels(sublabels_to_set)
-        return 'Data Loaded'
+        if ctx.triggered_id == 'reset-dates':
+            month_split_day = 1
+        self.monthly_costs.set_month_split_day(month_split_day)
+        return 'Data Loaded', month_split_day
 
     def begin_dropdown(
         self,
@@ -361,8 +369,6 @@ class Dashboard:
         month_split_day: int,
         *_,
     ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:
-        if 'month-split-date' == ctx.triggered_id:
-            self.monthly_costs.set_month_split_day(month_split_day)
         options: list[pd.Timestamp] = self.monthly_costs.get_all_months_to_analyze_start()
         value: pd.Timestamp = self.monthly_costs.get_min_date_to_start()
         if 'monthly-transactions-plot' == ctx.triggered_id:
@@ -377,8 +383,6 @@ class Dashboard:
         month_split_day: int,
         *_,
     ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:
-        if 'month-split-date' == ctx.triggered_id:
-            self.monthly_costs.set_month_split_day(month_split_day)
         options: list[pd.Timestamp] = self.monthly_costs.get_all_months_to_analyze_end()
         value: pd.Timestamp = self.monthly_costs.get_max_date_to_end()
         if 'monthly-transactions-plot' == ctx.triggered_id:

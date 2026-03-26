@@ -231,63 +231,50 @@ class Dashboard:
                     },
                     'month_split_day': dependencies.Input('month-split-date', 'value'),
                     'reset_dates': dependencies.Input('reset-dates', 'n_clicks'),
+                    'begin_date': dependencies.Input('begin-dropdown', 'value'),
+                    'end_date': dependencies.Input('end-dropdown', 'value'),
+                    'month_click': dependencies.Input('monthly-transactions-plot', 'clickData'),
                 },
                 output=[
                     dependencies.Output('set-db-state', 'children'),
                     dependencies.Output('month-split-date', 'value'),
+                    dependencies.Output('begin-dropdown', 'value'),
+                    dependencies.Output('begin-dropdown', 'options'),
+                    dependencies.Output('end-dropdown', 'value'),
+                    dependencies.Output('end-dropdown', 'options'),
                 ],
             )(self.set_database_state),
             self.app.callback(
-                dependencies.Output('begin-dropdown', 'value'),
-                dependencies.Output('begin-dropdown', 'options'),
-                dependencies.Input('monthly-transactions-plot', 'clickData'),
-                dependencies.State('month-split-date', 'value'),
-                dependencies.Input('set-db-state', 'children'),
-            )(self.begin_dropdown),
-            self.app.callback(
-                dependencies.Output('end-dropdown', 'value'),
-                dependencies.Output('end-dropdown', 'options'),
-                dependencies.Input('monthly-transactions-plot', 'clickData'),
-                dependencies.State('month-split-date', 'value'),
-                dependencies.Input('set-db-state', 'children'),
-            )(self.end_dropdown),
-            self.app.callback(
                 dependencies.Output('all-data', 'data'),
-                dependencies.Input('begin-dropdown', 'value'),
-                dependencies.Input('end-dropdown', 'value'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.get_transactions_table),
             self.app.callback(
                 dependencies.Output('available_amount', 'children'),
-                dependencies.Input('begin-dropdown', 'value'),
-                dependencies.Input('end-dropdown', 'value'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.available_amount),
             self.app.callback(
                 dependencies.Output('label_pie', 'figure'),
                 dependencies.Input('color-mode-switch', 'value'),
-                dependencies.Input('begin-dropdown', 'value'),
-                dependencies.Input('end-dropdown', 'value'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.plot_transactions_by_label_pie),
             self.app.callback(
                 dependencies.Output('income_pie', 'figure'),
                 dependencies.Input('color-mode-switch', 'value'),
-                dependencies.Input('begin-dropdown', 'value'),
-                dependencies.Input('end-dropdown', 'value'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.plot_income_pie),
             self.app.callback(
                 dependencies.Output('sublabel_pie', 'figure'),
                 dependencies.Input('label_pie', 'clickData'),
                 dependencies.Input('label_pie', 'figure'),
                 dependencies.Input('color-mode-switch', 'value'),
-                dependencies.Input('begin-dropdown', 'value'),
-                dependencies.Input('end-dropdown', 'value'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.plot_transactions_by_sublabel_pie),
             self.app.callback(
                 dependencies.Output('label_line', 'figure'),
                 dependencies.Input('label_pie', 'clickData'),
                 dependencies.Input('label_pie', 'figure'),
                 dependencies.Input('color-mode-switch', 'value'),
-                dependencies.Input('begin-dropdown', 'value'),
-                dependencies.Input('end-dropdown', 'value'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.plot_label_line_chart),
             self.app.callback(
                 dependencies.Output('sublabel_line', 'figure'),
@@ -296,29 +283,25 @@ class Dashboard:
                 dependencies.Input('sublabel_pie', 'clickData'),
                 dependencies.Input('sublabel_pie', 'figure'),
                 dependencies.Input('color-mode-switch', 'value'),
-                dependencies.Input('begin-dropdown', 'value'),
-                dependencies.Input('end-dropdown', 'value'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.plot_sublabel_line_chart),
             self.app.callback(
                 dependencies.Output('income_line', 'figure'),
                 dependencies.Input('income_pie', 'clickData'),
                 dependencies.Input('income_pie', 'figure'),
                 dependencies.Input('color-mode-switch', 'value'),
-                dependencies.Input('begin-dropdown', 'value'),
-                dependencies.Input('end-dropdown', 'value'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.plot_income_line_chart),
             self.app.callback(
                 dependencies.Output('monthly-transactions-plot', 'figure'),
-                dependencies.Input('begin-dropdown', 'value'),
-                dependencies.Input('end-dropdown', 'value'),
                 dependencies.Input('color-mode-switch', 'value'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.plot_expenses_bar),
             self.app.callback(
                 dependencies.Output('label-data', 'data'),
                 dependencies.Input('label_pie', 'clickData'),
                 dependencies.Input('label_pie', 'figure'),
-                dependencies.Input('begin-dropdown', 'value'),
-                dependencies.Input('end-dropdown', 'value'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.get_transactions_table_by_label),
             self.app.callback(
                 dependencies.Output('sublabel-data', 'data'),
@@ -326,8 +309,7 @@ class Dashboard:
                 dependencies.Input('label_pie', 'figure'),
                 dependencies.Input('sublabel_pie', 'clickData'),
                 dependencies.Input('sublabel_pie', 'figure'),
-                dependencies.Input('begin-dropdown', 'value'),
-                dependencies.Input('end-dropdown', 'value'),
+                dependencies.Input('set-db-state', 'children'),
             )(self.get_transactions_table_by_sublabel),
         )
 
@@ -342,16 +324,16 @@ class Dashboard:
         Input('color-mode-switch', 'value'),
     )
 
-    def set_month_split_day(self, month_split_day: int) -> None:
-        self.monthly_costs.set_month_split_day(month_split_day)
-
     def set_database_state(
         self,
         active_labels: list[str],
         active_sublabels: dict[str, list[str]],
         month_split_day: int,
         reset_dates: int,
-    ) -> tuple[str, int]:
+        begin_date: str,
+        end_date: str,
+        month_click: dict,
+    ) -> tuple[str, int, pd.Timestamp, list[pd.Timestamp], pd.Timestamp, list[pd.Timestamp]]:
         sublabels_to_set: dict[str, list[str]] = {
             label: sublabels
             for label, sublabels in active_sublabels.items()
@@ -361,27 +343,41 @@ class Dashboard:
         if ctx.triggered_id == 'reset-dates':
             month_split_day = 1
         self.monthly_costs.set_month_split_day(month_split_day)
-        return 'Data Loaded', month_split_day
+        begin_value, begin_options = self.begin_dropdown(
+            month_click, month_split_day, begin_date, str(ctx.triggered_id)
+        )
+        end_value, end_options = self.end_dropdown(
+            month_click, month_split_day, end_date, str(ctx.triggered_id)
+        )
+        self.monthly_costs.set_start_and_end_date(
+            pd.to_datetime(begin_value), pd.to_datetime(end_value)
+        )
+
+        return 'Data Loaded', month_split_day, begin_value, begin_options, end_value, end_options
 
     def begin_dropdown(
         self,
         monthly_transactions_plot_click_data: dict,
         month_split_day: int,
-        *_,
+        selected_value: str,
+        triggered_id: str,
     ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:
         options: list[pd.Timestamp] = self.monthly_costs.get_all_months_to_analyze_start()
         value: pd.Timestamp = self.monthly_costs.get_min_date_to_start()
-        if 'monthly-transactions-plot' == ctx.triggered_id:
+        if 'monthly-transactions-plot' == triggered_id:
             value: pd.Timestamp = extract_date_from_click_data(
                 monthly_transactions_plot_click_data, month_split_day
             )
+        if 'begin-dropdown' == triggered_id:
+            value: pd.Timestamp = pd.to_datetime(selected_value)
         return (value, options)
 
     def end_dropdown(
         self,
         monthly_transactions_plot_click_data: dict,
         month_split_day: int,
-        *_,
+        selected_value: str,
+        triggered_id: str,
     ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:
         options: list[pd.Timestamp] = self.monthly_costs.get_all_months_to_analyze_end()
         value: pd.Timestamp = self.monthly_costs.get_max_date_to_end()
@@ -390,6 +386,8 @@ class Dashboard:
                 monthly_transactions_plot_click_data, month_split_day
             )
             value: pd.Timestamp = get_previous_day(get_next_month(first_day_last_month))
+        if 'end-dropdown' == triggered_id:
+            value: pd.Timestamp = pd.to_datetime(selected_value)
         return (value, options)
 
     def get_transactions_table(self, *_) -> list[dict]:
@@ -518,14 +516,9 @@ class Dashboard:
 
     def plot_expenses_bar(
         self,
-        begin_dropdown_data: str,
-        end_dropdown_data: str,
         dark_mode_off: bool,
         *_,
     ) -> go.Figure:
-        self.monthly_costs.set_start_and_end_date(
-            pd.to_datetime(begin_dropdown_data), pd.to_datetime(end_dropdown_data)
-        )
         if self.monthly_costs.get_n_months_to_analyze() == 1:
             df: pd.DataFrame = self.monthly_costs.get_daily_expenses()
         else:

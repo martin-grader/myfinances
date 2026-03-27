@@ -120,102 +120,107 @@ class Dashboard:
             ],
             width=1,
         )
+        self.pie_plots = html.Div(
+            children=[
+                dcc.Graph(
+                    id='label_pie',
+                    style={'display': 'inline-block', 'width': '30%'},
+                ),
+                dcc.Graph(
+                    id='sublabel_pie',
+                    style={'display': 'inline-block', 'width': '30%'},
+                ),
+                dcc.Graph(
+                    id='income_pie',
+                    style={'display': 'inline-block', 'width': '30%'},
+                ),
+            ],
+        )
+        self.line_plots = html.Div(
+            children=[
+                dcc.Graph(
+                    id='label_line',
+                    style={'display': 'inline-block', 'width': '30%'},
+                ),
+                dcc.Graph(
+                    id='sublabel_line',
+                    style={'display': 'inline-block', 'width': '30%'},
+                ),
+                dcc.Graph(
+                    id='income_line',
+                    style={'display': 'inline-block', 'width': '30%'},
+                ),
+            ],
+        )
+        self.tables = dbc.Tabs(
+            [
+                dbc.Tab(
+                    [
+                        dash_table.DataTable(
+                            sort_action='native',
+                            style_data={
+                                'whiteSpace': 'normal',
+                                'height': 'auto',
+                            },
+                            id='all-data',
+                        ),
+                    ],
+                    label='All Transactions',
+                ),
+                dbc.Tab(
+                    [
+                        dash_table.DataTable(
+                            sort_action='native',
+                            style_data={
+                                'whiteSpace': 'normal',
+                                'height': 'auto',
+                            },
+                            id='label-data',
+                        ),
+                    ],
+                    label='Transactions of selected label',
+                ),
+                dbc.Tab(
+                    [
+                        dash_table.DataTable(
+                            sort_action='native',
+                            style_data={
+                                'whiteSpace': 'normal',
+                                'height': 'auto',
+                            },
+                            id='sublabel-data',
+                        ),
+                    ],
+                    label='Transactions of selected sublabel',
+                ),
+            ],
+            # className='dbc dbc-row-selectable',
+        )
+        self.navbar = dbc.NavbarSimple(
+            children=[
+                self.color_mode_switch,
+            ],
+            sticky='top',
+            color='primary',
+            dark=True,
+            brand='Finances Overview',
+        )
+        self.spinner = dbc.Spinner(dbc.Badge(id='set-db-state', color='success'))
 
         self.app.layout = dbc.Container(
             [
-                dbc.NavbarSimple(
-                    children=[
-                        self.color_mode_switch,
-                    ],
-                    sticky='top',
-                    color='primary',
-                    dark=True,
-                    brand='Finances Overview',
-                ),
+                self.navbar,
                 html.Div(
                     children=[
-                        dbc.Spinner(dbc.Badge(id='set-db-state', color='success')),
+                        self.spinner,
                         self.date_control,
                         self.label_control,
                         self.monthly_transactions_plot,
                         self.available_amount_card,
+                        self.pie_plots,
+                        self.line_plots,
+                        self.tables,
                     ]
-                ),
-                html.Div(
-                    children=[
-                        dcc.Graph(
-                            id='label_pie',
-                            style={'display': 'inline-block', 'width': '30%'},
-                        ),
-                        dcc.Graph(
-                            id='sublabel_pie',
-                            style={'display': 'inline-block', 'width': '30%'},
-                        ),
-                        dcc.Graph(
-                            id='income_pie',
-                            style={'display': 'inline-block', 'width': '30%'},
-                        ),
-                    ],
-                ),
-                html.Div(
-                    children=[
-                        dcc.Graph(
-                            id='label_line',
-                            style={'display': 'inline-block', 'width': '30%'},
-                        ),
-                        dcc.Graph(
-                            id='sublabel_line',
-                            style={'display': 'inline-block', 'width': '30%'},
-                        ),
-                        dcc.Graph(
-                            id='income_line',
-                            style={'display': 'inline-block', 'width': '30%'},
-                        ),
-                    ],
-                ),
-                dbc.Tabs(
-                    [
-                        dbc.Tab(
-                            [
-                                dash_table.DataTable(
-                                    sort_action='native',
-                                    style_data={
-                                        'whiteSpace': 'normal',
-                                        'height': 'auto',
-                                    },
-                                    id='all-data',
-                                ),
-                            ],
-                            label='All Transactions',
-                        ),
-                        dbc.Tab(
-                            [
-                                dash_table.DataTable(
-                                    sort_action='native',
-                                    style_data={
-                                        'whiteSpace': 'normal',
-                                        'height': 'auto',
-                                    },
-                                    id='label-data',
-                                ),
-                            ],
-                            label='Transactions of selected label',
-                        ),
-                        dbc.Tab(
-                            [
-                                dash_table.DataTable(
-                                    sort_action='native',
-                                    style_data={
-                                        'whiteSpace': 'normal',
-                                        'height': 'auto',
-                                    },
-                                    id='sublabel-data',
-                                ),
-                            ],
-                            label='Transactions of selected sublabel',
-                        ),
-                    ],
-                    # className='dbc dbc-row-selectable',
                 ),
             ],
             fluid=True,

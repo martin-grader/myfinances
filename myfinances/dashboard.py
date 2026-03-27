@@ -27,8 +27,9 @@ class Dashboard:
                 dbc.Switch(
                     id='color-mode-switch',
                     value=False,
-                    className='d-inline-block ms-1',
                     persistence=True,
+                    className='d-inline-block ms-1',
+                    input_class_name='bg-dark',
                 ),
                 dbc.Label(className='fa fa-sun', html_for='color-mode-switch'),
             ]
@@ -122,17 +123,18 @@ class Dashboard:
 
         self.app.layout = dbc.Container(
             [
-                html.H1(
-                    children='Finances Overview',
-                ),
-                self.color_mode_switch,
-                html.Div(
-                    [
-                        dbc.Spinner(dbc.Badge(id='set-db-state', color='success')),
-                    ]
+                dbc.NavbarSimple(
+                    children=[
+                        self.color_mode_switch,
+                    ],
+                    sticky='top',
+                    color='primary',
+                    dark=True,
+                    brand='Finances Overview',
                 ),
                 html.Div(
                     children=[
+                        dbc.Spinner(dbc.Badge(id='set-db-state', color='success')),
                         self.date_control,
                         self.label_control,
                         self.monthly_transactions_plot,

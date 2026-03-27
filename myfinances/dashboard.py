@@ -1,5 +1,3 @@
-from typing import Any
-
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
@@ -344,10 +342,7 @@ class Dashboard:
         begin_date: str,
         end_date: str,
         month_click: dict,
-    ) -> tuple[
-        # str, int, pd.Timestamp, list[pd.Timestamp], pd.Timestamp, list[pd.Timestamp], str, ...
-        Any
-    ]:
+    ) -> tuple[str | int | pd.Timestamp | list[pd.Timestamp], ...]:
         sublabels_to_set: dict[str, list[str]] = {
             label: sublabels
             for label, sublabels in active_sublabels.items()
@@ -369,7 +364,7 @@ class Dashboard:
         self.monthly_costs.set_start_and_end_date(
             pd.to_datetime(begin_value), pd.to_datetime(end_value)
         )
-        return_tuple: Any = (
+        return_tuple: tuple[str | int | pd.Timestamp | list[pd.Timestamp], ...] = (
             (
                 'Data Loaded',
                 month_split_day,

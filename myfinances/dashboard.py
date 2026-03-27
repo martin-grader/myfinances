@@ -67,7 +67,7 @@ class Dashboard:
                                         dbc.Label('Monatssplittag:'),
                                         dcc.Dropdown(
                                             options=list(range(1, 28)),
-                                            value=self.monthly_costs.get_month_split_day(),
+                                            value=1,
                                             id='month-split-date',
                                         ),
                                     ]
@@ -139,7 +139,7 @@ class Dashboard:
                         )
                         for key, values in self.monthly_costs.get_all_sublabels().items()
                     ],
-                    style={'display': 'flex', 'flexDirection': 'row'},
+                    className='d-grid gap-1 d-md-flex justify-content-md-start',
                 ),
                 html.Div(
                     children=[
@@ -352,8 +352,14 @@ class Dashboard:
         self.monthly_costs.set_start_and_end_date(
             pd.to_datetime(begin_value), pd.to_datetime(end_value)
         )
-
-        return 'Data Loaded', month_split_day, begin_value, begin_options, end_value, end_options
+        return (
+            'Data Loaded',
+            month_split_day,
+            begin_value,
+            begin_options,
+            end_value,
+            end_options,
+        )
 
     def begin_dropdown(
         self,

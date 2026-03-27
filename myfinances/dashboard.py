@@ -1,3 +1,5 @@
+from typing import Any
+
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
@@ -83,6 +85,29 @@ class Dashboard:
             ],
             body=True,
         )
+        self.label_control = html.Div(
+            children=[
+                dbc.ButtonGroup(
+                    [
+                        dbc.Button(label, id=f'{label}-button', n_clicks=0),
+                        dbc.DropdownMenu(
+                            children=[
+                                dbc.Checklist(
+                                    options=sorted(sublabels),
+                                    value=self.monthly_costs.get_active_sublabels(label),
+                                    id=f'{label}',
+                                )
+                            ],
+                            group=True,
+                            id=f'{label}-dropdown',
+                        ),
+                    ],
+                )
+                for label, sublabels in sorted(self.monthly_costs.get_all_sublabels().items())
+            ],
+            className='d-grid gap-1 d-md-flex justify-content-md-start',
+        )
+
         self.available_amount_card = dbc.Col(
             [
                 dbc.Card(
@@ -111,35 +136,10 @@ class Dashboard:
                 html.Div(
                     children=[
                         self.date_control,
+                        self.label_control,
                         self.monthly_transactions_plot,
                         self.available_amount_card,
-                        dbc.DropdownMenu(
-                            label='Label',
-                            children=[
-                                dbc.Checklist(
-                                    options=sorted(self.monthly_costs.get_all_labels()),
-                                    value=self.monthly_costs.get_active_labels(),
-                                    id='labels-checklist',
-                                )
-                            ],
-                        ),
                     ]
-                ),
-                html.Div(
-                    children=[
-                        dbc.DropdownMenu(
-                            label=key,
-                            children=[
-                                dbc.Checklist(
-                                    values,
-                                    self.monthly_costs.get_active_sublabels(key),
-                                    id=f'{key}',
-                                )
-                            ],
-                        )
-                        for key, values in self.monthly_costs.get_all_sublabels().items()
-                    ],
-                    className='d-grid gap-1 d-md-flex justify-content-md-start',
                 ),
                 html.Div(
                     children=[
@@ -224,7 +224,10 @@ class Dashboard:
         (  # type: ignore
             self.app.callback(
                 inputs={
-                    'active_labels': dependencies.Input('labels-checklist', 'value'),
+                    'label_clicks': {
+                        key: dependencies.Input(f'{key}-button', 'n_clicks')
+                        for key in self.monthly_costs.get_all_labels()
+                    },
                     'active_sublabels': {
                         key: dependencies.Input(key, 'value')
                         for key in self.monthly_costs.get_all_labels()
@@ -242,6 +245,14 @@ class Dashboard:
                     dependencies.Output('begin-dropdown', 'options'),
                     dependencies.Output('end-dropdown', 'value'),
                     dependencies.Output('end-dropdown', 'options'),
+                ]
+                + [
+                    dependencies.Output(f'{key}-button', 'color')
+                    for key in self.monthly_costs.get_all_labels()
+                ]
+                + [
+                    dependencies.Output(f'{key}-dropdown', 'color')
+                    for key in self.monthly_costs.get_all_labels()
                 ],
             )(self.set_database_state),
             self.app.callback(
@@ -326,19 +337,25 @@ class Dashboard:
 
     def set_database_state(
         self,
-        active_labels: list[str],
+        label_clicks: dict[str, int],
         active_sublabels: dict[str, list[str]],
         month_split_day: int,
         reset_dates: int,
         begin_date: str,
         end_date: str,
         month_click: dict,
-    ) -> tuple[str, int, pd.Timestamp, list[pd.Timestamp], pd.Timestamp, list[pd.Timestamp]]:
+    ) -> tuple[
+        # str, int, pd.Timestamp, list[pd.Timestamp], pd.Timestamp, list[pd.Timestamp], str, ...
+        Any
+    ]:
         sublabels_to_set: dict[str, list[str]] = {
             label: sublabels
             for label, sublabels in active_sublabels.items()
-            if label in active_labels
+            if not label_clicks.get(label, 1) % 2
         }
+        button_colors: tuple[str, ...] = tuple(
+            'primary' if not n_clicks % 2 else 'secondary' for _, n_clicks in label_clicks.items()
+        )
         self.monthly_costs.set_active_sublabels(sublabels_to_set)
         if ctx.triggered_id == 'reset-dates':
             month_split_day = 1
@@ -352,14 +369,19 @@ class Dashboard:
         self.monthly_costs.set_start_and_end_date(
             pd.to_datetime(begin_value), pd.to_datetime(end_value)
         )
-        return (
-            'Data Loaded',
-            month_split_day,
-            begin_value,
-            begin_options,
-            end_value,
-            end_options,
+        return_tuple: Any = (
+            (
+                'Data Loaded',
+                month_split_day,
+                begin_value,
+                begin_options,
+                end_value,
+                end_options,
+            )
+            + button_colors
+            + button_colors
         )
+        return return_tuple
 
     def begin_dropdown(
         self,

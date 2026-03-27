@@ -47,36 +47,21 @@ class Dashboard:
                     [
                         dbc.Row(
                             [
-                                dbc.Col(
-                                    [
-                                        dbc.Label('Start:'),
-                                        dcc.Dropdown(
-                                            id='begin-dropdown',
-                                        ),
-                                    ]
+                                dbc.Label('Start:'),
+                                dcc.Dropdown(
+                                    id='begin-dropdown',
                                 ),
-                                dbc.Col(
-                                    [
-                                        dbc.Label('Ende:'),
-                                        dcc.Dropdown(
-                                            id='end-dropdown',
-                                        ),
-                                    ]
+                                dbc.Label('Ende:'),
+                                dcc.Dropdown(
+                                    id='end-dropdown',
                                 ),
-                                dbc.Col(
-                                    [
-                                        dbc.Label('Monatssplittag:'),
-                                        dcc.Dropdown(
-                                            options=list(range(1, 28)),
-                                            value=1,
-                                            id='month-split-date',
-                                        ),
-                                    ]
+                                dbc.Label('Monatssplittag:'),
+                                dcc.Dropdown(
+                                    options=list(range(1, 28)),
+                                    value=1,
+                                    id='month-split-date',
                                 ),
-                                dbc.Col(
-                                    dbc.Button('Reset', id='reset-dates'),
-                                    align='end',
-                                ),
+                                dbc.Button('Reset', id='reset-dates'),
                             ]
                         )
                     ],
@@ -84,27 +69,29 @@ class Dashboard:
             ],
             body=True,
         )
-        self.label_control = html.Div(
-            children=[
-                dbc.ButtonGroup(
-                    [
-                        dbc.Button(label, id=f'{label}-button', n_clicks=0),
-                        dbc.DropdownMenu(
-                            children=[
-                                dbc.Checklist(
-                                    options=sorted(sublabels),
-                                    value=self.monthly_costs.get_active_sublabels(label),
-                                    id=f'{label}',
-                                )
-                            ],
-                            group=True,
-                            id=f'{label}-dropdown',
-                        ),
-                    ],
-                )
-                for label, sublabels in sorted(self.monthly_costs.get_all_sublabels().items())
-            ],
-            className='d-grid gap-1 d-md-flex justify-content-md-start',
+        self.label_control = dbc.Card(
+            html.Div(
+                children=[
+                    dbc.ButtonGroup(
+                        [
+                            dbc.Button(label, id=f'{label}-button', n_clicks=0),
+                            dbc.DropdownMenu(
+                                children=[
+                                    dbc.Checklist(
+                                        options=sorted(sublabels),
+                                        value=self.monthly_costs.get_active_sublabels(label),
+                                        id=f'{label}',
+                                    )
+                                ],
+                                group=True,
+                                id=f'{label}-dropdown',
+                            ),
+                        ],
+                    )
+                    for label, sublabels in sorted(self.monthly_costs.get_all_sublabels().items())
+                ],
+                className='d-grid gap-1 justify-content-md-start',
+            )
         )
 
         self.available_amount_card = dbc.Col(
@@ -118,7 +105,6 @@ class Dashboard:
                     ]
                 ),
             ],
-            width=1,
         )
         self.pie_plots = html.Div(
             children=[
@@ -210,16 +196,26 @@ class Dashboard:
         self.app.layout = dbc.Container(
             [
                 self.navbar,
-                html.Div(
-                    children=[
-                        self.spinner,
-                        self.date_control,
-                        self.label_control,
-                        self.monthly_transactions_plot,
-                        self.available_amount_card,
-                        self.pie_plots,
-                        self.line_plots,
-                        self.tables,
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            [
+                                self.spinner,
+                                self.date_control,
+                                self.label_control,
+                            ],
+                            width=2,
+                        ),
+                        dbc.Col(
+                            [
+                                # self.label_control,
+                                self.monthly_transactions_plot,
+                                self.pie_plots,
+                                self.line_plots,
+                                self.tables,
+                            ]
+                        ),
+                        dbc.Col([self.available_amount_card], width=1),
                     ]
                 ),
             ],

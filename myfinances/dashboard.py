@@ -34,14 +34,10 @@ class Dashboard:
                 dbc.Label(className='fa fa-sun', html_for='color-mode-switch'),
             ]
         )
-        self.monthly_transactions_plot = html.Div(
-            [
-                dcc.Graph(
-                    id='monthly-transactions-plot',
-                ),
-            ]
+        self.monthly_transactions_plot = card_style(
+            [dcc.Graph(id='monthly-transactions-plot')], 'Monthly Transactions'
         )
-        self.date_control = dbc.Card(
+        self.date_control = card_style(
             [
                 html.Div(
                     [
@@ -61,83 +57,58 @@ class Dashboard:
                                     value=1,
                                     id='month-split-date',
                                 ),
-                                dbc.Button('Reset', id='reset-dates'),
+                                dbc.Button('Reset', id='reset-dates', class_name='mt-1'),
                             ]
                         )
                     ],
                 ),
             ],
-            body=True,
+            'Date Control',
         )
-        self.label_control = dbc.Card(
-            html.Div(
-                children=[
-                    dbc.ButtonGroup(
-                        [
-                            dbc.Button(label, id=f'{label}-button', n_clicks=0),
-                            dbc.DropdownMenu(
-                                children=[
-                                    dbc.Checklist(
-                                        options=sorted(sublabels),
-                                        value=self.monthly_costs.get_active_sublabels(label),
-                                        id=f'{label}',
-                                    )
-                                ],
-                                group=True,
-                                id=f'{label}-dropdown',
-                            ),
-                        ],
-                    )
-                    for label, sublabels in sorted(self.monthly_costs.get_all_sublabels().items())
-                ],
-                className='d-grid gap-1 justify-content-md-start',
-            )
+        self.label_control = card_style(
+            [
+                html.Div(
+                    children=[
+                        dbc.ButtonGroup(
+                            [
+                                dbc.Button(label, id=f'{label}-button', n_clicks=0),
+                                dbc.DropdownMenu(
+                                    children=[
+                                        dbc.Checklist(
+                                            options=sorted(sublabels),
+                                            value=self.monthly_costs.get_active_sublabels(label),
+                                            id=f'{label}',
+                                        )
+                                    ],
+                                    group=True,
+                                    id=f'{label}-dropdown',
+                                ),
+                            ],
+                        )
+                        for label, sublabels in sorted(
+                            self.monthly_costs.get_all_sublabels().items()
+                        )
+                    ],
+                    className='d-grid gap-1 justify-content-md-start',
+                )
+            ],
+            'Label Control',
         )
 
-        self.available_amount_card = dbc.Col(
-            [
-                dbc.Card(
-                    [
-                        dbc.CardHeader('Availabel amount'),
-                        dbc.CardBody(
-                            id='available_amount',
-                        ),
-                    ]
-                ),
-            ],
+        self.available_amount_card = card_style(
+            [html.Div(id='available_amount')], 'Available amount'
         )
-        self.pie_plots = html.Div(
+
+        self.labeled_data = dbc.CardGroup(
             children=[
-                dcc.Graph(
-                    id='label_pie',
-                    style={'display': 'inline-block', 'width': '30%'},
+                card_style([dcc.Graph(id='label_pie'), dcc.Graph(id='label_line')], 'Labels'),
+                card_style(
+                    [dcc.Graph(id='sublabel_pie'), dcc.Graph(id='sublabel_line')], 'Sublabels'
                 ),
-                dcc.Graph(
-                    id='sublabel_pie',
-                    style={'display': 'inline-block', 'width': '30%'},
-                ),
-                dcc.Graph(
-                    id='income_pie',
-                    style={'display': 'inline-block', 'width': '30%'},
-                ),
-            ],
+                card_style([dcc.Graph(id='income_pie'), dcc.Graph(id='income_line')], 'Income'),
+            ]
         )
-        self.line_plots = html.Div(
-            children=[
-                dcc.Graph(
-                    id='label_line',
-                    style={'display': 'inline-block', 'width': '30%'},
-                ),
-                dcc.Graph(
-                    id='sublabel_line',
-                    style={'display': 'inline-block', 'width': '30%'},
-                ),
-                dcc.Graph(
-                    id='income_line',
-                    style={'display': 'inline-block', 'width': '30%'},
-                ),
-            ],
-        )
+
         self.tables = dbc.Tabs(
             [
                 dbc.Tab(
@@ -180,18 +151,16 @@ class Dashboard:
                     label='Transactions of selected sublabel',
                 ),
             ],
-            # className='dbc dbc-row-selectable',
         )
+        self.spinner = dbc.Spinner(dbc.Badge(id='set-db-state', color='success'))
         self.navbar = dbc.NavbarSimple(
-            children=[
-                self.color_mode_switch,
-            ],
+            children=[self.color_mode_switch, self.spinner],
             sticky='top',
             color='primary',
             dark=True,
             brand='Finances Overview',
+            class_name='mb-3',
         )
-        self.spinner = dbc.Spinner(dbc.Badge(id='set-db-state', color='success'))
 
         self.app.layout = dbc.Container(
             [
@@ -200,20 +169,27 @@ class Dashboard:
                     [
                         dbc.Col(
                             [
-                                self.spinner,
-                                self.date_control,
-                                self.label_control,
+                                dbc.Stack(
+                                    [
+                                        self.date_control,
+                                        self.label_control,
+                                    ],
+                                    gap=3,
+                                )
                             ],
                             width=2,
                         ),
                         dbc.Col(
                             [
-                                # self.label_control,
-                                self.monthly_transactions_plot,
-                                self.pie_plots,
-                                self.line_plots,
-                                self.tables,
-                            ]
+                                dbc.Stack(
+                                    [
+                                        self.monthly_transactions_plot,
+                                        self.labeled_data,
+                                        self.tables,
+                                    ],
+                                    gap=3,
+                                )
+                            ],
                         ),
                         dbc.Col([self.available_amount_card], width=1),
                     ]
@@ -637,3 +613,15 @@ def get_active_sublabel_and_color(click_data_sublabel: dict, figure_pie: dict) -
         sublabel: str = default_sublabel
         color: str = default_color
     return sublabel, color
+
+
+def card_style(body: list, title: str) -> dbc.Card:
+    card: dbc.Card = dbc.Card(
+        [
+            dbc.CardHeader(title),
+            dbc.CardBody(
+                body,
+            ),
+        ]
+    )
+    return card

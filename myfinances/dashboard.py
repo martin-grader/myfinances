@@ -98,10 +98,40 @@ class Dashboard:
         self.available_amount_card = card_style(
             [html.Div(id='available_amount')], 'Available amount'
         )
+        self.modal = html.Div(
+            [
+                dbc.Button('Open fullscreen', id='open', n_clicks=0),
+                dbc.Modal(
+                    [
+                        dbc.ModalHeader(dbc.ModalTitle('Labled expenses per month')),
+                        dbc.ModalBody(dcc.Graph(id='all_label_lines_modal')),
+                        dbc.ModalFooter(
+                            dbc.Button('Close', id='close', className='ms-auto', n_clicks=0)
+                        ),
+                    ],
+                    id='modal',
+                    fullscreen=True,
+                    is_open=False,
+                ),
+            ]
+        )
+
+        self.label_line_tabs = dbc.Tabs(
+            [
+                dbc.Tab(dcc.Graph(id='label_line'), label='Selected'),
+                dbc.Tab(
+                    [
+                        self.modal,
+                        dcc.Graph(id='all_label_lines'),
+                    ],
+                    label='All',
+                ),
+            ]
+        )
 
         self.labeled_data = dbc.CardGroup(
             children=[
-                card_style([dcc.Graph(id='label_pie'), dcc.Graph(id='label_line')], 'Labels'),
+                card_style([dcc.Graph(id='label_pie'), self.label_line_tabs], 'Labels'),
                 card_style(
                     [dcc.Graph(id='sublabel_pie'), dcc.Graph(id='sublabel_line')], 'Sublabels'
                 ),
@@ -258,6 +288,13 @@ class Dashboard:
                 dependencies.Input('set-db-state', 'children'),
             )(self.plot_transactions_by_sublabel_pie),
             self.app.callback(
+                dependencies.Output('all_label_lines', 'figure'),
+                dependencies.Output('all_label_lines_modal', 'figure'),
+                dependencies.Input('color-mode-switch', 'value'),
+                dependencies.Input('label_pie', 'figure'),
+                dependencies.Input('set-db-state', 'children'),
+            )(self.plot_all_label_lines_chart),
+            self.app.callback(
                 dependencies.Output('label_line', 'figure'),
                 dependencies.Input('label_pie', 'clickData'),
                 dependencies.Input('label_pie', 'figure'),
@@ -299,6 +336,12 @@ class Dashboard:
                 dependencies.Input('sublabel_pie', 'figure'),
                 dependencies.Input('set-db-state', 'children'),
             )(self.get_transactions_table_by_sublabel),
+            self.app.callback(
+                dependencies.Output('modal', 'is_open'),
+                dependencies.Input('open', 'n_clicks'),
+                dependencies.Input('close', 'n_clicks'),
+                dependencies.State('modal', 'is_open'),
+            )(self.toggle_modal),
         )
 
     clientside_callback(
@@ -464,6 +507,27 @@ class Dashboard:
         figure: go.Figure = create_pie_plot_figure(df, TransactionLabeled.Sublabel, theme)
         return figure
 
+    def plot_all_label_lines_chart(
+        self,
+        dark_mode_off: bool,
+        transactions_by_label_pie: dict,
+        *_,
+    ) -> tuple[go.Figure, go.Figure]:
+        labels: list = transactions_by_label_pie['data'][0]['labels']
+        df: pd.DataFrame = self.monthly_costs.get_monthly_expenses([TransactionLabeled.Label])
+        df = df.loc[df[TransactionLabeled.Label] != 'Einkommen']
+        df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount] * -1
+        figure: go.Figure = px.area(
+            data_frame=df,
+            x=TransactionLabeled.Date,
+            y=TransactionLabeled.Amount,
+            color=TransactionLabeled.Label,
+            template=extract_theme_from_mode(dark_mode_off),
+            category_orders={TransactionLabeled.Label: labels},
+        )
+        figure.update_traces(mode='none')
+        return figure, figure
+
     def plot_label_line_chart(
         self,
         transactions_by_label_pie_click_data: dict,
@@ -527,6 +591,11 @@ class Dashboard:
             df: pd.DataFrame = self.monthly_costs.get_monthly_expenses()
         figure: go.Figure = create_bar_plot_figure(df, dark_mode_off)
         return figure
+
+    def toggle_modal(self, n1, n2, is_open) -> bool:
+        if n1 or n2:
+            return not is_open
+        return is_open
 
     def run(self) -> None:
         self.app.run(debug=True)

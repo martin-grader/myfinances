@@ -19,6 +19,7 @@ class Dashboard:
             external_stylesheets=[dbc.themes.BOOTSTRAP, self.dbc_css, dbc.icons.FONT_AWESOME],
         )
         self.monthly_costs: MonthlyCosts = monthly_costs
+        self.date_format: str = '%Y-%b-%d'
 
         self.theme_change = ThemeChangerAIO(
             aio_id='theme', button_props={'color': 'primary', 'outline': False}
@@ -374,7 +375,7 @@ class Dashboard:
         begin_date: str,
         end_date: str,
         month_click: dict,
-    ) -> tuple[str | int | pd.Timestamp | list[pd.Timestamp], ...]:
+    ) -> tuple[str | int | list[str], ...]:
         sublabels_to_set: dict[str, list[str]] = {
             label: sublabels
             for label, sublabels in active_sublabels.items()
@@ -396,7 +397,7 @@ class Dashboard:
         self.monthly_costs.set_start_and_end_date(
             pd.to_datetime(begin_value), pd.to_datetime(end_value)
         )
-        return_tuple: tuple[str | int | pd.Timestamp | list[pd.Timestamp], ...] = (
+        return_tuple: tuple[str | int | list[str], ...] = (
             (
                 'Data Loaded',
                 month_split_day,
@@ -416,7 +417,7 @@ class Dashboard:
         month_split_day: int,
         selected_value: str,
         triggered_id: str,
-    ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:
+    ) -> tuple[str, list[str]]:
         options: list[pd.Timestamp] = self.monthly_costs.get_all_months_to_analyze_start()
         value: pd.Timestamp = self.monthly_costs.get_min_date_to_start()
         if 'monthly-transactions-plot' == triggered_id:
@@ -425,7 +426,9 @@ class Dashboard:
             )
         if 'begin-dropdown' == triggered_id:
             value: pd.Timestamp = pd.to_datetime(selected_value)
-        return (value, options)
+        options_formatted: list[str] = [ts.strftime(self.date_format) for ts in options]
+        value_formatted: str = value.strftime(self.date_format)
+        return (value_formatted, options_formatted)
 
     def end_dropdown(
         self,
@@ -433,7 +436,7 @@ class Dashboard:
         month_split_day: int,
         selected_value: str,
         triggered_id: str,
-    ) -> tuple[pd.Timestamp, list[pd.Timestamp]]:
+    ) -> tuple[str, list[str]]:
         options: list[pd.Timestamp] = self.monthly_costs.get_all_months_to_analyze_end()
         value: pd.Timestamp = self.monthly_costs.get_max_date_to_end()
         if 'monthly-transactions-plot' == ctx.triggered_id:
@@ -443,7 +446,9 @@ class Dashboard:
             value: pd.Timestamp = get_previous_day(get_next_month(first_day_last_month))
         if 'end-dropdown' == triggered_id:
             value: pd.Timestamp = pd.to_datetime(selected_value)
-        return (value, options)
+        options_formatted: list[str] = [ts.strftime(self.date_format) for ts in options]
+        value_formatted: str = value.strftime(self.date_format)
+        return (value_formatted, options_formatted)
 
     def get_transactions_table(self, *_) -> list[dict]:
         return self.monthly_costs.get_transactions().to_dict('records')

@@ -21,7 +21,7 @@ class Dashboard:
         self.monthly_costs: MonthlyCosts = monthly_costs
 
         self.theme_change = ThemeChangerAIO(
-            aio_id='theme', button_props={'color': 'secondary', 'outline': False}
+            aio_id='theme', button_props={'color': 'primary', 'outline': False}
         )
 
         self.color_mode_switch = html.Span(
@@ -189,15 +189,14 @@ class Dashboard:
         self.navbar = dbc.NavbarSimple(
             children=[self.color_mode_switch, self.theme_change, self.spinner],
             sticky='top',
-            color='primary',
-            dark=True,
+            color='none',
             brand='Finances Overview',
-            class_name='mb-3',
         )
 
         self.app.layout = dbc.Container(
             [
                 self.navbar,
+                html.Hr(),
                 dbc.Row(
                     [
                         dbc.Col(

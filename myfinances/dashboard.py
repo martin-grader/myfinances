@@ -19,6 +19,10 @@ class Dashboard:
             external_stylesheets=[dbc.themes.BOOTSTRAP, self.dbc_css, dbc.icons.FONT_AWESOME],
         )
         self.monthly_costs: MonthlyCosts = monthly_costs
+        self.default_sublabels_active: dict[str, list[str]] = {
+            label: monthly_costs.get_active_sublabels(label)
+            for label in monthly_costs.get_all_labels()
+        }
         self.date_format: str = '%Y-%b-%d'
 
         self.theme_change = ThemeChangerAIO(
@@ -75,7 +79,13 @@ class Dashboard:
                     children=[
                         dbc.ButtonGroup(
                             [
-                                dbc.Button(label, id=f'{label}-button', n_clicks=0),
+                                dbc.Button(
+                                    label,
+                                    id=f'{label}-button',
+                                    n_clicks=int(
+                                        len(self.monthly_costs.get_active_sublabels(label)) == 0
+                                    ),
+                                ),
                                 dbc.DropdownMenu(
                                     children=[
                                         dbc.Checklist(
@@ -92,6 +102,9 @@ class Dashboard:
                         for label, sublabels in sorted(
                             self.monthly_costs.get_all_sublabels().items()
                         )
+                    ]
+                    + [
+                        dbc.Button('Reset', id='reset-labels', class_name='mt-1'),
                     ],
                     className='d-grid gap-1 justify-content-md-start',
                 )
@@ -241,6 +254,16 @@ class Dashboard:
         )
         (  # type: ignore
             self.app.callback(
+                dependencies.Input('reset-labels', 'n_clicks'),
+                output=[
+                    dependencies.Output(key, 'value') for key in self.monthly_costs.get_all_labels()
+                ]
+                + [
+                    dependencies.Output(f'{key}-button', 'n_clicks')
+                    for key in self.monthly_costs.get_all_labels()
+                ],
+            )(self.reset_labels),
+            self.app.callback(
                 inputs={
                     'label_clicks': {
                         key: dependencies.Input(f'{key}-button', 'n_clicks')
@@ -378,6 +401,13 @@ class Dashboard:
         Input('color-mode-switch', 'value'),
     )
 
+    def reset_labels(self, *_) -> list[int | list[str]]:
+        sublabels: list[list[str]] = [
+            self.default_sublabels_active[label] for label in self.monthly_costs.get_all_labels()
+        ]
+        n_clicks: list[int] = [int(len(label) == 0) for label in sublabels]
+        return sublabels + n_clicks
+
     def set_database_state(
         self,
         label_clicks: dict[str, int],
@@ -396,6 +426,7 @@ class Dashboard:
         button_colors: tuple[str, ...] = tuple(
             'primary' if not n_clicks % 2 else 'secondary' for _, n_clicks in label_clicks.items()
         )
+        # print(sublabels_to_set['Wohnen'])
         self.monthly_costs.set_active_sublabels(sublabels_to_set)
         if ctx.triggered_id == 'reset-dates':
             month_split_day = 1

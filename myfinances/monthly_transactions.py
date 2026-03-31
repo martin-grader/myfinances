@@ -235,6 +235,7 @@ class MonthlyTransactions:
     def set_month_split_day(self, month_split_day: int) -> None:
         MonthSplitDateValidityChecker().execute(month_split_day)
         self._month_split_day: int = month_split_day
+        self.reset_start_end_dates()
 
     def reset_start_end_dates(self) -> None:
         self._reset_start_end_dates()

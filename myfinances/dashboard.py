@@ -116,6 +116,9 @@ class Dashboard:
             [html.Div(id='available_amount')], 'Available amount'
         )
         self.analyzed_period_card = card_style([html.Div(id='analyzed-period')], 'Analyzed period')
+        self.number_transactions_card = card_style(
+            [html.Div(id='number-transactions')], 'Analyzed transactions'
+        )
         self.modal = html.Div(
             [
                 dbc.Button('Open fullscreen', id='open', n_clicks=0),
@@ -241,7 +244,12 @@ class Dashboard:
                         dbc.Col(
                             [
                                 dbc.Stack(
-                                    [self.available_amount_card, self.analyzed_period_card], gap=3
+                                    [
+                                        self.available_amount_card,
+                                        self.analyzed_period_card,
+                                        self.number_transactions_card,
+                                    ],
+                                    gap=3,
                                 )
                             ],
                             width=1,
@@ -308,6 +316,10 @@ class Dashboard:
                 dependencies.Output('analyzed-period', 'children'),
                 dependencies.Input('set-db-state', 'children'),
             )(self.analyzed_period),
+            self.app.callback(
+                dependencies.Output('number-transactions', 'children'),
+                dependencies.Input('set-db-state', 'children'),
+            )(self.number_transactions),
             self.app.callback(
                 dependencies.Output('label_pie', 'figure'),
                 dependencies.Input('color-mode-switch', 'value'),
@@ -533,6 +545,10 @@ class Dashboard:
     def analyzed_period(self, *_) -> str:
         months_to_analzye: list[pd.Timestamp] = self.monthly_costs.get_months_to_analyze_start()
         return f'{len(months_to_analzye)} months'
+
+    def number_transactions(self, *_) -> str:
+        number_transactions: int = self.monthly_costs.get_transactions().shape[0]
+        return f'{number_transactions}'
 
     def plot_transactions_by_label_pie(self, color_mode_state: bool, theme, *_) -> go.Figure:
         df: pd.DataFrame = (

@@ -250,6 +250,14 @@ class MonthlyTransactions:
             )
         ]
 
+    def get_all_transactions_in_dates(self) -> DataFrame[TransactionLabeled]:
+        return self._df.loc[
+            (
+                (self._df[TransactionLabeled.Date] >= self._date_to_start)
+                & (self._df[TransactionLabeled.Date] <= self._date_to_end)
+            )
+        ]
+
     def get_date_to_start(self) -> pd.Timestamp:
         return self._date_to_start
 
@@ -411,6 +419,13 @@ class MonthlyTransactions:
             ].unique()
             all_sublabels[label] = sublabels
         return all_sublabels
+
+    def get_all_sublabels_within_dates(self, label: str) -> list[str]:
+        df: DataFrame[TransactionLabeled] = self.get_all_transactions_in_dates()
+        sublabels = df.loc[
+            df[TransactionLabeled.Label] == label, TransactionLabeled.Sublabel
+        ].unique()
+        return sublabels
 
     def get_active_sublabels(self, label: str) -> list[str]:
         df: DataFrame[TransactionLabeled] = self.get_transactions()

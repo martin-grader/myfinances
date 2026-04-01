@@ -96,7 +96,15 @@ class Dashboard:
                                 dbc.DropdownMenu(
                                     children=[
                                         dbc.Checklist(
-                                            options=sorted(sublabels),
+                                            # options=sorted(sublabels),
+                                            options=[
+                                                {
+                                                    'label': label,
+                                                    'value': label,
+                                                    'disabled': False,
+                                                }
+                                                for label in sorted(sublabels)
+                                            ],
                                             value=self.monthly_costs.get_active_sublabels(label),
                                             id=f'{label}',
                                         )
@@ -309,6 +317,10 @@ class Dashboard:
                 + [
                     dependencies.Output(f'{key}-dropdown', 'color')
                     for key in self.monthly_costs.get_all_labels()
+                ]
+                + [
+                    dependencies.Output(key, 'options')
+                    for key in sorted(self.monthly_costs.get_all_labels())
                 ],
             )(self.set_database_state),
             self.app.callback(
@@ -453,7 +465,7 @@ class Dashboard:
         begin_date: str,
         end_date: str,
         month_click: dict,
-    ) -> tuple[str | int | list[str], ...]:
+    ) -> tuple[str | int | list[str] | list[dict], ...]:
         sublabels_to_set: dict[str, list[str]] = {
             label: sublabels
             for label, sublabels in active_sublabels.items()
@@ -465,7 +477,9 @@ class Dashboard:
         self.monthly_costs.set_active_sublabels(sublabels_to_set)
         if ctx.triggered_id == 'reset-dates':
             month_split_day = 1
-        self.monthly_costs.set_month_split_day(month_split_day)
+            self.monthly_costs.set_month_split_day(month_split_day)
+        if ctx.triggered_id == 'month-split-date':
+            self.monthly_costs.set_month_split_day(month_split_day)
         begin_value, begin_options = self.begin_dropdown(
             month_click, month_split_day, begin_date, str(ctx.triggered_id)
         )
@@ -475,7 +489,24 @@ class Dashboard:
         self.monthly_costs.set_start_and_end_date(
             pd.to_datetime(begin_value), pd.to_datetime(end_value)
         )
-        return_tuple: tuple[str | int | list[str], ...] = (
+        sublabels_available: dict = {
+            label: self.monthly_costs.get_all_sublabels_within_dates(label)
+            for label in self.monthly_costs.get_all_labels()
+        }
+        sublabel_options: list[list[dict]] = []
+        for label, sublabels in sorted(self.monthly_costs.get_all_sublabels().items()):
+            checklist_options: list[dict] = []
+            for sublabel in sublabels:
+                checklist_options.append(
+                    {
+                        'label': sublabel,
+                        'value': sublabel,
+                        'disabled': sublabel not in sublabels_available[label],
+                    }
+                )
+            sublabel_options.append(checklist_options)
+
+        return_tuple: tuple[str | int | list[str] | list[dict], ...] = (
             (
                 'Data Loaded',
                 month_split_day,
@@ -486,6 +517,7 @@ class Dashboard:
             )
             + button_colors
             + button_colors
+            + tuple(sublabel_options)
         )
         return return_tuple
 
@@ -494,8 +526,13 @@ class Dashboard:
         inactive_sublabels: list[str] = []
         color: list[str] = []
         for label, sublabels in sublabels.items():
+            available_sublabels: list[str] = self.monthly_costs.get_all_sublabels_within_dates(
+                label
+            )
             active_sublabels: list[str] = self.monthly_costs.get_active_sublabels(label)
-            deactivated_sublabels: int = len(sublabels) - len(active_sublabels)
+            deactivated_sublabels: int = len(
+                [sublabel for sublabel in available_sublabels if sublabel not in active_sublabels]
+            )
             inactive_sublabels.append(str(deactivated_sublabels))
             if label_color[label] != 'primary':
                 color.append('secondary')
@@ -514,7 +551,10 @@ class Dashboard:
         triggered_id: str,
     ) -> tuple[str, list[str]]:
         options: list[pd.Timestamp] = self.monthly_costs.get_all_months_to_analyze_start()
-        value: pd.Timestamp = self.monthly_costs.get_min_date_to_start()
+        value: pd.Timestamp = self.monthly_costs.get_date_to_start()
+        if 'reset-dates' == triggered_id:
+            value: pd.Timestamp = self.monthly_costs.get_min_date_to_start()
+
         if 'monthly-transactions-plot' == triggered_id:
             value: pd.Timestamp = extract_date_from_click_data(
                 monthly_transactions_plot_click_data, month_split_day
@@ -533,7 +573,9 @@ class Dashboard:
         triggered_id: str,
     ) -> tuple[str, list[str]]:
         options: list[pd.Timestamp] = self.monthly_costs.get_all_months_to_analyze_end()
-        value: pd.Timestamp = self.monthly_costs.get_max_date_to_end()
+        value: pd.Timestamp = self.monthly_costs.get_date_to_end()
+        if 'reset-dates' == ctx.triggered_id:
+            value: pd.Timestamp = self.monthly_costs.get_max_date_to_end()
         if 'monthly-transactions-plot' == ctx.triggered_id:
             first_day_last_month: pd.Timestamp = extract_date_from_click_data(
                 monthly_transactions_plot_click_data, month_split_day

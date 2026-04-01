@@ -80,7 +80,14 @@ class Dashboard:
                         dbc.ButtonGroup(
                             [
                                 dbc.Button(
-                                    label,
+                                    [
+                                        label,
+                                        dbc.Badge(
+                                            pill=True,
+                                            class_name='position-absolute top-0 start-0 translate-middle',  # noqa E501
+                                            id=f'{label}-badge',
+                                        ),
+                                    ],
                                     id=f'{label}-button',
                                     n_clicks=int(
                                         len(self.monthly_costs.get_active_sublabels(label)) == 0
@@ -305,6 +312,23 @@ class Dashboard:
                 ],
             )(self.set_database_state),
             self.app.callback(
+                inputs={
+                    'db_state': dependencies.Input('set-db-state', 'children'),
+                    'label_color': {
+                        key: dependencies.Input(f'{key}-button', 'color')
+                        for key in self.monthly_costs.get_all_labels()
+                    },
+                },
+                output=[
+                    dependencies.Output(f'{key}-badge', 'children')
+                    for key in self.monthly_costs.get_all_labels()
+                ]
+                + [
+                    dependencies.Output(f'{key}-badge', 'color')
+                    for key in self.monthly_costs.get_all_labels()
+                ],
+            )(self.set_badges),
+            self.app.callback(
                 dependencies.Output('all-data', 'data'),
                 dependencies.Input('set-db-state', 'children'),
             )(self.get_transactions_table),
@@ -438,7 +462,6 @@ class Dashboard:
         button_colors: tuple[str, ...] = tuple(
             'primary' if not n_clicks % 2 else 'secondary' for _, n_clicks in label_clicks.items()
         )
-        # print(sublabels_to_set['Wohnen'])
         self.monthly_costs.set_active_sublabels(sublabels_to_set)
         if ctx.triggered_id == 'reset-dates':
             month_split_day = 1
@@ -465,6 +488,23 @@ class Dashboard:
             + button_colors
         )
         return return_tuple
+
+    def set_badges(self, db_state, label_color: dict) -> list[str]:
+        sublabels: dict = self.monthly_costs.get_all_sublabels()
+        inactive_sublabels: list[str] = []
+        color: list[str] = []
+        for label, sublabels in sublabels.items():
+            active_sublabels: list[str] = self.monthly_costs.get_active_sublabels(label)
+            deactivated_sublabels: int = len(sublabels) - len(active_sublabels)
+            inactive_sublabels.append(str(deactivated_sublabels))
+            if label_color[label] != 'primary':
+                color.append('secondary')
+            else:
+                if deactivated_sublabels == 0:
+                    color.append('success')
+                else:
+                    color.append('warning')
+        return inactive_sublabels + color
 
     def begin_dropdown(
         self,

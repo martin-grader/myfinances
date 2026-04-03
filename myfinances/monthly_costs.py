@@ -83,6 +83,24 @@ class MonthlyCosts(MonthlyTransactions):
             & (expenses[TransactionLabeled.Sublabel] == sublabel)
         ]
 
+    def get_relative_monthly_expenses_by_sublabel(self, label: str, sublabel: str) -> pd.DataFrame:
+        df_label = self.get_monthly_expenses_by_label(label)
+        df_sublabel = self.get_monthly_expenses_by_sublabel(label, sublabel)
+        df_relative = pd.merge(
+            df_sublabel,
+            df_label[[TransactionLabeled.Date, TransactionLabeled.Amount]],
+            how='left',
+            on=TransactionLabeled.Date,
+            suffixes=('', '_label'),
+        )
+        df_relative.loc[:, TransactionLabeled.Amount] = (
+            df_relative[TransactionLabeled.Amount]
+            / df_relative[f'{TransactionLabeled.Amount}_label']
+            * 100
+        )
+        df_relative.drop(columns=[f'{TransactionLabeled.Amount}_label'], inplace=True)
+        return df_relative
+
     def get_daily_expenses(self) -> pd.DataFrame:
         df: DataFrame[TransactionLabeled] = self.get_transactions()
         df_daily_expenses: pd.DataFrame = df.loc[

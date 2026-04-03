@@ -96,16 +96,6 @@ class Dashboard:
                                 dbc.DropdownMenu(
                                     children=[
                                         dbc.Checklist(
-                                            # options=sorted(sublabels),
-                                            options=[
-                                                {
-                                                    'label': label,
-                                                    'value': label,
-                                                    'disabled': False,
-                                                }
-                                                for label in sorted(sublabels)
-                                            ],
-                                            value=self.monthly_costs.get_active_sublabels(label),
                                             id=f'{label}',
                                         )
                                     ],
@@ -164,13 +154,17 @@ class Dashboard:
                 ),
             ]
         )
+        self.sublabel_line_tabs = dbc.Tabs(
+            [
+                dbc.Tab(dcc.Graph(id='sublabel_line'), label='Selected'),
+                dbc.Tab(dcc.Graph(id='sublabel_line_relative'), label='Relative'),
+            ]
+        )
 
         self.labeled_data = dbc.CardGroup(
             children=[
                 card_style([dcc.Graph(id='label_pie'), self.label_line_tabs], 'Labels'),
-                card_style(
-                    [dcc.Graph(id='sublabel_pie'), dcc.Graph(id='sublabel_line')], 'Sublabels'
-                ),
+                card_style([dcc.Graph(id='sublabel_pie'), self.sublabel_line_tabs], 'Sublabels'),
                 card_style([dcc.Graph(id='income_pie'), dcc.Graph(id='income_line')], 'Income'),
             ]
         )
@@ -402,6 +396,16 @@ class Dashboard:
                 dependencies.Input(ThemeChangerAIO.ids.radio('theme'), 'value'),
                 dependencies.Input('set-db-state', 'children'),
             )(self.plot_sublabel_line_chart),
+            self.app.callback(
+                dependencies.Output('sublabel_line_relative', 'figure'),
+                dependencies.Input('label_pie', 'clickData'),
+                dependencies.Input('label_pie', 'figure'),
+                dependencies.Input('sublabel_pie', 'clickData'),
+                dependencies.Input('sublabel_pie', 'figure'),
+                dependencies.Input('color-mode-switch', 'value'),
+                dependencies.Input(ThemeChangerAIO.ids.radio('theme'), 'value'),
+                dependencies.Input('set-db-state', 'children'),
+            )(self.plot_sublabel_line_relative_chart),
             self.app.callback(
                 dependencies.Output('income_line', 'figure'),
                 dependencies.Input('income_pie', 'clickData'),
@@ -710,7 +714,7 @@ class Dashboard:
         df: pd.DataFrame = self.monthly_costs.get_monthly_expenses_by_label(label)
         df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount] * -1
         mean: float = self.monthly_costs.get_averaged_expenses_by_label().loc[label] * -1
-        figure: go.Figure = create_line_plot_figure(df, mean, label, color, dark_mode_off, theme)
+        figure: go.Figure = create_line_plot_figure(df, label, color, dark_mode_off, theme, mean)
         return figure
 
     def plot_sublabel_line_chart(
@@ -732,7 +736,30 @@ class Dashboard:
         df: pd.DataFrame = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
         df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount] * -1
         mean: float = self.monthly_costs.get_averaged_expenses_by_sublabel(label).loc[sublabel] * -1
-        figure: go.Figure = create_line_plot_figure(df, mean, sublabel, color, dark_mode_off, theme)
+        figure: go.Figure = create_line_plot_figure(df, sublabel, color, dark_mode_off, theme, mean)
+        return figure
+
+    def plot_sublabel_line_relative_chart(
+        self,
+        transactions_by_label_pie_click_data: dict,
+        transactions_by_label_pie: dict,
+        transactions_by_sublabel_pie_click_data: dict,
+        transactions_by_sublabel_pie: dict,
+        dark_mode_off: bool,
+        theme,
+        *_,
+    ) -> go.Figure:
+        label, _ = get_active_label_and_color(
+            transactions_by_label_pie_click_data, transactions_by_label_pie
+        )
+        sublabel, color = get_active_sublabel_and_color(
+            transactions_by_sublabel_pie_click_data, transactions_by_sublabel_pie
+        )
+        df: pd.DataFrame = self.monthly_costs.get_relative_monthly_expenses_by_sublabel(
+            label, sublabel
+        )
+        df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount]
+        figure: go.Figure = create_line_plot_figure(df, sublabel, color, dark_mode_off, theme)
         return figure
 
     def plot_income_line_chart(
@@ -747,7 +774,7 @@ class Dashboard:
         sublabel, color = get_active_sublabel_and_color(income_pie_click_data, income_pie)
         df: pd.DataFrame = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
         mean: float = self.monthly_costs.get_averaged_income().loc[sublabel]
-        figure: go.Figure = create_line_plot_figure(df, mean, sublabel, color, dark_mode_off, theme)
+        figure: go.Figure = create_line_plot_figure(df, sublabel, color, dark_mode_off, theme, mean)
 
         return figure
 
@@ -794,7 +821,7 @@ def create_bar_plot_figure(df: pd.DataFrame, dark_mode_off: bool, theme) -> go.F
 
 
 def create_line_plot_figure(
-    df: pd.DataFrame, mean: float, title: str, color: str, dark_mode_off: bool, theme
+    df: pd.DataFrame, title: str, color: str, dark_mode_off: bool, theme, mean: float | None = None
 ) -> go.Figure:
     figure: go.Figure = px.line(
         data_frame=df,
@@ -805,7 +832,13 @@ def create_line_plot_figure(
         color_discrete_sequence=[color],
         template=extract_theme_from_mode(dark_mode_off, theme),
     )
-    figure.add_hline(mean, line_dash='dot', line_color=color, annotation_text=f'Mittel: {mean:.0f}')
+    if mean:
+        figure.add_hline(
+            mean,
+            line_dash='dot',
+            line_color=color,
+            annotation_text=f'Mittel: {mean:.0f}',
+        )
     return figure
 
 

@@ -26,7 +26,9 @@ class Dashboard:
         self.date_format: str = '%Y-%b-%d'
 
         self.theme_change = ThemeChangerAIO(
-            aio_id='theme', button_props={'color': 'primary', 'outline': False}
+            aio_id='theme',
+            button_props={'color': 'primary', 'outline': False},
+            radio_props={'persistence': True},
         )
 
         self.color_mode_switch = html.Span(
@@ -36,11 +38,12 @@ class Dashboard:
                     id='color-mode-switch',
                     value=False,
                     persistence=True,
-                    className='d-inline-block ms-1',
+                    className='d-inline-block ms-1 border',
                     input_class_name='bg-dark',
                 ),
-                dbc.Label(className='fa fa-sun', html_for='color-mode-switch'),
-            ]
+                dbc.Label(className='fa fa-sun border', html_for='color-mode-switch'),
+            ],
+            className='mx-1 border',
         )
         self.monthly_transactions_plot = card_style(
             [dcc.Graph(id='monthly-transactions-plot')], 'Monthly Transactions'
@@ -212,12 +215,27 @@ class Dashboard:
                 ),
             ],
         )
-        self.spinner = dbc.Spinner(dbc.Badge(id='set-db-state', color='success'))
+        self.spinner = dbc.Spinner(
+            dbc.Badge(
+                id='set-db-state',
+                color='success',
+                class_name='mx-1',
+            )
+        )
         self.navbar = dbc.NavbarSimple(
             children=[self.color_mode_switch, self.theme_change, self.spinner],
             sticky='top',
-            color='none',
+            color='light',
             brand='Finances Overview',
+            brand_style={
+                'font-weight': 'bold',
+                'font-size': 'xx-large',
+                'text-align': 'right',
+                # 'color': 'green',
+            },
+            fluid=True,
+            id='navbar',
+            class_name='mt-3 border',
         )
 
         self.app.layout = dbc.Container(
@@ -346,6 +364,10 @@ class Dashboard:
                 dependencies.Output('analyzed-period', 'children'),
                 dependencies.Input('set-db-state', 'children'),
             )(self.analyzed_period),
+            self.app.callback(
+                dependencies.Output('navbar', 'color'),
+                dependencies.Input('color-mode-switch', 'value'),
+            )(self.set_navbar_color),
             self.app.callback(
                 dependencies.Output('number-transactions', 'children'),
                 dependencies.Input('set-db-state', 'children'),
@@ -590,6 +612,12 @@ class Dashboard:
         options_formatted: list[str] = [ts.strftime(self.date_format) for ts in options]
         value_formatted: str = value.strftime(self.date_format)
         return (value_formatted, options_formatted)
+
+    def set_navbar_color(self, dark_mode_off: bool) -> str:
+        color: str = 'dark'
+        if dark_mode_off:
+            color = 'light'
+        return color
 
     def get_transactions_table(self, *_) -> list[dict]:
         return self.monthly_costs.get_transactions().to_dict('records')

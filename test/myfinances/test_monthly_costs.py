@@ -85,7 +85,7 @@ def test_drop_costs_fails(monthly_costs, label, sublabel) -> None:
 
 
 def test_get_monthly_expenses(monthly_costs, month_split_day) -> None:
-    monthly_expenses: pd.DataFrame = monthly_costs.get_monthly_expenses()
+    monthly_expenses: pd.DataFrame = monthly_costs.get_monthly_transactions()
     assert monthly_expenses['Amount'].to_list() == [-30, 0, 0]
     for _, row in monthly_expenses.iterrows():
         row['Date'].day == month_split_day  # pyright: ignore

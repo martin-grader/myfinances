@@ -33,7 +33,7 @@ def main() -> None:
     log.info(monthly_costs.get_averaged_expenses_by_label())
     log.info(monthly_costs.get_averaged_expenses_by_label().sum())
     log.info(
-        monthly_costs.get_monthly_expenses().loc[
+        monthly_costs.get_monthly_transactions().loc[
             :, [TransactionLabeled.Date, TransactionLabeled.Amount]
         ]
     )

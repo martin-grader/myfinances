@@ -722,7 +722,7 @@ class Dashboard:
         *_,
     ) -> tuple[go.Figure, go.Figure]:
         labels: list = transactions_by_label_pie['data'][0]['labels']
-        df: pd.DataFrame = self.monthly_costs.get_monthly_expenses([TransactionLabeled.Label])
+        df: pd.DataFrame = self.monthly_costs.get_monthly_transactions([TransactionLabeled.Label])
         df = df.loc[df[TransactionLabeled.Label] != 'Einkommen']
         df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount] * -1
         figure: go.Figure = px.area(
@@ -747,7 +747,7 @@ class Dashboard:
         label, color = get_active_label_and_color(
             transactions_by_label_pie_click_data, transactions_by_label_pie
         )
-        df: pd.DataFrame = self.monthly_costs.get_monthly_expenses_by_label(label)
+        df: pd.DataFrame = self.monthly_costs.get_monthly_transactions_by_label(label)
         df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount] * -1
         mean: float = self.monthly_costs.get_averaged_expenses_by_label().loc[label] * -1
         figure: go.Figure = create_line_plot_figure(df, label, color, dark_mode_off, theme, mean)
@@ -769,7 +769,7 @@ class Dashboard:
         sublabel, color = get_active_sublabel_and_color(
             transactions_by_sublabel_pie_click_data, transactions_by_sublabel_pie
         )
-        df: pd.DataFrame = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
+        df: pd.DataFrame = self.monthly_costs.get_monthly_transactions_by_sublabel(label, sublabel)
         df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount] * -1
         mean: float = self.monthly_costs.get_averaged_expenses_by_sublabel(label).loc[sublabel] * -1
         figure: go.Figure = create_line_plot_figure(df, sublabel, color, dark_mode_off, theme, mean)
@@ -808,7 +808,7 @@ class Dashboard:
     ) -> go.Figure:
         label = 'Einkommen'
         sublabel, color = get_active_sublabel_and_color(income_pie_click_data, income_pie)
-        df: pd.DataFrame = self.monthly_costs.get_monthly_expenses_by_sublabel(label, sublabel)
+        df: pd.DataFrame = self.monthly_costs.get_monthly_transactions_by_sublabel(label, sublabel)
         mean: float = self.monthly_costs.get_averaged_income().loc[sublabel]
         figure: go.Figure = create_line_plot_figure(df, sublabel, color, dark_mode_off, theme, mean)
 
@@ -821,9 +821,9 @@ class Dashboard:
         *_,
     ) -> go.Figure:
         if self.monthly_costs.get_n_months_to_analyze() == 1:
-            df: pd.DataFrame = self.monthly_costs.get_daily_expenses()
+            df: pd.DataFrame = self.monthly_costs.get_daily_transactions()
         else:
-            df: pd.DataFrame = self.monthly_costs.get_monthly_expenses()
+            df: pd.DataFrame = self.monthly_costs.get_monthly_transactions()
         figure: go.Figure = create_bar_plot_figure(df, dark_mode_off, theme)
         return figure
 

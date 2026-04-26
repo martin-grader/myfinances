@@ -13,6 +13,7 @@ from myfinances.utils import get_rows_by_string
 class TransactionLabeled(Transaction):
     Label: Series[str]
     Sublabel: Series[str]
+    IsIncome: Series[bool]
 
 
 @pa.check_types
@@ -29,6 +30,7 @@ def set_all_labels(
 def add_empty_labels_columns(df: DataFrame[Transaction]) -> DataFrame[TransactionLabeled]:
     df = df.assign(Label=None)  # type: ignore
     df = df.assign(Sublabel=None)  # type: ignore
+    df = df.assign(IsIncome=False)  # type: ignore
     return df  # type: ignore
 
 
@@ -48,14 +50,19 @@ def set_labels_this_config(df: DataFrame[TransactionLabeled], label_config: Labe
         for identifier in identifiers:
             rows_to_label: pd.Series = get_rows_by_string(df, identifier)
             check_for_duplicated_labels(df, rows_to_label, label_config.label, sublabel)
-            set_label(df, rows_to_label, label_config.label, sublabel)
+            set_label(df, rows_to_label, label_config.label, sublabel, label_config.is_income)
 
 
 def set_label(
-    df: DataFrame[TransactionLabeled], rows_to_label: pd.Series, label: str, sublabel: str
+    df: DataFrame[TransactionLabeled],
+    rows_to_label: pd.Series,
+    label: str,
+    sublabel: str,
+    is_income: bool,
 ) -> None:
     df.loc[rows_to_label, TransactionLabeled.Label] = label
     df.loc[rows_to_label, TransactionLabeled.Sublabel] = sublabel
+    df.loc[rows_to_label, TransactionLabeled.IsIncome] = is_income
     log.debug(df[rows_to_label])
     log.debug('Labled ' + str(rows_to_label.sum()) + ' entries with ' + label + '/' + sublabel)
 

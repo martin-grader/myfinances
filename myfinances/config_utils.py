@@ -68,6 +68,7 @@ class AddLabels(TransactionLabelsPrototype):
 class LabelConfig(BaseModel):
     label: str
     sublabels: dict[str, list[str]]
+    is_income: bool = False
 
 
 def to_add_config(config: dict) -> AddConfig:

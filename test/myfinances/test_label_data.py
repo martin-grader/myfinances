@@ -36,12 +36,14 @@ def test_add_empty_labels_columns() -> None:
 def test_set_label(df_no_labels: DataFrame[TransactionLabeled], rows_to_label: pd.Series) -> None:
     label: str = 'test_label'
     sublabel: str = 'test_sublabel'
-    ld.set_label(df_no_labels, rows_to_label, label, sublabel)
+    is_income: bool = True
+    ld.set_label(df_no_labels, rows_to_label, label, sublabel, is_income)
     pd.testing.assert_frame_equal(
         df_no_labels.loc[~rows_to_label, :], df_no_labels.loc[~rows_to_label, :]
     )
     assert all(df_no_labels.loc[rows_to_label, TransactionLabeled.Label] == label)
     assert all(df_no_labels.loc[rows_to_label, TransactionLabeled.Sublabel] == sublabel)
+    assert all(df_no_labels.loc[rows_to_label, TransactionLabeled.IsIncome] == is_income)
 
 
 def test_check_for_duplicated_labels(df_no_labels: DataFrame[TransactionLabeled]) -> None:

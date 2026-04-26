@@ -38,12 +38,12 @@ class Dashboard:
                     id='color-mode-switch',
                     value=False,
                     persistence=True,
-                    className='d-inline-block ms-1 border',
+                    className='d-inline-block ms-1',
                     input_class_name='bg-dark',
                 ),
-                dbc.Label(className='fa fa-sun border', html_for='color-mode-switch'),
+                dbc.Label(className='fa fa-sun', html_for='color-mode-switch'),
             ],
-            className='mx-1 border',
+            className='mx-1',
         )
         self.monthly_transactions_plot = card_style(
             [dcc.Graph(id='monthly-transactions-plot')], 'Monthly Transactions'
@@ -620,7 +620,15 @@ class Dashboard:
         return color
 
     def get_transactions_table(self, *_) -> list[dict]:
-        return self.monthly_costs.get_transactions().to_dict('records')
+        df_dict: list[dict] = self.monthly_costs.get_transactions().to_dict('records')
+        df_dict: list[dict] = [
+            {
+                **item,
+                TransactionLabeled.Date: item[TransactionLabeled.Date].strftime('%Y-%m-%d'),
+            }
+            for item in df_dict
+        ]
+        return df_dict
 
     def get_transactions_table_by_label(
         self,

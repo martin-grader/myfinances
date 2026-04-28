@@ -9,15 +9,51 @@ class MonthlyCosts(MonthlyTransactions):
     def __init__(self, df: DataFrame[TransactionLabeled], month_split_day: int = 1) -> None:
         super().__init__(df, month_split_day)
 
-    def get_expenses(self) -> float:
-        df: DataFrame[TransactionLabeled] = self.get_transactions()
-        expenses: float = df.loc[df[TransactionLabeled.Amount] < 0, TransactionLabeled.Amount].sum()
+    def calculate_sum_negative_transactions(self) -> float:
+        negative_transactions: DataFrame[TransactionLabeled] = self._get_negative_transactions()
+        expenses: float = negative_transactions[TransactionLabeled.Amount].sum()
         return expenses
 
-    def get_income(self) -> float:
+    def calculate_sum_positive_transactions(self) -> float:
         positive_transactions: DataFrame[TransactionLabeled] = self._get_positive_transactions()
         income: float = positive_transactions[TransactionLabeled.Amount].sum()
         return income
+
+    def calculate_sum_expenses(self) -> float:
+        expenses_transactions: DataFrame[TransactionLabeled] = self._get_expenses_transactions()
+        expenses: float = expenses_transactions[TransactionLabeled.Amount].sum()
+        return expenses
+
+    def calculate_sum_income(self) -> float:
+        income_transactions: DataFrame[TransactionLabeled] = self._get_income_transactions()
+        income: float = income_transactions[TransactionLabeled.Amount].sum()
+        return income
+
+    def _get_positive_transactions(self) -> DataFrame[TransactionLabeled]:
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
+        positive_transactions: DataFrame[TransactionLabeled] = df.loc[
+            df[TransactionLabeled.Amount] > 0, :
+        ]
+        return positive_transactions
+
+    def _get_negative_transactions(self) -> DataFrame[TransactionLabeled]:
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
+        negative_transactions: DataFrame[TransactionLabeled] = df.loc[
+            df[TransactionLabeled.Amount] < 0, :
+        ]
+        return negative_transactions
+
+    def _get_income_transactions(self) -> DataFrame[TransactionLabeled]:
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
+        income_transactions: DataFrame[TransactionLabeled] = df.loc[df[TransactionLabeled.IsIncome]]
+        return income_transactions
+
+    def _get_expenses_transactions(self) -> DataFrame[TransactionLabeled]:
+        df: DataFrame[TransactionLabeled] = self.get_transactions()
+        expenses_transactions: DataFrame[TransactionLabeled] = df.loc[
+            ~df[TransactionLabeled.IsIncome]
+        ]
+        return expenses_transactions
 
     def get_averaged_income(self) -> pd.DataFrame:
         positive_transactions: DataFrame[TransactionLabeled] = self._get_positive_transactions()
@@ -29,13 +65,6 @@ class MonthlyCosts(MonthlyTransactions):
         )  # type: ignore
 
         return total_grouped_income
-
-    def _get_positive_transactions(self) -> DataFrame[TransactionLabeled]:
-        df: DataFrame[TransactionLabeled] = self.get_transactions()
-        positive_transactions: DataFrame[TransactionLabeled] = df.loc[
-            df[TransactionLabeled.Amount] > 0, :
-        ]
-        return positive_transactions
 
     def get_averaged_expenses_by_label(self) -> pd.api.typing.DataFrameGroupBy:
         df: DataFrame[TransactionLabeled] = self.get_transactions()

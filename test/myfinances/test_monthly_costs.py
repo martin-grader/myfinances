@@ -32,9 +32,11 @@ def df_test(dates) -> DataFrame[TransactionLabeled]:
             TransactionLabeled.Text: ['sample'] * days,
             TransactionLabeled.Label: ['test_label'] * days,
             TransactionLabeled.Sublabel: ['test_sublabel'] * days,
+            TransactionLabeled.IsIncome: [False] * days,
         }
     )
     df.loc[20:22, TransactionLabeled.Amount] = 10.0
+    df.loc[20:22, TransactionLabeled.IsIncome] = True
     df.loc[26:28, TransactionLabeled.Amount] = -20.0
     return df  # type:ignore
 

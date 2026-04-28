@@ -56,7 +56,7 @@ class MonthlyCosts(MonthlyTransactions):
         return expenses_transactions
 
     def get_averaged_income(self) -> pd.DataFrame:
-        positive_transactions: DataFrame[TransactionLabeled] = self._get_positive_transactions()
+        positive_transactions: DataFrame[TransactionLabeled] = self._get_income_transactions()
         total_grouped_income: pd.DataFrame = (
             positive_transactions.groupby([TransactionLabeled.Sublabel])[TransactionLabeled.Amount]
             .sum()

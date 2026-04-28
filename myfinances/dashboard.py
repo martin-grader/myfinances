@@ -662,7 +662,7 @@ class Dashboard:
         ].to_dict('records')
 
     def available_amount(self, *_) -> str:
-        return f'{self.monthly_costs.get_averaged_expenses_by_label().sum():.2f} € '
+        return f'{self.monthly_costs.get_averaged_transactions_by_label().sum():.2f} € '
 
     def analyzed_period(self, *_) -> str:
         months_to_analzye: list[pd.Timestamp] = self.monthly_costs.get_months_to_analyze_start()
@@ -673,12 +673,7 @@ class Dashboard:
         return f'{number_transactions}'
 
     def plot_transactions_by_label_pie(self, color_mode_state: bool, theme, *_) -> go.Figure:
-        df: pd.DataFrame = (
-            self.monthly_costs.get_averaged_expenses_by_label()
-            .drop('Einkommen', errors='ignore')
-            .mul(-1)
-            .reset_index()
-        )
+        df: pd.DataFrame = self.monthly_costs.get_averaged_expenses_by_label().mul(-1).reset_index()
         figure: go.Figure = create_pie_plot_figure(
             df, TransactionLabeled.Label, color_mode_state, theme
         )
@@ -749,7 +744,7 @@ class Dashboard:
         )
         df: pd.DataFrame = self.monthly_costs.get_monthly_transactions_by_label(label)
         df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount] * -1
-        mean: float = self.monthly_costs.get_averaged_expenses_by_label().loc[label] * -1
+        mean: float = self.monthly_costs.get_averaged_transactions_by_label().loc[label] * -1
         figure: go.Figure = create_line_plot_figure(df, label, color, dark_mode_off, theme, mean)
         return figure
 
@@ -771,7 +766,9 @@ class Dashboard:
         )
         df: pd.DataFrame = self.monthly_costs.get_monthly_transactions_by_sublabel(label, sublabel)
         df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount] * -1
-        mean: float = self.monthly_costs.get_averaged_expenses_by_sublabel(label).loc[sublabel] * -1
+        mean: float = (
+            self.monthly_costs.get_averaged_transactions_by_sublabel(label).loc[sublabel] * -1
+        )
         figure: go.Figure = create_line_plot_figure(df, sublabel, color, dark_mode_off, theme, mean)
         return figure
 

@@ -30,8 +30,8 @@ def main() -> None:
         monthly_costs.drop_costs_by_config(drop_config)
     for add_config in configs_paths.add_configs:
         monthly_costs.add_costs_by_config(add_config)
-    log.info(monthly_costs.get_averaged_expenses_by_label())
-    log.info(monthly_costs.get_averaged_expenses_by_label().sum())
+    log.info(monthly_costs.get_averaged_transactions_by_label())
+    log.info(monthly_costs.get_averaged_transactions_by_label().sum())
     log.info(
         monthly_costs.get_monthly_transactions().loc[
             :, [TransactionLabeled.Date, TransactionLabeled.Amount]

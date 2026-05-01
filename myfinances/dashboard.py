@@ -167,7 +167,18 @@ class Dashboard:
         self.labeled_data = dbc.CardGroup(
             children=[
                 card_style([dcc.Graph(id='label_pie'), self.label_line_tabs], 'Labels'),
-                card_style([dcc.Graph(id='sublabel_pie'), self.sublabel_line_tabs], 'Sublabels'),
+                card_style(
+                    [
+                        dbc.Alert(
+                            id='subplabel-pie-dop-alert',
+                            color='warning',
+                            dismissable=True,
+                        ),
+                        dcc.Graph(id='sublabel_pie'),
+                        self.sublabel_line_tabs,
+                    ],
+                    'Sublabels',
+                ),
                 card_style([dcc.Graph(id='income_pie'), dcc.Graph(id='income_line')], 'Income'),
             ]
         )
@@ -392,6 +403,13 @@ class Dashboard:
                 dependencies.Input(ThemeChangerAIO.ids.radio('theme'), 'value'),
                 dependencies.Input('set-db-state', 'children'),
             )(self.plot_transactions_by_sublabel_pie),
+            self.app.callback(
+                dependencies.Output('subplabel-pie-dop-alert', 'is_open'),
+                dependencies.Output('subplabel-pie-dop-alert', 'children'),
+                dependencies.Input('label_pie', 'clickData'),
+                dependencies.Input('label_pie', 'figure'),
+                dependencies.Input('set-db-state', 'children'),
+            )(self.alert_sublabel_transactions_dropped),
             self.app.callback(
                 dependencies.Output('all_label_lines', 'figure'),
                 dependencies.Output('all_label_lines_modal', 'figure'),
@@ -693,10 +711,32 @@ class Dashboard:
         df: pd.DataFrame = (
             self.monthly_costs.get_averaged_expenses_by_sublabel(label).mul(-1).reset_index()
         )
+        df = df.loc[df[TransactionLabeled.Amount] > 0]
         figure: go.Figure = create_pie_plot_figure(
             df, TransactionLabeled.Sublabel, color_mode_state, theme
         )
+
         return figure
+
+    def alert_sublabel_transactions_dropped(
+        self,
+        transactions_by_label_pie_click_data: dict,
+        transactions_by_label_pie: dict,
+        *_,
+    ) -> tuple[bool, str]:
+        label, _ = get_active_label_and_color(
+            transactions_by_label_pie_click_data, transactions_by_label_pie
+        )
+        df: pd.DataFrame = (
+            self.monthly_costs.get_averaged_expenses_by_sublabel(label).mul(-1).reset_index()
+        )
+        df_dropped: pd.DataFrame = df.loc[df[TransactionLabeled.Amount] < 0]
+        sublabels_dropped: bool = df_dropped.shape[0] > 0
+        alert_message: str = (
+            f'Dropped income sublabels:'
+            f' {", ".join(df_dropped[TransactionLabeled.Sublabel].to_list())}'
+        )
+        return sublabels_dropped, alert_message
 
     def plot_income_pie(self, color_mode_state: bool, theme, *_) -> go.Figure:
         df: pd.DataFrame = (
@@ -791,7 +831,7 @@ class Dashboard:
         df: pd.DataFrame = self.monthly_costs.get_relative_monthly_expenses_by_sublabel(
             label, sublabel
         )
-        df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount]
+        # df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount]
         figure: go.Figure = create_line_plot_figure(df, sublabel, color, dark_mode_off, theme)
         return figure
 

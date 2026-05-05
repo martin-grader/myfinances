@@ -165,21 +165,51 @@ class Dashboard:
         )
 
         self.labeled_data = dbc.CardGroup(
-            children=[
-                card_style([dcc.Graph(id='label_pie'), self.label_line_tabs], 'Labels'),
+            [
                 card_style(
                     [
-                        dbc.Alert(
-                            id='subplabel-pie-dop-alert',
-                            color='warning',
-                            dismissable=True,
-                        ),
-                        dcc.Graph(id='sublabel_pie'),
-                        self.sublabel_line_tabs,
+                        dbc.CardGroup(
+                            [
+                                card_style(
+                                    [dcc.Graph(id='label_pie'), self.label_line_tabs], 'Labels'
+                                ),
+                                card_style(
+                                    [
+                                        dbc.Alert(
+                                            id='subplabel-pie-dop-alert',
+                                            color='warning',
+                                            dismissable=True,
+                                        ),
+                                        dcc.Graph(id='sublabel_pie'),
+                                        self.sublabel_line_tabs,
+                                    ],
+                                    'Sublabels',
+                                ),
+                            ]
+                        )
                     ],
-                    'Sublabels',
+                    'Expenses',
                 ),
-                card_style([dcc.Graph(id='income_pie'), dcc.Graph(id='income_line')], 'Income'),
+                card_style(
+                    [
+                        dbc.CardGroup(
+                            [
+                                card_style(
+                                    [dcc.Graph(id='income_pie'), dcc.Graph(id='income_line')],
+                                    'Labels',
+                                ),
+                                card_style(
+                                    [
+                                        dcc.Graph(id='income_sublabel_pie'),
+                                        dcc.Graph(id='income_subline'),
+                                    ],
+                                    'Sublabels',
+                                ),
+                            ],
+                        )
+                    ],
+                    'Income',
+                ),
             ]
         )
 
@@ -396,6 +426,14 @@ class Dashboard:
                 dependencies.Input('set-db-state', 'children'),
             )(self.plot_income_pie),
             self.app.callback(
+                dependencies.Output('income_sublabel_pie', 'figure'),
+                dependencies.Input('income_pie', 'clickData'),
+                dependencies.Input('income_pie', 'figure'),
+                dependencies.Input('color-mode-switch', 'value'),
+                dependencies.Input(ThemeChangerAIO.ids.radio('theme'), 'value'),
+                dependencies.Input('set-db-state', 'children'),
+            )(self.plot_income_sublabel_pie),
+            self.app.callback(
                 dependencies.Output('sublabel_pie', 'figure'),
                 dependencies.Input('label_pie', 'clickData'),
                 dependencies.Input('label_pie', 'figure'),
@@ -454,6 +492,16 @@ class Dashboard:
                 dependencies.Input(ThemeChangerAIO.ids.radio('theme'), 'value'),
                 dependencies.Input('set-db-state', 'children'),
             )(self.plot_income_line_chart),
+            self.app.callback(
+                dependencies.Output('income_subline', 'figure'),
+                dependencies.Input('income_pie', 'clickData'),
+                dependencies.Input('income_pie', 'figure'),
+                dependencies.Input('income_sublabel_pie', 'clickData'),
+                dependencies.Input('income_sublabel_pie', 'figure'),
+                dependencies.Input('color-mode-switch', 'value'),
+                dependencies.Input(ThemeChangerAIO.ids.radio('theme'), 'value'),
+                dependencies.Input('set-db-state', 'children'),
+            )(self.plot_income_subline_chart),
             self.app.callback(
                 dependencies.Output('monthly-transactions-plot', 'figure'),
                 dependencies.Input('color-mode-switch', 'value'),
@@ -711,7 +759,7 @@ class Dashboard:
         df: pd.DataFrame = (
             self.monthly_costs.get_averaged_expenses_by_sublabel(label).mul(-1).reset_index()
         )
-        df = df.loc[df[TransactionLabeled.Amount] > 0]
+        # df = df.loc[df[TransactionLabeled.Amount] > 0]
         figure: go.Figure = create_pie_plot_figure(
             df, TransactionLabeled.Sublabel, color_mode_state, theme
         )
@@ -740,7 +788,28 @@ class Dashboard:
 
     def plot_income_pie(self, color_mode_state: bool, theme, *_) -> go.Figure:
         df: pd.DataFrame = (
-            self.monthly_costs.get_averaged_income()
+            self.monthly_costs.get_averaged_income_by_label()
+            .reset_index()
+            .sort_values(by=TransactionLabeled.Amount, ascending=False)
+        )
+        figure: go.Figure = create_pie_plot_figure(
+            df, TransactionLabeled.Label, color_mode_state, theme
+        )
+        return figure
+
+    def plot_income_sublabel_pie(
+        self,
+        transactions_by_label_pie_click_data: dict,
+        transactions_by_label_pie: dict,
+        color_mode_state: bool,
+        theme,
+        *_,
+    ) -> go.Figure:
+        label, _ = get_active_label_and_color(
+            transactions_by_label_pie_click_data, transactions_by_label_pie
+        )
+        df: pd.DataFrame = (
+            self.monthly_costs.get_averaged_income_by_sublabel(label)
             .reset_index()
             .sort_values(by=TransactionLabeled.Amount, ascending=False)
         )
@@ -831,7 +900,6 @@ class Dashboard:
         df: pd.DataFrame = self.monthly_costs.get_relative_monthly_expenses_by_sublabel(
             label, sublabel
         )
-        # df.loc[:, TransactionLabeled.Amount] = df.loc[:, TransactionLabeled.Amount]
         figure: go.Figure = create_line_plot_figure(df, sublabel, color, dark_mode_off, theme)
         return figure
 
@@ -843,10 +911,31 @@ class Dashboard:
         theme,
         *_,
     ) -> go.Figure:
-        label = 'Einkommen'
-        sublabel, color = get_active_sublabel_and_color(income_pie_click_data, income_pie)
+        label, color = get_active_sublabel_and_color(income_pie_click_data, income_pie)
+        df: pd.DataFrame = self.monthly_costs.get_monthly_transactions_by_label(label)
+        mean: float = self.monthly_costs.get_averaged_income_by_label().loc[label]
+        figure: go.Figure = create_line_plot_figure(df, label, color, dark_mode_off, theme, mean)
+
+        return figure
+
+    def plot_income_subline_chart(
+        self,
+        income_by_label_pie_click_data: dict,
+        income_by_label_pie: dict,
+        income_by_sublabel_pie_click_data: dict,
+        income_by_sublabel_pie: dict,
+        dark_mode_off: bool,
+        theme,
+        *_,
+    ) -> go.Figure:
+        label, _ = get_active_sublabel_and_color(
+            income_by_label_pie_click_data, income_by_label_pie
+        )
+        sublabel, color = get_active_sublabel_and_color(
+            income_by_sublabel_pie_click_data, income_by_sublabel_pie
+        )
         df: pd.DataFrame = self.monthly_costs.get_monthly_transactions_by_sublabel(label, sublabel)
-        mean: float = self.monthly_costs.get_averaged_income().loc[sublabel]
+        mean: float = self.monthly_costs.get_averaged_income_by_sublabel(label).loc[sublabel]
         figure: go.Figure = create_line_plot_figure(df, sublabel, color, dark_mode_off, theme, mean)
 
         return figure

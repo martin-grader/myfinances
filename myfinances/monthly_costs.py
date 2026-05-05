@@ -78,16 +78,13 @@ class MonthlyCosts(MonthlyTransactions):
         )  # type: ignore
         return total_grouped_expenses
 
-    def get_averaged_income(self) -> pd.DataFrame:
+    def get_averaged_income_by_label(self) -> pd.api.typing.DataFrameGroupBy:
         positive_transactions: DataFrame[TransactionLabeled] = self._get_income_transactions()
-        total_grouped_income: pd.DataFrame = (
-            positive_transactions.groupby([TransactionLabeled.Sublabel])[TransactionLabeled.Amount]
-            .sum()
-            .div(self.get_n_months_to_analyze())
-            .sort_values()
-        )  # type: ignore
+        return self._sum_amount_by_label(positive_transactions)
 
-        return total_grouped_income
+    def get_averaged_income_by_sublabel(self, label: str) -> pd.api.typing.DataFrameGroupBy:
+        positive_transactions: DataFrame[TransactionLabeled] = self._get_income_transactions()
+        return self._sum_amount_by_sublabel(positive_transactions, label)
 
     def get_averaged_expenses_by_label(self) -> pd.api.typing.DataFrameGroupBy:
         df: DataFrame[TransactionLabeled] = self._get_expenses_transactions()

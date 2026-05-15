@@ -1,0 +1,8 @@
+label: gifts
+sublabels:
+  flowers:
+    - "Flowers"
+  mothers_day:
+    - "Mother's Day"
+  christmas_gifts:
+    - "Christmas gifts"

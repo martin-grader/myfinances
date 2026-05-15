@@ -1,0 +1,9 @@
+label: transportation
+sublabels:
+  fuel:
+    - "Fuel station"
+  car_maintenance:
+    - "Car repair"
+    - "Car service"
+  car_insurance:
+    - "Car insurance"

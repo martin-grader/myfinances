@@ -1,0 +1,19 @@
+label: travel
+sublabels:
+  flights:
+    - "Flights to "
+  hotels:
+    - "Hotel - "
+  holiday_activities:
+    - "Holiday - Sagrada Familia tickets"
+    - "Holiday - boat tour"
+    - "Holiday - day trip Sintra"
+    - "Holiday - museum and shopping"
+    - "Holiday - tram and museum"
+  holiday_meals:
+    - "Holiday - dinner "
+    - "Holiday - paella restaurant"
+    - "Holiday - restaurant "
+    - "Holiday - tapas dinner"
+  holiday_transport:
+    - "Holiday - taxi to airport"

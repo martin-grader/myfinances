@@ -1,0 +1,14 @@
+label: health
+sublabels:
+  insurance:
+    - "Health insurance"
+  pharmacy:
+    - "Pharmacy"
+  doctor:
+    - "Doctor visit"
+  dental:
+    - "Dentist"
+  vision:
+    - "Eye exam"
+  rebates:
+    - "Medical expense reimbursement"

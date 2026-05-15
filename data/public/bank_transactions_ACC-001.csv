@@ -1,0 +1,1892 @@
+date,amount,description,account_id
+2020-02-01,-29.99,Gym membership,ACC-001
+2020-02-01,-800.00,Monthly rent,ACC-001
+2020-02-03,-3.22,Coffee shop,ACC-001
+2020-02-03,-56.51,Groceries - supermarket,ACC-001
+2020-02-05,-101.07,Electricity bill,ACC-001
+2020-02-07,-4.33,Coffee shop,ACC-001
+2020-02-08,-36.65,Water bill,ACC-001
+2020-02-10,-34.99,Internet bill,ACC-001
+2020-02-12,-9.99,Netflix subscription,ACC-001
+2020-02-13,-38.75,Groceries - supermarket,ACC-001
+2020-02-14,-32.67,Flowers,ACC-001
+2020-02-14,-82.93,Restaurant - Valentine's Day,ACC-001
+2020-02-15,-22.00,Phone bill,ACC-001
+2020-02-16,-5.64,Coffee shop,ACC-001
+2020-02-17,-68.40,Restaurant - Asian fusion,ACC-001
+2020-02-18,-35.76,Fuel station,ACC-001
+2020-02-18,-9.99,Spotify subscription,ACC-001
+2020-02-20,-43.72,Groceries - supermarket,ACC-001
+2020-02-20,-155.00,Health insurance,ACC-001
+2020-02-21,-49.48,Fuel station,ACC-001
+2020-02-21,-92.53,Groceries - supermarket,ACC-001
+2020-02-23,-78.17,Groceries - supermarket,ACC-001
+2020-02-25,-5.56,Coffee shop,ACC-001
+2020-02-26,-170.26,Transfer to savings,ACC-001
+2020-02-27,1900.00,Salary deposit,ACC-001
+2020-03-01,-29.99,Gym membership,ACC-001
+2020-03-01,-800.00,Monthly rent,ACC-001
+2020-03-05,-82.67,Electricity bill,ACC-001
+2020-03-06,-55.92,Restaurant - Indian,ACC-001
+2020-03-07,-83.43,Groceries - supermarket,ACC-001
+2020-03-10,-34.99,Internet bill,ACC-001
+2020-03-12,-63.14,Groceries - supermarket,ACC-001
+2020-03-12,-9.99,Netflix subscription,ACC-001
+2020-03-14,-59.62,Groceries - supermarket,ACC-001
+2020-03-15,-4.28,Coffee shop,ACC-001
+2020-03-15,-22.00,Phone bill,ACC-001
+2020-03-16,-3.92,Coffee shop,ACC-001
+2020-03-16,-83.24,Groceries - supermarket,ACC-001
+2020-03-18,-9.99,Spotify subscription,ACC-001
+2020-03-19,-41.65,Groceries - supermarket,ACC-001
+2020-03-20,-155.00,Health insurance,ACC-001
+2020-03-21,-53.60,Fuel station,ACC-001
+2020-03-22,-270.00,Car insurance (semi-annual),ACC-001
+2020-03-24,-3.15,Coffee shop,ACC-001
+2020-03-26,-255.21,Transfer to savings,ACC-001
+2020-03-27,-4.61,Coffee shop,ACC-001
+2020-03-27,-47.93,Fuel station,ACC-001
+2020-03-27,1900.00,Salary deposit,ACC-001
+2020-03-28,-37.09,Restaurant - Indian,ACC-001
+2020-04-01,-29.99,Gym membership,ACC-001
+2020-04-01,-800.00,Monthly rent,ACC-001
+2020-04-03,-14.05,Pharmacy,ACC-001
+2020-04-04,-6.12,Coffee shop,ACC-001
+2020-04-05,-71.60,Electricity bill,ACC-001
+2020-04-08,-3.16,Coffee shop,ACC-001
+2020-04-08,-39.14,Water bill,ACC-001
+2020-04-09,-35.32,Restaurant - Italian,ACC-001
+2020-04-10,-34.99,Internet bill,ACC-001
+2020-04-11,-89.50,Groceries - supermarket,ACC-001
+2020-04-12,-9.99,Netflix subscription,ACC-001
+2020-04-12,-83.38,Restaurant - Easter brunch,ACC-001
+2020-04-14,-6.26,Coffee shop,ACC-001
+2020-04-15,-22.00,Phone bill,ACC-001
+2020-04-16,-39.55,Fuel station,ACC-001
+2020-04-16,-71.63,Groceries - supermarket,ACC-001
+2020-04-17,-53.35,Fuel station,ACC-001
+2020-04-18,-42.15,Groceries - supermarket,ACC-001
+2020-04-18,-9.99,Spotify subscription,ACC-001
+2020-04-20,-155.00,Health insurance,ACC-001
+2020-04-24,-70.65,Groceries - supermarket,ACC-001
+2020-04-24,-227.41,Transfer to savings,ACC-001
+2020-04-27,1900.00,Salary deposit,ACC-001
+2020-04-28,-94.63,Groceries - supermarket,ACC-001
+2020-05-01,-29.99,Gym membership,ACC-001
+2020-05-01,-800.00,Monthly rent,ACC-001
+2020-05-04,-51.65,Fuel station,ACC-001
+2020-05-05,-60.53,Electricity bill,ACC-001
+2020-05-06,-87.83,Groceries - supermarket,ACC-001
+2020-05-06,-73.86,Restaurant - Indian,ACC-001
+2020-05-09,-94.23,Groceries - supermarket,ACC-001
+2020-05-10,-34.99,Internet bill,ACC-001
+2020-05-10,-86.06,Mother's Day gift,ACC-001
+2020-05-12,-9.99,Netflix subscription,ACC-001
+2020-05-13,-4.32,Coffee shop,ACC-001
+2020-05-15,-22.00,Phone bill,ACC-001
+2020-05-16,-4.92,Coffee shop,ACC-001
+2020-05-16,-55.01,Fuel station,ACC-001
+2020-05-18,-9.99,Spotify subscription,ACC-001
+2020-05-20,-155.00,Health insurance,ACC-001
+2020-05-24,-3.77,Coffee shop,ACC-001
+2020-05-26,-172.69,Transfer to savings,ACC-001
+2020-05-27,1900.00,Salary deposit,ACC-001
+2020-05-28,-43.67,Groceries - supermarket,ACC-001
+2020-05-30,-89.86,Groceries - supermarket,ACC-001
+2020-05-31,-5.65,Coffee shop,ACC-001
+2020-05-31,-76.80,Groceries - supermarket,ACC-001
+2020-06-01,-29.99,Gym membership,ACC-001
+2020-06-01,-800.00,Monthly rent,ACC-001
+2020-06-02,-76.35,Groceries - supermarket,ACC-001
+2020-06-04,-5.75,Coffee shop,ACC-001
+2020-06-05,-52.89,Electricity bill,ACC-001
+2020-06-08,-55.77,Fuel station,ACC-001
+2020-06-08,-34.29,Water bill,ACC-001
+2020-06-09,-42.79,Fuel station,ACC-001
+2020-06-10,-34.99,Internet bill,ACC-001
+2020-06-11,-73.86,Groceries - supermarket,ACC-001
+2020-06-12,-9.99,Netflix subscription,ACC-001
+2020-06-14,-64.57,Groceries - supermarket,ACC-001
+2020-06-15,-22.00,Phone bill,ACC-001
+2020-06-18,-9.99,Spotify subscription,ACC-001
+2020-06-20,-155.00,Health insurance,ACC-001
+2020-06-23,-6.40,Coffee shop,ACC-001
+2020-06-26,1900.00,Salary deposit,ACC-001
+2020-06-26,-229.81,Transfer to savings,ACC-001
+2020-06-27,-80.23,Groceries - supermarket,ACC-001
+2020-06-27,-45.06,Restaurant - Mexican,ACC-001
+2020-06-28,-65.37,Groceries - supermarket,ACC-001
+2020-06-30,-6.17,Coffee shop,ACC-001
+2020-07-01,-29.99,Gym membership,ACC-001
+2020-07-01,-800.00,Monthly rent,ACC-001
+2020-07-02,-80.67,Groceries - supermarket,ACC-001
+2020-07-05,-56.81,Electricity bill,ACC-001
+2020-07-05,-68.12,Groceries - supermarket,ACC-001
+2020-07-09,-5.78,Coffee shop,ACC-001
+2020-07-09,-49.51,Fuel station,ACC-001
+2020-07-09,-40.16,Groceries - supermarket,ACC-001
+2020-07-09,-72.26,Restaurant - Mexican,ACC-001
+2020-07-10,-34.99,Internet bill,ACC-001
+2020-07-12,-52.30,Groceries - supermarket,ACC-001
+2020-07-12,-9.99,Netflix subscription,ACC-001
+2020-07-15,-6.45,Coffee shop,ACC-001
+2020-07-15,-22.00,Phone bill,ACC-001
+2020-07-18,-9.99,Spotify subscription,ACC-001
+2020-07-20,-155.00,Health insurance,ACC-001
+2020-07-23,-48.09,Fuel station,ACC-001
+2020-07-24,-213.54,Transfer to savings,ACC-001
+2020-07-25,-6.73,Coffee shop,ACC-001
+2020-07-26,-49.57,Restaurant - tapas,ACC-001
+2020-07-27,1950.00,Salary deposit,ACC-001
+2020-07-28,-57.76,Groceries - supermarket,ACC-001
+2020-08-01,-29.99,Gym membership,ACC-001
+2020-08-01,-800.00,Monthly rent,ACC-001
+2020-08-02,-90.49,Groceries - supermarket,ACC-001
+2020-08-03,-45.88,Fuel station,ACC-001
+2020-08-05,-57.85,Electricity bill,ACC-001
+2020-08-05,-43.13,Fuel station,ACC-001
+2020-08-05,-86.64,Restaurant - lunch,ACC-001
+2020-08-08,-38.71,Water bill,ACC-001
+2020-08-10,-34.99,Internet bill,ACC-001
+2020-08-11,-12.60,Pharmacy,ACC-001
+2020-08-12,-9.99,Netflix subscription,ACC-001
+2020-08-13,-3.76,Coffee shop,ACC-001
+2020-08-14,-6.20,Coffee shop,ACC-001
+2020-08-15,-5.95,Coffee shop,ACC-001
+2020-08-15,-22.00,Phone bill,ACC-001
+2020-08-17,-51.27,Groceries - supermarket,ACC-001
+2020-08-18,-9.99,Spotify subscription,ACC-001
+2020-08-19,-84.47,Groceries - supermarket,ACC-001
+2020-08-20,-5.01,Coffee shop,ACC-001
+2020-08-20,-155.00,Health insurance,ACC-001
+2020-08-23,-40.02,Groceries - supermarket,ACC-001
+2020-08-26,-183.95,Transfer to savings,ACC-001
+2020-08-27,1950.00,Salary deposit,ACC-001
+2020-08-28,-52.26,Groceries - supermarket,ACC-001
+2020-08-30,-63.70,Restaurant - Mexican,ACC-001
+2020-09-01,-29.99,Gym membership,ACC-001
+2020-09-01,-800.00,Monthly rent,ACC-001
+2020-09-03,-53.06,Fuel station,ACC-001
+2020-09-05,-70.17,Electricity bill,ACC-001
+2020-09-07,-80.03,Groceries - supermarket,ACC-001
+2020-09-10,-34.99,Internet bill,ACC-001
+2020-09-12,-70.11,Groceries - supermarket,ACC-001
+2020-09-12,-9.99,Netflix subscription,ACC-001
+2020-09-14,-4.25,Coffee shop,ACC-001
+2020-09-15,-22.00,Phone bill,ACC-001
+2020-09-15,-42.11,Restaurant - Italian,ACC-001
+2020-09-17,-3.80,Coffee shop,ACC-001
+2020-09-18,-310.00,Eye exam and new glasses,ACC-001
+2020-09-18,-9.99,Spotify subscription,ACC-001
+2020-09-19,-3.12,Coffee shop,ACC-001
+2020-09-19,-83.98,Groceries - supermarket,ACC-001
+2020-09-20,-155.00,Health insurance,ACC-001
+2020-09-22,-270.00,Car insurance (semi-annual),ACC-001
+2020-09-23,-90.31,Groceries - supermarket,ACC-001
+2020-09-25,-46.21,Fuel station,ACC-001
+2020-09-25,1950.00,Salary deposit,ACC-001
+2020-09-25,-244.59,Transfer to savings,ACC-001
+2020-09-28,-3.79,Coffee shop,ACC-001
+2020-09-29,-52.68,Restaurant - lunch,ACC-001
+2020-09-30,-65.17,Groceries - supermarket,ACC-001
+2020-10-01,-29.99,Gym membership,ACC-001
+2020-10-01,-800.00,Monthly rent,ACC-001
+2020-10-03,-40.83,Fuel station,ACC-001
+2020-10-05,-75.46,Electricity bill,ACC-001
+2020-10-08,-36.10,Water bill,ACC-001
+2020-10-09,-60.61,Groceries - supermarket,ACC-001
+2020-10-10,-56.42,Groceries - supermarket,ACC-001
+2020-10-10,-34.99,Internet bill,ACC-001
+2020-10-11,-5.58,Coffee shop,ACC-001
+2020-10-11,-40.99,Groceries - supermarket,ACC-001
+2020-10-11,-72.99,Restaurant - Thai,ACC-001
+2020-10-12,-9.99,Netflix subscription,ACC-001
+2020-10-15,-22.00,Phone bill,ACC-001
+2020-10-16,-4.70,Coffee shop,ACC-001
+2020-10-18,-9.99,Spotify subscription,ACC-001
+2020-10-20,-155.00,Health insurance,ACC-001
+2020-10-21,-6.46,Coffee shop,ACC-001
+2020-10-21,-22.58,Halloween costume,ACC-001
+2020-10-24,-23.91,Cinema tickets,ACC-001
+2020-10-24,-55.71,Groceries - supermarket,ACC-001
+2020-10-26,-204.90,Transfer to savings,ACC-001
+2020-10-27,1950.00,Salary deposit,ACC-001
+2020-10-29,-50.51,Groceries - supermarket,ACC-001
+2020-10-30,-38.40,Fuel station,ACC-001
+2020-11-01,-29.99,Gym membership,ACC-001
+2020-11-01,-800.00,Monthly rent,ACC-001
+2020-11-03,-49.58,Fuel station,ACC-001
+2020-11-03,-56.87,Groceries - supermarket,ACC-001
+2020-11-04,-160.00,Winter coat,ACC-001
+2020-11-05,-97.25,Electricity bill,ACC-001
+2020-11-07,-41.92,Groceries - supermarket,ACC-001
+2020-11-07,-48.30,Restaurant - Italian,ACC-001
+2020-11-08,-5.44,Coffee shop,ACC-001
+2020-11-10,-34.99,Internet bill,ACC-001
+2020-11-11,-81.38,Groceries - supermarket,ACC-001
+2020-11-12,-4.32,Coffee shop,ACC-001
+2020-11-12,-9.99,Netflix subscription,ACC-001
+2020-11-13,-251.71,Car service - annual,ACC-001
+2020-11-15,-22.00,Phone bill,ACC-001
+2020-11-18,-9.99,Spotify subscription,ACC-001
+2020-11-20,-155.00,Health insurance,ACC-001
+2020-11-21,-3.73,Coffee shop,ACC-001
+2020-11-21,-38.55,Groceries - supermarket,ACC-001
+2020-11-22,-3.61,Coffee shop,ACC-001
+2020-11-24,-88.57,Groceries - supermarket,ACC-001
+2020-11-26,-250.92,Transfer to savings,ACC-001
+2020-11-27,1950.00,Salary deposit,ACC-001
+2020-11-28,-55.92,Restaurant - Italian,ACC-001
+2020-11-30,-41.09,Fuel station,ACC-001
+2020-12-01,-29.99,Gym membership,ACC-001
+2020-12-01,-800.00,Monthly rent,ACC-001
+2020-12-02,-144.16,Christmas tree and decorations,ACC-001
+2020-12-02,-81.77,Groceries - supermarket,ACC-001
+2020-12-04,-26.57,Pharmacy,ACC-001
+2020-12-05,-4.92,Coffee shop,ACC-001
+2020-12-05,-109.28,Electricity bill,ACC-001
+2020-12-05,-63.15,Restaurant - Mexican,ACC-001
+2020-12-07,-61.46,Groceries - supermarket,ACC-001
+2020-12-08,-218.86,Christmas gifts - family,ACC-001
+2020-12-08,-6.74,Coffee shop,ACC-001
+2020-12-08,-39.21,Water bill,ACC-001
+2020-12-09,-5.29,Coffee shop,ACC-001
+2020-12-10,-54.95,Fuel station,ACC-001
+2020-12-10,-51.16,Groceries - supermarket,ACC-001
+2020-12-10,-34.99,Internet bill,ACC-001
+2020-12-10,-54.37,Restaurant - Asian fusion,ACC-001
+2020-12-11,-19.13,Pharmacy,ACC-001
+2020-12-12,-9.99,Netflix subscription,ACC-001
+2020-12-15,-90.69,Christmas gifts - friends,ACC-001
+2020-12-15,-22.00,Phone bill,ACC-001
+2020-12-18,-9.99,Spotify subscription,ACC-001
+2020-12-19,-84.72,Groceries - supermarket,ACC-001
+2020-12-20,250.00,Annual bonus,ACC-001
+2020-12-20,-155.00,Health insurance,ACC-001
+2020-12-22,-54.45,Fuel station,ACC-001
+2020-12-22,-91.95,Restaurant - Christmas dinner,ACC-001
+2020-12-25,1950.00,Salary deposit,ACC-001
+2020-12-25,-181.09,Transfer to savings,ACC-001
+2020-12-29,-86.11,Groceries - supermarket,ACC-001
+2020-12-31,-57.04,New Year fireworks,ACC-001
+2021-01-01,-29.99,Gym membership,ACC-001
+2021-01-01,-800.00,Monthly rent,ACC-001
+2021-01-05,-105.53,Electricity bill,ACC-001
+2021-01-06,-78.59,Groceries - supermarket,ACC-001
+2021-01-07,-63.61,Restaurant - Indian,ACC-001
+2021-01-10,-44.23,Fuel station,ACC-001
+2021-01-10,-34.99,Internet bill,ACC-001
+2021-01-12,-88.82,Groceries - supermarket,ACC-001
+2021-01-12,-11.99,Netflix subscription,ACC-001
+2021-01-15,-22.00,Phone bill,ACC-001
+2021-01-15,-60.90,Restaurant - Mexican,ACC-001
+2021-01-17,-3.02,Coffee shop,ACC-001
+2021-01-18,-9.99,Spotify subscription,ACC-001
+2021-01-19,-6.89,Coffee shop,ACC-001
+2021-01-19,-49.02,Groceries - supermarket,ACC-001
+2021-01-20,-162.00,Health insurance,ACC-001
+2021-01-22,-6.85,Coffee shop,ACC-001
+2021-01-23,-39.08,Fuel station,ACC-001
+2021-01-26,-230.45,Transfer to savings,ACC-001
+2021-01-27,1950.00,Salary deposit,ACC-001
+2021-01-28,-78.67,Groceries - supermarket,ACC-001
+2021-01-31,-38.42,Groceries - supermarket,ACC-001
+2021-02-01,-29.99,Gym membership,ACC-001
+2021-02-01,-800.00,Monthly rent,ACC-001
+2021-02-02,-5.05,Coffee shop,ACC-001
+2021-02-03,-42.58,Groceries - supermarket,ACC-001
+2021-02-05,-100.66,Electricity bill,ACC-001
+2021-02-08,-32.75,Fuel station,ACC-001
+2021-02-08,-41.44,Water bill,ACC-001
+2021-02-09,-87.64,Groceries - supermarket,ACC-001
+2021-02-10,-78.24,Groceries - supermarket,ACC-001
+2021-02-10,-34.99,Internet bill,ACC-001
+2021-02-12,-11.99,Netflix subscription,ACC-001
+2021-02-14,-40.33,Flowers,ACC-001
+2021-02-14,-52.48,Groceries - supermarket,ACC-001
+2021-02-14,-74.10,Restaurant - Valentine's Day,ACC-001
+2021-02-15,-22.00,Phone bill,ACC-001
+2021-02-18,-66.05,Restaurant - sushi,ACC-001
+2021-02-18,-9.99,Spotify subscription,ACC-001
+2021-02-20,-162.00,Health insurance,ACC-001
+2021-02-22,-46.32,Fuel station,ACC-001
+2021-02-24,-3.01,Coffee shop,ACC-001
+2021-02-24,-43.80,Groceries - supermarket,ACC-001
+2021-02-26,1950.00,Salary deposit,ACC-001
+2021-02-26,-279.08,Transfer to savings,ACC-001
+2021-02-28,-6.10,Coffee shop,ACC-001
+2021-03-01,-29.99,Gym membership,ACC-001
+2021-03-01,-800.00,Monthly rent,ACC-001
+2021-03-02,-5.95,Coffee shop,ACC-001
+2021-03-03,-3.95,Coffee shop,ACC-001
+2021-03-05,-79.73,Electricity bill,ACC-001
+2021-03-08,-48.21,Fuel station,ACC-001
+2021-03-10,-34.99,Internet bill,ACC-001
+2021-03-11,-63.89,Groceries - supermarket,ACC-001
+2021-03-12,-11.99,Netflix subscription,ACC-001
+2021-03-14,-3.12,Coffee shop,ACC-001
+2021-03-15,-22.00,Phone bill,ACC-001
+2021-03-16,-78.79,Groceries - supermarket,ACC-001
+2021-03-18,-9.99,Spotify subscription,ACC-001
+2021-03-20,-48.85,Fuel station,ACC-001
+2021-03-20,-162.00,Health insurance,ACC-001
+2021-03-22,-280.00,Car insurance (semi-annual),ACC-001
+2021-03-24,-59.46,Groceries - supermarket,ACC-001
+2021-03-24,-42.65,Restaurant - Italian,ACC-001
+2021-03-26,-3.08,Coffee shop,ACC-001
+2021-03-26,-55.34,Groceries - supermarket,ACC-001
+2021-03-26,1950.00,Salary deposit,ACC-001
+2021-03-26,-203.32,Transfer to savings,ACC-001
+2021-03-27,-77.92,Restaurant - sushi,ACC-001
+2021-03-31,-66.41,Groceries - supermarket,ACC-001
+2021-04-01,-29.99,Gym membership,ACC-001
+2021-04-01,-800.00,Monthly rent,ACC-001
+2021-04-02,-6.93,Coffee shop,ACC-001
+2021-04-03,-73.55,Groceries - supermarket,ACC-001
+2021-04-04,-57.55,Restaurant - Easter brunch,ACC-001
+2021-04-05,-71.13,Electricity bill,ACC-001
+2021-04-05,-54.03,Groceries - supermarket,ACC-001
+2021-04-08,-37.40,Water bill,ACC-001
+2021-04-10,-34.99,Internet bill,ACC-001
+2021-04-12,-35.55,Fuel station,ACC-001
+2021-04-12,-11.99,Netflix subscription,ACC-001
+2021-04-15,-67.51,Groceries - supermarket,ACC-001
+2021-04-15,-22.00,Phone bill,ACC-001
+2021-04-17,-48.18,Fuel station,ACC-001
+2021-04-18,-9.99,Spotify subscription,ACC-001
+2021-04-19,-80.26,Groceries - supermarket,ACC-001
+2021-04-20,-162.00,Health insurance,ACC-001
+2021-04-22,-5.38,Coffee shop,ACC-001
+2021-04-23,-41.93,Groceries - supermarket,ACC-001
+2021-04-25,-5.14,Coffee shop,ACC-001
+2021-04-25,-36.61,Restaurant - Thai,ACC-001
+2021-04-26,-70.82,Restaurant - brunch,ACC-001
+2021-04-26,-253.35,Transfer to savings,ACC-001
+2021-04-27,1950.00,Salary deposit,ACC-001
+2021-04-30,-6.09,Coffee shop,ACC-001
+2021-05-01,-29.99,Gym membership,ACC-001
+2021-05-01,-800.00,Monthly rent,ACC-001
+2021-05-03,-53.43,Groceries - supermarket,ACC-001
+2021-05-05,-61.86,Electricity bill,ACC-001
+2021-05-07,-4.38,Coffee shop,ACC-001
+2021-05-07,-129.84,Concert tickets,ACC-001
+2021-05-07,-44.03,Fuel station,ACC-001
+2021-05-07,-52.39,Groceries - supermarket,ACC-001
+2021-05-09,-92.79,Mother's Day - gift and dinner,ACC-001
+2021-05-10,-34.99,Internet bill,ACC-001
+2021-05-12,-11.99,Netflix subscription,ACC-001
+2021-05-13,-43.80,Restaurant - sushi,ACC-001
+2021-05-14,-55.00,Doctor visit - copay,ACC-001
+2021-05-15,-3.90,Coffee shop,ACC-001
+2021-05-15,-22.00,Phone bill,ACC-001
+2021-05-17,-92.62,Groceries - supermarket,ACC-001
+2021-05-18,-9.99,Spotify subscription,ACC-001
+2021-05-20,-162.00,Health insurance,ACC-001
+2021-05-23,-3.87,Coffee shop,ACC-001
+2021-05-26,-186.19,Transfer to savings,ACC-001
+2021-05-27,-42.25,Groceries - supermarket,ACC-001
+2021-05-27,1950.00,Salary deposit,ACC-001
+2021-05-28,-33.00,Fuel station,ACC-001
+2021-05-28,-84.37,Groceries - supermarket,ACC-001
+2021-05-31,-6.18,Coffee shop,ACC-001
+2021-06-01,-29.99,Gym membership,ACC-001
+2021-06-01,-800.00,Monthly rent,ACC-001
+2021-06-05,-63.69,Electricity bill,ACC-001
+2021-06-05,-91.42,Groceries - supermarket,ACC-001
+2021-06-07,-32.98,Fuel station,ACC-001
+2021-06-08,-34.94,Water bill,ACC-001
+2021-06-10,-4.99,Coffee shop,ACC-001
+2021-06-10,-72.37,Groceries - supermarket,ACC-001
+2021-06-10,-34.99,Internet bill,ACC-001
+2021-06-12,-72.16,Groceries - supermarket,ACC-001
+2021-06-12,-11.99,Netflix subscription,ACC-001
+2021-06-14,-6.92,Coffee shop,ACC-001
+2021-06-15,-22.00,Phone bill,ACC-001
+2021-06-18,-4.66,Coffee shop,ACC-001
+2021-06-18,-9.99,Spotify subscription,ACC-001
+2021-06-20,-162.00,Health insurance,ACC-001
+2021-06-22,-22.00,Birthday cake,ACC-001
+2021-06-25,1950.00,Salary deposit,ACC-001
+2021-06-25,-279.04,Transfer to savings,ACC-001
+2021-06-26,-82.48,Groceries - supermarket,ACC-001
+2021-06-27,-47.19,Fuel station,ACC-001
+2021-06-29,-83.74,Restaurant - Italian,ACC-001
+2021-06-30,-60.43,Groceries - supermarket,ACC-001
+2021-07-01,-29.99,Gym membership,ACC-001
+2021-07-01,-800.00,Monthly rent,ACC-001
+2021-07-02,-6.65,Coffee shop,ACC-001
+2021-07-05,-67.20,Electricity bill,ACC-001
+2021-07-05,-86.93,Groceries - supermarket,ACC-001
+2021-07-06,-5.75,Coffee shop,ACC-001
+2021-07-06,-427.93,Flights to Paris,ACC-001
+2021-07-10,-34.99,Internet bill,ACC-001
+2021-07-10,-84.76,Restaurant - Indian,ACC-001
+2021-07-11,-878.63,Hotel - Paris (4 nights),ACC-001
+2021-07-12,-92.18,Holiday - dinner Paris,ACC-001
+2021-07-12,-11.99,Netflix subscription,ACC-001
+2021-07-13,-82.83,Holiday - restaurant Paris,ACC-001
+2021-07-14,-3.65,Coffee shop,ACC-001
+2021-07-14,-117.02,Holiday - museum and shopping,ACC-001
+2021-07-15,-42.77,Holiday - taxi to airport,ACC-001
+2021-07-15,-22.00,Phone bill,ACC-001
+2021-07-16,-49.51,Groceries - supermarket,ACC-001
+2021-07-18,-9.99,Spotify subscription,ACC-001
+2021-07-19,-37.97,Fuel station,ACC-001
+2021-07-20,-162.00,Health insurance,ACC-001
+2021-07-21,-6.65,Coffee shop,ACC-001
+2021-07-21,-90.27,Groceries - supermarket,ACC-001
+2021-07-22,-54.93,Groceries - supermarket,ACC-001
+2021-07-24,-54.43,Fuel station,ACC-001
+2021-07-26,-204.10,Transfer to savings,ACC-001
+2021-07-27,2000.00,Salary deposit,ACC-001
+2021-07-30,-44.37,Groceries - supermarket,ACC-001
+2021-08-01,-29.99,Gym membership,ACC-001
+2021-08-01,-800.00,Monthly rent,ACC-001
+2021-08-03,-5.41,Coffee shop,ACC-001
+2021-08-03,-36.48,Fuel station,ACC-001
+2021-08-05,-64.63,Electricity bill,ACC-001
+2021-08-05,-77.25,Groceries - supermarket,ACC-001
+2021-08-08,-35.21,Water bill,ACC-001
+2021-08-10,-42.08,Fuel station,ACC-001
+2021-08-10,-34.99,Internet bill,ACC-001
+2021-08-10,-50.36,Restaurant - sushi,ACC-001
+2021-08-12,-4.56,Coffee shop,ACC-001
+2021-08-12,-11.99,Netflix subscription,ACC-001
+2021-08-13,-84.02,Groceries - supermarket,ACC-001
+2021-08-15,-22.00,Phone bill,ACC-001
+2021-08-16,-93.28,Groceries - supermarket,ACC-001
+2021-08-18,-9.99,Spotify subscription,ACC-001
+2021-08-20,-162.00,Health insurance,ACC-001
+2021-08-21,-49.46,Groceries - supermarket,ACC-001
+2021-08-22,-69.56,Groceries - supermarket,ACC-001
+2021-08-26,-280.76,Transfer to savings,ACC-001
+2021-08-27,2000.00,Salary deposit,ACC-001
+2021-08-29,-70.30,Restaurant - tapas,ACC-001
+2021-08-30,-6.35,Coffee shop,ACC-001
+2021-09-01,-29.99,Gym membership,ACC-001
+2021-09-01,-800.00,Monthly rent,ACC-001
+2021-09-04,-49.14,Groceries - supermarket,ACC-001
+2021-09-05,-64.41,Electricity bill,ACC-001
+2021-09-06,-83.53,Groceries - supermarket,ACC-001
+2021-09-10,-6.13,Coffee shop,ACC-001
+2021-09-10,-34.99,Internet bill,ACC-001
+2021-09-12,-6.95,Coffee shop,ACC-001
+2021-09-12,-11.99,Netflix subscription,ACC-001
+2021-09-15,-77.37,Groceries - supermarket,ACC-001
+2021-09-15,-22.00,Phone bill,ACC-001
+2021-09-16,-51.26,Fuel station,ACC-001
+2021-09-18,-9.99,Spotify subscription,ACC-001
+2021-09-20,-162.00,Health insurance,ACC-001
+2021-09-22,-280.00,Car insurance (semi-annual),ACC-001
+2021-09-22,-65.68,Groceries - supermarket,ACC-001
+2021-09-24,-183.11,Transfer to savings,ACC-001
+2021-09-25,-59.90,Restaurant - brunch,ACC-001
+2021-09-27,2000.00,Salary deposit,ACC-001
+2021-09-28,-4.83,Coffee shop,ACC-001
+2021-09-29,-51.33,Groceries - supermarket,ACC-001
+2021-09-30,-55.56,Fuel station,ACC-001
+2021-10-01,-29.99,Gym membership,ACC-001
+2021-10-01,-800.00,Monthly rent,ACC-001
+2021-10-05,-83.08,Electricity bill,ACC-001
+2021-10-08,-37.97,Water bill,ACC-001
+2021-10-10,-34.99,Internet bill,ACC-001
+2021-10-10,-13.14,Pharmacy,ACC-001
+2021-10-12,-11.99,Netflix subscription,ACC-001
+2021-10-12,-640.00,New phone,ACC-001
+2021-10-13,-59.60,Groceries - supermarket,ACC-001
+2021-10-15,-93.32,Groceries - supermarket,ACC-001
+2021-10-15,-22.00,Phone bill,ACC-001
+2021-10-18,-9.99,Spotify subscription,ACC-001
+2021-10-19,-4.37,Coffee shop,ACC-001
+2021-10-20,-47.19,Fuel station,ACC-001
+2021-10-20,-162.00,Health insurance,ACC-001
+2021-10-21,-3.59,Coffee shop,ACC-001
+2021-10-21,-66.02,Groceries - supermarket,ACC-001
+2021-10-22,-36.27,Halloween party supplies,ACC-001
+2021-10-22,-84.23,Restaurant - Indian,ACC-001
+2021-10-23,-64.85,Groceries - supermarket,ACC-001
+2021-10-25,-44.31,Fuel station,ACC-001
+2021-10-26,-4.71,Coffee shop,ACC-001
+2021-10-26,-50.23,Restaurant - tapas,ACC-001
+2021-10-26,-282.36,Transfer to savings,ACC-001
+2021-10-27,2000.00,Salary deposit,ACC-001
+2021-10-28,-6.68,Coffee shop,ACC-001
+2021-10-30,-38.08,Groceries - supermarket,ACC-001
+2021-11-01,-29.99,Gym membership,ACC-001
+2021-11-01,-800.00,Monthly rent,ACC-001
+2021-11-04,-3.84,Coffee shop,ACC-001
+2021-11-05,-27.70,Cinema tickets,ACC-001
+2021-11-05,-99.63,Electricity bill,ACC-001
+2021-11-09,-34.58,Fuel station,ACC-001
+2021-11-10,-211.32,Car service - annual,ACC-001
+2021-11-10,-34.99,Internet bill,ACC-001
+2021-11-11,-55.86,Groceries - supermarket,ACC-001
+2021-11-12,-11.99,Netflix subscription,ACC-001
+2021-11-12,-14.85,Pharmacy,ACC-001
+2021-11-14,-54.50,Groceries - supermarket,ACC-001
+2021-11-15,-22.00,Phone bill,ACC-001
+2021-11-18,-52.89,Fuel station,ACC-001
+2021-11-18,-82.12,Groceries - supermarket,ACC-001
+2021-11-18,-9.99,Spotify subscription,ACC-001
+2021-11-20,-162.00,Health insurance,ACC-001
+2021-11-22,-5.76,Coffee shop,ACC-001
+2021-11-23,-68.63,Restaurant - brunch,ACC-001
+2021-11-24,-84.15,Groceries - supermarket,ACC-001
+2021-11-24,-83.02,Restaurant - Mexican,ACC-001
+2021-11-26,2000.00,Salary deposit,ACC-001
+2021-11-26,-246.26,Transfer to savings,ACC-001
+2021-11-29,-3.12,Coffee shop,ACC-001
+2021-11-29,-50.92,Groceries - supermarket,ACC-001
+2021-12-01,-29.99,Gym membership,ACC-001
+2021-12-01,-800.00,Monthly rent,ACC-001
+2021-12-02,-112.91,Christmas tree and decorations,ACC-001
+2021-12-05,-111.30,Electricity bill,ACC-001
+2021-12-06,-6.90,Coffee shop,ACC-001
+2021-12-08,-207.84,Christmas gifts - family,ACC-001
+2021-12-08,-34.34,Water bill,ACC-001
+2021-12-09,-3.21,Coffee shop,ACC-001
+2021-12-10,-34.99,Internet bill,ACC-001
+2021-12-12,-38.54,Fuel station,ACC-001
+2021-12-12,-11.99,Netflix subscription,ACC-001
+2021-12-14,-55.95,Groceries - supermarket,ACC-001
+2021-12-15,-132.46,Christmas gifts - friends,ACC-001
+2021-12-15,-4.46,Coffee shop,ACC-001
+2021-12-15,-41.54,Groceries - supermarket,ACC-001
+2021-12-15,-22.00,Phone bill,ACC-001
+2021-12-16,-4.70,Coffee shop,ACC-001
+2021-12-16,-35.27,Fuel station,ACC-001
+2021-12-18,-9.99,Spotify subscription,ACC-001
+2021-12-20,320.00,Annual bonus,ACC-001
+2021-12-20,-93.36,Groceries - supermarket,ACC-001
+2021-12-20,-162.00,Health insurance,ACC-001
+2021-12-22,-94.22,Restaurant - Christmas dinner,ACC-001
+2021-12-24,-81.36,Groceries - supermarket,ACC-001
+2021-12-24,-212.77,Transfer to savings,ACC-001
+2021-12-26,-55.12,Groceries - supermarket,ACC-001
+2021-12-27,2000.00,Salary deposit,ACC-001
+2021-12-29,-82.83,Restaurant - Asian fusion,ACC-001
+2021-12-31,-42.95,New Year supplies,ACC-001
+2022-01-01,-29.99,Gym membership,ACC-001
+2022-01-01,-825.00,Monthly rent,ACC-001
+2022-01-02,-68.57,Groceries - supermarket,ACC-001
+2022-01-05,-116.60,Electricity bill,ACC-001
+2022-01-06,-61.90,Restaurant - tapas,ACC-001
+2022-01-08,-6.00,Coffee shop,ACC-001
+2022-01-10,-52.92,Fuel station,ACC-001
+2022-01-10,-39.99,Internet bill,ACC-001
+2022-01-11,-60.61,Groceries - supermarket,ACC-001
+2022-01-12,-12.99,Netflix subscription,ACC-001
+2022-01-15,-25.00,Phone bill,ACC-001
+2022-01-18,-9.99,Spotify subscription,ACC-001
+2022-01-19,-74.57,Groceries - supermarket,ACC-001
+2022-01-20,-74.57,Groceries - supermarket,ACC-001
+2022-01-20,-170.00,Health insurance,ACC-001
+2022-01-21,-32.46,Fuel station,ACC-001
+2022-01-25,-3.32,Coffee shop,ACC-001
+2022-01-26,-55.30,Groceries - supermarket,ACC-001
+2022-01-26,-301.34,Transfer to savings,ACC-001
+2022-01-27,-4.89,Coffee shop,ACC-001
+2022-01-27,2000.00,Salary deposit,ACC-001
+2022-02-01,-29.99,Gym membership,ACC-001
+2022-02-01,-825.00,Monthly rent,ACC-001
+2022-02-03,-6.49,Coffee shop,ACC-001
+2022-02-04,-6.30,Coffee shop,ACC-001
+2022-02-05,-111.51,Electricity bill,ACC-001
+2022-02-07,-51.31,Groceries - supermarket,ACC-001
+2022-02-08,-40.45,Water bill,ACC-001
+2022-02-09,-40.96,Restaurant - Italian,ACC-001
+2022-02-10,-59.76,Groceries - supermarket,ACC-001
+2022-02-10,-39.99,Internet bill,ACC-001
+2022-02-11,-434.64,Ski trip - cabin rental,ACC-001
+2022-02-12,-12.99,Netflix subscription,ACC-001
+2022-02-12,-108.31,Ski trip - equipment rental,ACC-001
+2022-02-12,-239.94,Ski trip - lift passes,ACC-001
+2022-02-13,-52.99,Ski trip - dinner,ACC-001
+2022-02-14,-4.58,Coffee shop,ACC-001
+2022-02-14,-31.73,Flowers,ACC-001
+2022-02-14,-47.27,Fuel station,ACC-001
+2022-02-14,-78.67,Restaurant - Valentine's Day,ACC-001
+2022-02-14,-50.51,Ski trip - fuel and snacks,ACC-001
+2022-02-14,-69.61,Ski trip - restaurant,ACC-001
+2022-02-15,-25.00,Phone bill,ACC-001
+2022-02-17,-94.53,Groceries - supermarket,ACC-001
+2022-02-18,-9.99,Spotify subscription,ACC-001
+2022-02-20,-3.26,Coffee shop,ACC-001
+2022-02-20,-65.35,Groceries - supermarket,ACC-001
+2022-02-20,-170.00,Health insurance,ACC-001
+2022-02-22,-480.00,Dentist - crown,ACC-001
+2022-02-24,-49.52,Groceries - supermarket,ACC-001
+2022-02-25,2000.00,Salary deposit,ACC-001
+2022-02-25,-233.51,Transfer to savings,ACC-001
+2022-02-27,-48.32,Fuel station,ACC-001
+2022-03-01,-29.99,Gym membership,ACC-001
+2022-03-01,-825.00,Monthly rent,ACC-001
+2022-03-05,-90.95,Electricity bill,ACC-001
+2022-03-05,-88.27,Groceries - supermarket,ACC-001
+2022-03-08,-43.73,Groceries - supermarket,ACC-001
+2022-03-10,-4.42,Coffee shop,ACC-001
+2022-03-10,-39.99,Internet bill,ACC-001
+2022-03-11,-5.22,Coffee shop,ACC-001
+2022-03-12,-12.99,Netflix subscription,ACC-001
+2022-03-15,-36.43,Fuel station,ACC-001
+2022-03-15,-25.00,Phone bill,ACC-001
+2022-03-17,-79.26,Groceries - supermarket,ACC-001
+2022-03-18,-9.99,Spotify subscription,ACC-001
+2022-03-20,-67.19,Groceries - supermarket,ACC-001
+2022-03-20,-170.00,Health insurance,ACC-001
+2022-03-22,-295.00,Car insurance (semi-annual),ACC-001
+2022-03-24,-3.47,Coffee shop,ACC-001
+2022-03-24,-37.58,Restaurant - Thai,ACC-001
+2022-03-25,2000.00,Salary deposit,ACC-001
+2022-03-25,-323.41,Transfer to savings,ACC-001
+2022-03-27,-68.87,Restaurant - Thai,ACC-001
+2022-03-28,-87.99,Groceries - supermarket,ACC-001
+2022-03-30,-35.15,Fuel station,ACC-001
+2022-04-01,-29.99,Gym membership,ACC-001
+2022-04-01,-825.00,Monthly rent,ACC-001
+2022-04-03,-38.63,Groceries - supermarket,ACC-001
+2022-04-05,-6.79,Coffee shop,ACC-001
+2022-04-05,-71.93,Electricity bill,ACC-001
+2022-04-05,-61.95,Groceries - supermarket,ACC-001
+2022-04-08,-39.66,Water bill,ACC-001
+2022-04-09,-48.66,Restaurant - Italian,ACC-001
+2022-04-10,-39.99,Internet bill,ACC-001
+2022-04-12,-12.99,Netflix subscription,ACC-001
+2022-04-15,-25.00,Phone bill,ACC-001
+2022-04-17,-5.98,Coffee shop,ACC-001
+2022-04-17,-80.12,Restaurant - Easter brunch,ACC-001
+2022-04-18,-3.89,Coffee shop,ACC-001
+2022-04-18,-9.99,Spotify subscription,ACC-001
+2022-04-20,-60.24,Groceries - supermarket,ACC-001
+2022-04-20,-170.00,Health insurance,ACC-001
+2022-04-25,-84.82,Groceries - supermarket,ACC-001
+2022-04-26,-33.89,Fuel station,ACC-001
+2022-04-26,-317.88,Transfer to savings,ACC-001
+2022-04-27,-3.60,Coffee shop,ACC-001
+2022-04-27,2000.00,Salary deposit,ACC-001
+2022-04-29,-35.41,Fuel station,ACC-001
+2022-04-30,-92.21,Groceries - supermarket,ACC-001
+2022-05-01,-29.99,Gym membership,ACC-001
+2022-05-01,-825.00,Monthly rent,ACC-001
+2022-05-05,-64.55,Electricity bill,ACC-001
+2022-05-07,-43.17,Groceries - supermarket,ACC-001
+2022-05-08,-91.45,Mother's Day gift,ACC-001
+2022-05-09,-81.39,Groceries - supermarket,ACC-001
+2022-05-10,-39.99,Internet bill,ACC-001
+2022-05-12,-5.39,Coffee shop,ACC-001
+2022-05-12,-12.99,Netflix subscription,ACC-001
+2022-05-13,-36.41,Fuel station,ACC-001
+2022-05-15,-25.00,Phone bill,ACC-001
+2022-05-18,-36.86,Restaurant - Asian fusion,ACC-001
+2022-05-18,-80.41,Restaurant - tapas,ACC-001
+2022-05-18,-9.99,Spotify subscription,ACC-001
+2022-05-19,-6.11,Coffee shop,ACC-001
+2022-05-20,-170.00,Health insurance,ACC-001
+2022-05-21,-39.85,Groceries - supermarket,ACC-001
+2022-05-24,-6.86,Coffee shop,ACC-001
+2022-05-24,-38.01,Fuel station,ACC-001
+2022-05-25,-8.61,Pharmacy,ACC-001
+2022-05-26,-63.38,Groceries - supermarket,ACC-001
+2022-05-26,-301.84,Transfer to savings,ACC-001
+2022-05-27,2000.00,Salary deposit,ACC-001
+2022-05-29,-4.17,Coffee shop,ACC-001
+2022-05-31,-88.08,Groceries - supermarket,ACC-001
+2022-06-01,-29.99,Gym membership,ACC-001
+2022-06-01,-825.00,Monthly rent,ACC-001
+2022-06-04,-5.88,Coffee shop,ACC-001
+2022-06-04,-51.21,Fuel station,ACC-001
+2022-06-04,-92.96,Groceries - supermarket,ACC-001
+2022-06-05,-57.55,Electricity bill,ACC-001
+2022-06-06,-5.39,Coffee shop,ACC-001
+2022-06-07,-3.04,Coffee shop,ACC-001
+2022-06-08,-38.98,Water bill,ACC-001
+2022-06-10,-39.99,Internet bill,ACC-001
+2022-06-11,-55.38,Groceries - supermarket,ACC-001
+2022-06-12,-12.99,Netflix subscription,ACC-001
+2022-06-13,-70.01,Groceries - supermarket,ACC-001
+2022-06-15,-33.67,Fuel station,ACC-001
+2022-06-15,-25.00,Phone bill,ACC-001
+2022-06-18,-61.12,Groceries - supermarket,ACC-001
+2022-06-18,-1100.00,Laptop replacement,ACC-001
+2022-06-18,-61.91,Restaurant - sushi,ACC-001
+2022-06-18,-9.99,Spotify subscription,ACC-001
+2022-06-20,-5.64,Coffee shop,ACC-001
+2022-06-20,-60.92,Groceries - supermarket,ACC-001
+2022-06-20,-170.00,Health insurance,ACC-001
+2022-06-20,-87.80,Restaurant - Italian,ACC-001
+2022-06-23,-21.45,Cinema tickets,ACC-001
+2022-06-24,-261.17,Transfer to savings,ACC-001
+2022-06-27,2000.00,Salary deposit,ACC-001
+2022-07-01,-29.99,Gym membership,ACC-001
+2022-07-01,-825.00,Monthly rent,ACC-001
+2022-07-05,-68.25,Electricity bill,ACC-001
+2022-07-06,-44.31,Groceries - supermarket,ACC-001
+2022-07-08,-483.67,Flights to Amsterdam,ACC-001
+2022-07-09,-45.90,Groceries - supermarket,ACC-001
+2022-07-10,-68.15,Groceries - supermarket,ACC-001
+2022-07-10,-39.99,Internet bill,ACC-001
+2022-07-11,-4.88,Coffee shop,ACC-001
+2022-07-12,-12.99,Netflix subscription,ACC-001
+2022-07-13,-6.58,Coffee shop,ACC-001
+2022-07-13,-73.37,Groceries - supermarket,ACC-001
+2022-07-13,-913.18,Hotel - Amsterdam (5 nights),ACC-001
+2022-07-14,-77.69,Holiday - dinner Amsterdam,ACC-001
+2022-07-15,-92.11,Holiday - restaurant Amsterdam,ACC-001
+2022-07-15,-25.00,Phone bill,ACC-001
+2022-07-16,-131.19,Holiday - museum and shopping,ACC-001
+2022-07-18,-51.63,Holiday - taxi to airport,ACC-001
+2022-07-18,-9.99,Spotify subscription,ACC-001
+2022-07-20,-170.00,Health insurance,ACC-001
+2022-07-22,-4.55,Coffee shop,ACC-001
+2022-07-25,-5.56,Coffee shop,ACC-001
+2022-07-26,-41.27,Fuel station,ACC-001
+2022-07-26,-248.54,Transfer to savings,ACC-001
+2022-07-27,-25.44,Cinema tickets,ACC-001
+2022-07-27,2080.00,Salary deposit,ACC-001
+2022-07-28,-50.36,Restaurant - Asian fusion,ACC-001
+2022-07-31,-52.08,Fuel station,ACC-001
+2022-07-31,-89.36,Groceries - supermarket,ACC-001
+2022-08-01,-29.99,Gym membership,ACC-001
+2022-08-01,-825.00,Monthly rent,ACC-001
+2022-08-02,-81.45,Groceries - supermarket,ACC-001
+2022-08-04,-67.28,Groceries - supermarket,ACC-001
+2022-08-05,-68.45,Electricity bill,ACC-001
+2022-08-06,-47.01,Restaurant - Indian,ACC-001
+2022-08-07,-34.46,Fuel station,ACC-001
+2022-08-08,-40.69,Water bill,ACC-001
+2022-08-10,-4.40,Coffee shop,ACC-001
+2022-08-10,-85.74,Groceries - supermarket,ACC-001
+2022-08-10,-39.99,Internet bill,ACC-001
+2022-08-12,-12.99,Netflix subscription,ACC-001
+2022-08-15,-25.00,Phone bill,ACC-001
+2022-08-18,-46.30,Groceries - supermarket,ACC-001
+2022-08-18,-9.99,Spotify subscription,ACC-001
+2022-08-20,-54.33,Fuel station,ACC-001
+2022-08-20,-170.00,Health insurance,ACC-001
+2022-08-21,-26.22,Pharmacy,ACC-001
+2022-08-24,-19.07,Pharmacy,ACC-001
+2022-08-26,2080.00,Salary deposit,ACC-001
+2022-08-26,-251.14,Transfer to savings,ACC-001
+2022-08-27,-55.35,Groceries - supermarket,ACC-001
+2022-08-30,-5.38,Coffee shop,ACC-001
+2022-08-31,-6.57,Coffee shop,ACC-001
+2022-09-01,-29.99,Gym membership,ACC-001
+2022-09-01,-825.00,Monthly rent,ACC-001
+2022-09-05,-75.86,Electricity bill,ACC-001
+2022-09-05,-74.99,Groceries - supermarket,ACC-001
+2022-09-09,-54.53,Fuel station,ACC-001
+2022-09-10,-63.47,Groceries - supermarket,ACC-001
+2022-09-10,-39.99,Internet bill,ACC-001
+2022-09-10,-18.71,Pharmacy,ACC-001
+2022-09-12,-162.82,Concert tickets,ACC-001
+2022-09-12,-76.81,Groceries - supermarket,ACC-001
+2022-09-12,-12.99,Netflix subscription,ACC-001
+2022-09-15,-25.00,Phone bill,ACC-001
+2022-09-16,-60.05,Groceries - supermarket,ACC-001
+2022-09-17,-118.00,New autumn jacket,ACC-001
+2022-09-18,-9.99,Spotify subscription,ACC-001
+2022-09-20,-170.00,Health insurance,ACC-001
+2022-09-21,-5.99,Coffee shop,ACC-001
+2022-09-22,-295.00,Car insurance (semi-annual),ACC-001
+2022-09-23,-69.42,Restaurant - tapas,ACC-001
+2022-09-25,-41.45,Fuel station,ACC-001
+2022-09-26,-5.41,Coffee shop,ACC-001
+2022-09-26,-291.72,Transfer to savings,ACC-001
+2022-09-27,-75.85,Groceries - supermarket,ACC-001
+2022-09-27,2080.00,Salary deposit,ACC-001
+2022-09-28,90.00,Dividend payment - shares,ACC-001
+2022-09-30,-3.58,Coffee shop,ACC-001
+2022-10-01,-29.99,Gym membership,ACC-001
+2022-10-01,-825.00,Monthly rent,ACC-001
+2022-10-05,-82.81,Electricity bill,ACC-001
+2022-10-08,-33.03,Water bill,ACC-001
+2022-10-10,-39.99,Internet bill,ACC-001
+2022-10-11,-84.80,Groceries - supermarket,ACC-001
+2022-10-12,-6.60,Coffee shop,ACC-001
+2022-10-12,-12.99,Netflix subscription,ACC-001
+2022-10-13,-45.36,Fuel station,ACC-001
+2022-10-15,-66.30,Groceries - supermarket,ACC-001
+2022-10-15,-25.00,Phone bill,ACC-001
+2022-10-18,-3.72,Coffee shop,ACC-001
+2022-10-18,-9.99,Spotify subscription,ACC-001
+2022-10-20,-6.55,Coffee shop,ACC-001
+2022-10-20,-170.00,Health insurance,ACC-001
+2022-10-21,-39.60,Halloween costume,ACC-001
+2022-10-21,-82.30,Restaurant - Thai,ACC-001
+2022-10-22,-94.21,Groceries - supermarket,ACC-001
+2022-10-26,-281.71,Transfer to savings,ACC-001
+2022-10-27,-58.57,Groceries - supermarket,ACC-001
+2022-10-27,-82.36,Restaurant - lunch,ACC-001
+2022-10-27,2080.00,Salary deposit,ACC-001
+2022-10-29,-3.46,Coffee shop,ACC-001
+2022-10-29,-73.98,Groceries - supermarket,ACC-001
+2022-10-30,-45.57,Fuel station,ACC-001
+2022-11-01,-29.99,Gym membership,ACC-001
+2022-11-01,-825.00,Monthly rent,ACC-001
+2022-11-05,-99.13,Electricity bill,ACC-001
+2022-11-05,-43.40,Restaurant - sushi,ACC-001
+2022-11-07,-5.54,Coffee shop,ACC-001
+2022-11-08,-62.00,Doctor visit - copay,ACC-001
+2022-11-10,-39.99,Internet bill,ACC-001
+2022-11-11,-46.78,Groceries - supermarket,ACC-001
+2022-11-12,-4.90,Coffee shop,ACC-001
+2022-11-12,-12.99,Netflix subscription,ACC-001
+2022-11-13,-184.45,Car service - annual,ACC-001
+2022-11-14,-55.98,Groceries - supermarket,ACC-001
+2022-11-15,-25.00,Phone bill,ACC-001
+2022-11-18,-9.99,Spotify subscription,ACC-001
+2022-11-20,-53.71,Groceries - supermarket,ACC-001
+2022-11-20,-170.00,Health insurance,ACC-001
+2022-11-22,-45.55,Fuel station,ACC-001
+2022-11-24,-82.39,Groceries - supermarket,ACC-001
+2022-11-25,2080.00,Salary deposit,ACC-001
+2022-11-25,-289.39,Transfer to savings,ACC-001
+2022-11-26,-43.89,Fuel station,ACC-001
+2022-11-28,-5.03,Coffee shop,ACC-001
+2022-11-30,-71.46,Groceries - supermarket,ACC-001
+2022-12-01,-29.99,Gym membership,ACC-001
+2022-12-01,-825.00,Monthly rent,ACC-001
+2022-12-02,-159.23,Christmas tree and decorations,ACC-001
+2022-12-02,-3.20,Coffee shop,ACC-001
+2022-12-03,-45.78,Fuel station,ACC-001
+2022-12-05,-112.11,Electricity bill,ACC-001
+2022-12-05,-51.34,Fuel station,ACC-001
+2022-12-08,-237.94,Christmas gifts - family,ACC-001
+2022-12-08,-36.05,Water bill,ACC-001
+2022-12-10,-39.99,Internet bill,ACC-001
+2022-12-11,-73.47,Groceries - supermarket,ACC-001
+2022-12-12,-12.99,Netflix subscription,ACC-001
+2022-12-15,-117.37,Christmas gifts - friends,ACC-001
+2022-12-15,-70.66,Groceries - supermarket,ACC-001
+2022-12-15,-25.00,Phone bill,ACC-001
+2022-12-16,-77.46,Groceries - supermarket,ACC-001
+2022-12-18,-9.99,Spotify subscription,ACC-001
+2022-12-20,380.00,Annual bonus,ACC-001
+2022-12-20,-170.00,Health insurance,ACC-001
+2022-12-21,-59.58,Groceries - supermarket,ACC-001
+2022-12-22,-93.42,Restaurant - Christmas dinner,ACC-001
+2022-12-24,-68.40,Restaurant - Italian,ACC-001
+2022-12-26,-326.46,Transfer to savings,ACC-001
+2022-12-27,2080.00,Salary deposit,ACC-001
+2022-12-28,-6.93,Coffee shop,ACC-001
+2022-12-28,95.00,Dividend payment - shares,ACC-001
+2022-12-28,-73.11,Groceries - supermarket,ACC-001
+2022-12-29,-5.08,Coffee shop,ACC-001
+2022-12-31,-40.30,New Year fireworks,ACC-001
+2023-01-01,-29.99,Gym membership,ACC-001
+2023-01-01,-850.00,Monthly rent,ACC-001
+2023-01-04,-4.53,Coffee shop,ACC-001
+2023-01-05,-118.89,Electricity bill,ACC-001
+2023-01-10,-53.80,Groceries - supermarket,ACC-001
+2023-01-10,-39.99,Internet bill,ACC-001
+2023-01-11,-49.88,Fuel station,ACC-001
+2023-01-12,-12.99,Netflix subscription,ACC-001
+2023-01-13,-51.09,Groceries - supermarket,ACC-001
+2023-01-15,-55.98,Groceries - supermarket,ACC-001
+2023-01-15,-25.00,Phone bill,ACC-001
+2023-01-17,-65.85,Groceries - supermarket,ACC-001
+2023-01-18,-25.50,Birthday cake,ACC-001
+2023-01-18,-9.99,Spotify subscription,ACC-001
+2023-01-20,-175.00,Health insurance,ACC-001
+2023-01-21,-6.01,Coffee shop,ACC-001
+2023-01-26,-268.77,Transfer to savings,ACC-001
+2023-01-27,-48.59,Fuel station,ACC-001
+2023-01-27,2080.00,Salary deposit,ACC-001
+2023-01-29,-6.65,Coffee shop,ACC-001
+2023-01-29,-73.63,Restaurant - brunch,ACC-001
+2023-01-31,-6.35,Coffee shop,ACC-001
+2023-01-31,-51.34,Groceries - supermarket,ACC-001
+2023-02-01,-29.99,Gym membership,ACC-001
+2023-02-01,-850.00,Monthly rent,ACC-001
+2023-02-05,-113.19,Electricity bill,ACC-001
+2023-02-06,-37.38,Fuel station,ACC-001
+2023-02-07,-75.47,Groceries - supermarket,ACC-001
+2023-02-08,-65.84,Groceries - supermarket,ACC-001
+2023-02-08,-41.11,Water bill,ACC-001
+2023-02-10,-39.99,Internet bill,ACC-001
+2023-02-12,-12.99,Netflix subscription,ACC-001
+2023-02-13,-18.38,Pharmacy,ACC-001
+2023-02-14,-4.55,Coffee shop,ACC-001
+2023-02-14,-32.68,Flowers,ACC-001
+2023-02-14,-91.71,Restaurant - Valentine's Day,ACC-001
+2023-02-15,-25.00,Phone bill,ACC-001
+2023-02-16,-70.74,Groceries - supermarket,ACC-001
+2023-02-16,-54.65,Restaurant - Italian,ACC-001
+2023-02-17,-380.81,Ski trip - cabin rental,ACC-001
+2023-02-18,-82.84,Ski trip - equipment rental,ACC-001
+2023-02-18,-181.63,Ski trip - lift passes,ACC-001
+2023-02-18,-9.99,Spotify subscription,ACC-001
+2023-02-19,-56.33,Groceries - supermarket,ACC-001
+2023-02-19,-65.12,Ski trip - dinner,ACC-001
+2023-02-20,-175.00,Health insurance,ACC-001
+2023-02-20,-53.31,Ski trip - fuel and snacks,ACC-001
+2023-02-20,-78.00,Ski trip - restaurant,ACC-001
+2023-02-21,-3.98,Coffee shop,ACC-001
+2023-02-21,-43.99,Restaurant - Asian fusion,ACC-001
+2023-02-23,-68.54,Groceries - supermarket,ACC-001
+2023-02-24,-272.87,Transfer to savings,ACC-001
+2023-02-27,-5.94,Coffee shop,ACC-001
+2023-02-27,-38.51,Fuel station,ACC-001
+2023-02-27,2080.00,Salary deposit,ACC-001
+2023-03-01,-29.99,Gym membership,ACC-001
+2023-03-01,-850.00,Monthly rent,ACC-001
+2023-03-02,-3.58,Coffee shop,ACC-001
+2023-03-03,-54.06,Fuel station,ACC-001
+2023-03-05,-86.78,Electricity bill,ACC-001
+2023-03-07,-3.77,Coffee shop,ACC-001
+2023-03-08,-69.52,Groceries - supermarket,ACC-001
+2023-03-10,-39.99,Internet bill,ACC-001
+2023-03-12,-76.70,Groceries - supermarket,ACC-001
+2023-03-12,-12.99,Netflix subscription,ACC-001
+2023-03-15,-25.00,Phone bill,ACC-001
+2023-03-16,-49.89,Restaurant - Mexican,ACC-001
+2023-03-17,-59.40,Groceries - supermarket,ACC-001
+2023-03-18,-44.86,Groceries - supermarket,ACC-001
+2023-03-18,-9.99,Spotify subscription,ACC-001
+2023-03-19,-32.09,Fuel station,ACC-001
+2023-03-20,-175.00,Health insurance,ACC-001
+2023-03-22,-305.00,Car insurance (semi-annual),ACC-001
+2023-03-22,-4.57,Coffee shop,ACC-001
+2023-03-24,-3.55,Coffee shop,ACC-001
+2023-03-24,-58.00,Doctor visit - copay,ACC-001
+2023-03-24,-313.92,Transfer to savings,ACC-001
+2023-03-27,2080.00,Salary deposit,ACC-001
+2023-03-28,105.00,Dividend payment - shares,ACC-001
+2023-03-29,-83.42,Groceries - supermarket,ACC-001
+2023-04-01,-29.99,Gym membership,ACC-001
+2023-04-01,-850.00,Monthly rent,ACC-001
+2023-04-02,-3.38,Coffee shop,ACC-001
+2023-04-05,-79.42,Electricity bill,ACC-001
+2023-04-05,-165.00,New running shoes and sportswear,ACC-001
+2023-04-06,-50.19,Groceries - supermarket,ACC-001
+2023-04-08,-32.30,Water bill,ACC-001
+2023-04-09,-68.06,Restaurant - Easter brunch,ACC-001
+2023-04-10,-39.99,Internet bill,ACC-001
+2023-04-12,-12.99,Netflix subscription,ACC-001
+2023-04-13,-25.07,Cinema tickets,ACC-001
+2023-04-13,-6.55,Coffee shop,ACC-001
+2023-04-15,-25.00,Phone bill,ACC-001
+2023-04-18,-68.11,Groceries - supermarket,ACC-001
+2023-04-18,-86.70,Restaurant - Italian,ACC-001
+2023-04-18,-9.99,Spotify subscription,ACC-001
+2023-04-19,-131.50,Concert tickets,ACC-001
+2023-04-19,-26.64,Pharmacy,ACC-001
+2023-04-20,-55.53,Fuel station,ACC-001
+2023-04-20,-175.00,Health insurance,ACC-001
+2023-04-22,-50.16,Fuel station,ACC-001
+2023-04-22,-87.26,Groceries - supermarket,ACC-001
+2023-04-24,-38.47,Groceries - supermarket,ACC-001
+2023-04-26,-80.48,Groceries - supermarket,ACC-001
+2023-04-26,-318.00,Transfer to savings,ACC-001
+2023-04-27,2080.00,Salary deposit,ACC-001
+2023-04-28,-6.33,Coffee shop,ACC-001
+2023-04-29,-6.03,Coffee shop,ACC-001
+2023-05-01,-29.99,Gym membership,ACC-001
+2023-05-01,-850.00,Monthly rent,ACC-001
+2023-05-05,-70.51,Electricity bill,ACC-001
+2023-05-07,-5.78,Coffee shop,ACC-001
+2023-05-10,-39.99,Internet bill,ACC-001
+2023-05-11,-40.75,Fuel station,ACC-001
+2023-05-12,-77.79,Groceries - supermarket,ACC-001
+2023-05-12,-12.99,Netflix subscription,ACC-001
+2023-05-13,-82.53,Restaurant - Asian fusion,ACC-001
+2023-05-14,-108.44,Mother's Day - gift and dinner,ACC-001
+2023-05-15,-25.00,Phone bill,ACC-001
+2023-05-17,-91.70,Groceries - supermarket,ACC-001
+2023-05-18,-5.03,Coffee shop,ACC-001
+2023-05-18,-56.51,Restaurant - Asian fusion,ACC-001
+2023-05-18,-9.99,Spotify subscription,ACC-001
+2023-05-19,-47.39,Fuel station,ACC-001
+2023-05-19,-87.23,Groceries - supermarket,ACC-001
+2023-05-20,-175.00,Health insurance,ACC-001
+2023-05-24,-52.65,Groceries - supermarket,ACC-001
+2023-05-26,2080.00,Salary deposit,ACC-001
+2023-05-26,-358.68,Transfer to savings,ACC-001
+2023-05-28,-3.72,Coffee shop,ACC-001
+2023-05-29,-3.22,Coffee shop,ACC-001
+2023-05-31,-48.10,Groceries - supermarket,ACC-001
+2023-06-01,-29.99,Gym membership,ACC-001
+2023-06-01,-850.00,Monthly rent,ACC-001
+2023-06-02,-86.89,Groceries - supermarket,ACC-001
+2023-06-03,-91.09,Groceries - supermarket,ACC-001
+2023-06-04,-33.75,Fuel station,ACC-001
+2023-06-05,-66.05,Electricity bill,ACC-001
+2023-06-08,-3.74,Coffee shop,ACC-001
+2023-06-08,-53.96,Restaurant - sushi,ACC-001
+2023-06-08,-40.58,Water bill,ACC-001
+2023-06-10,-39.99,Internet bill,ACC-001
+2023-06-12,-42.07,Groceries - supermarket,ACC-001
+2023-06-12,-12.99,Netflix subscription,ACC-001
+2023-06-13,-6.66,Coffee shop,ACC-001
+2023-06-15,-25.00,Phone bill,ACC-001
+2023-06-18,-9.99,Spotify subscription,ACC-001
+2023-06-20,-175.00,Health insurance,ACC-001
+2023-06-23,-51.22,Fuel station,ACC-001
+2023-06-25,-4.77,Coffee shop,ACC-001
+2023-06-26,-283.38,Transfer to savings,ACC-001
+2023-06-27,2080.00,Salary deposit,ACC-001
+2023-06-28,115.00,Dividend payment - shares,ACC-001
+2023-06-28,-50.07,Groceries - supermarket,ACC-001
+2023-06-29,-55.05,Groceries - supermarket,ACC-001
+2023-06-30,-6.86,Coffee shop,ACC-001
+2023-07-01,-29.99,Gym membership,ACC-001
+2023-07-01,-850.00,Monthly rent,ACC-001
+2023-07-03,-509.32,Flights to Berlin,ACC-001
+2023-07-04,-35.55,Fuel station,ACC-001
+2023-07-05,-72.89,Electricity bill,ACC-001
+2023-07-08,-1173.89,Hotel - Berlin (4 nights),ACC-001
+2023-07-09,-104.63,Holiday - dinner Berlin,ACC-001
+2023-07-10,-60.85,Holiday - restaurant Berlin,ACC-001
+2023-07-10,-39.99,Internet bill,ACC-001
+2023-07-11,-85.41,Groceries - supermarket,ACC-001
+2023-07-11,-111.42,Holiday - museum and shopping,ACC-001
+2023-07-12,-3.29,Coffee shop,ACC-001
+2023-07-12,-44.72,Holiday - taxi to airport,ACC-001
+2023-07-12,-12.99,Netflix subscription,ACC-001
+2023-07-15,-25.00,Phone bill,ACC-001
+2023-07-16,-46.26,Fuel station,ACC-001
+2023-07-16,-41.87,Restaurant - tapas,ACC-001
+2023-07-18,-5.54,Coffee shop,ACC-001
+2023-07-18,-65.89,Groceries - supermarket,ACC-001
+2023-07-18,-9.99,Spotify subscription,ACC-001
+2023-07-19,-44.94,Groceries - supermarket,ACC-001
+2023-07-20,-67.17,Groceries - supermarket,ACC-001
+2023-07-20,-175.00,Health insurance,ACC-001
+2023-07-23,-86.93,Groceries - supermarket,ACC-001
+2023-07-24,-5.41,Coffee shop,ACC-001
+2023-07-26,-373.99,Transfer to savings,ACC-001
+2023-07-27,2150.00,Salary deposit,ACC-001
+2023-08-01,-29.99,Gym membership,ACC-001
+2023-08-01,-850.00,Monthly rent,ACC-001
+2023-08-05,-70.03,Electricity bill,ACC-001
+2023-08-05,-69.62,Groceries - supermarket,ACC-001
+2023-08-08,-44.31,Fuel station,ACC-001
+2023-08-08,-38.82,Water bill,ACC-001
+2023-08-10,-39.99,Internet bill,ACC-001
+2023-08-12,-12.99,Netflix subscription,ACC-001
+2023-08-13,-6.37,Coffee shop,ACC-001
+2023-08-15,-25.00,Phone bill,ACC-001
+2023-08-17,-5.88,Coffee shop,ACC-001
+2023-08-17,-81.58,Groceries - supermarket,ACC-001
+2023-08-18,-66.48,Groceries - supermarket,ACC-001
+2023-08-18,-9.99,Spotify subscription,ACC-001
+2023-08-20,-175.00,Health insurance,ACC-001
+2023-08-21,-60.09,Restaurant - Asian fusion,ACC-001
+2023-08-24,-3.46,Coffee shop,ACC-001
+2023-08-24,-44.40,Fuel station,ACC-001
+2023-08-25,-88.59,Groceries - supermarket,ACC-001
+2023-08-25,2150.00,Salary deposit,ACC-001
+2023-08-25,-344.82,Transfer to savings,ACC-001
+2023-08-27,-74.73,Groceries - supermarket,ACC-001
+2023-09-01,-29.99,Gym membership,ACC-001
+2023-09-01,-850.00,Monthly rent,ACC-001
+2023-09-02,-94.72,Groceries - supermarket,ACC-001
+2023-09-04,-51.21,Fuel station,ACC-001
+2023-09-05,-3.85,Coffee shop,ACC-001
+2023-09-05,-72.65,Electricity bill,ACC-001
+2023-09-07,-3.21,Coffee shop,ACC-001
+2023-09-10,-39.99,Internet bill,ACC-001
+2023-09-12,-12.99,Netflix subscription,ACC-001
+2023-09-13,-3.34,Coffee shop,ACC-001
+2023-09-13,-64.78,Groceries - supermarket,ACC-001
+2023-09-15,-25.00,Phone bill,ACC-001
+2023-09-16,-3.77,Coffee shop,ACC-001
+2023-09-18,-9.99,Spotify subscription,ACC-001
+2023-09-19,-66.56,Groceries - supermarket,ACC-001
+2023-09-20,-63.01,Groceries - supermarket,ACC-001
+2023-09-20,-175.00,Health insurance,ACC-001
+2023-09-22,-305.00,Car insurance (semi-annual),ACC-001
+2023-09-22,-44.10,Fuel station,ACC-001
+2023-09-23,-52.99,Restaurant - brunch,ACC-001
+2023-09-26,-357.34,Transfer to savings,ACC-001
+2023-09-27,2150.00,Salary deposit,ACC-001
+2023-09-28,130.00,Dividend payment - shares,ACC-001
+2023-09-29,-44.07,Groceries - supermarket,ACC-001
+2023-10-01,-29.99,Gym membership,ACC-001
+2023-10-01,-850.00,Monthly rent,ACC-001
+2023-10-05,-3.25,Coffee shop,ACC-001
+2023-10-05,-87.54,Electricity bill,ACC-001
+2023-10-06,-41.51,Fuel station,ACC-001
+2023-10-06,-63.30,Groceries - supermarket,ACC-001
+2023-10-07,-82.02,Groceries - supermarket,ACC-001
+2023-10-08,-37.80,Water bill,ACC-001
+2023-10-10,-39.99,Internet bill,ACC-001
+2023-10-12,-12.99,Netflix subscription,ACC-001
+2023-10-14,-46.52,Groceries - supermarket,ACC-001
+2023-10-15,-25.00,Phone bill,ACC-001
+2023-10-17,-5.50,Coffee shop,ACC-001
+2023-10-17,-38.69,Fuel station,ACC-001
+2023-10-17,-55.98,Groceries - supermarket,ACC-001
+2023-10-18,-9.99,Spotify subscription,ACC-001
+2023-10-19,-6.97,Coffee shop,ACC-001
+2023-10-20,-175.00,Health insurance,ACC-001
+2023-10-26,-45.18,Halloween party supplies,ACC-001
+2023-10-26,-360.42,Transfer to savings,ACC-001
+2023-10-27,2150.00,Salary deposit,ACC-001
+2023-10-29,-71.92,Groceries - supermarket,ACC-001
+2023-10-29,-37.82,Restaurant - Indian,ACC-001
+2023-11-01,-29.99,Gym membership,ACC-001
+2023-11-01,-850.00,Monthly rent,ACC-001
+2023-11-03,-56.58,Groceries - supermarket,ACC-001
+2023-11-04,-4.36,Coffee shop,ACC-001
+2023-11-05,-105.67,Electricity bill,ACC-001
+2023-11-07,-40.96,Fuel station,ACC-001
+2023-11-10,-53.83,Groceries - supermarket,ACC-001
+2023-11-10,-39.99,Internet bill,ACC-001
+2023-11-11,-3.34,Coffee shop,ACC-001
+2023-11-12,-12.99,Netflix subscription,ACC-001
+2023-11-12,-58.40,Restaurant - Trattoria Verde,ACC-001
+2023-11-15,-25.00,Phone bill,ACC-001
+2023-11-17,-81.03,Groceries - supermarket,ACC-001
+2023-11-18,-9.99,Spotify subscription,ACC-001
+2023-11-19,-6.64,Coffee shop,ACC-001
+2023-11-20,-178.50,Health insurance,ACC-001
+2023-11-21,-52.35,Fuel station,ACC-001
+2023-11-24,-18.90,Cinema tickets,ACC-001
+2023-11-24,-77.87,Groceries - supermarket,ACC-001
+2023-11-24,-72.10,Restaurant - Sushi Hana,ACC-001
+2023-11-26,-305.00,Transfer to savings,ACC-001
+2023-11-27,-4.37,Coffee shop,ACC-001
+2023-11-27,2150.00,Salary deposit,ACC-001
+2023-11-30,-89.29,Groceries - supermarket,ACC-001
+2023-12-01,-29.99,Gym membership,ACC-001
+2023-12-01,-850.00,Monthly rent,ACC-001
+2023-12-02,-145.00,Christmas tree and decorations,ACC-001
+2023-12-03,-79.00,Groceries - supermarket,ACC-001
+2023-12-05,-125.71,Electricity bill,ACC-001
+2023-12-07,-41.15,Fuel station,ACC-001
+2023-12-08,-34.06,Water bill,ACC-001
+2023-12-09,-220.50,Christmas gifts - family,ACC-001
+2023-12-10,-60.03,Groceries - supermarket,ACC-001
+2023-12-10,-39.99,Internet bill,ACC-001
+2023-12-11,-7.48,Coffee shop,ACC-001
+2023-12-12,-12.99,Netflix subscription,ACC-001
+2023-12-15,-25.00,Phone bill,ACC-001
+2023-12-16,-98.30,Christmas gifts - friends,ACC-001
+2023-12-17,-50.24,Groceries - supermarket,ACC-001
+2023-12-18,-15.92,Pharmacy,ACC-001
+2023-12-18,-9.99,Spotify subscription,ACC-001
+2023-12-20,-178.50,Health insurance,ACC-001
+2023-12-21,450.00,Annual bonus,ACC-001
+2023-12-21,-41.29,Fuel station,ACC-001
+2023-12-23,-64.20,Restaurant - holiday dinner,ACC-001
+2023-12-24,-92.73,Groceries - supermarket,ACC-001
+2023-12-25,2150.00,Salary deposit,ACC-001
+2023-12-26,-461.16,Transfer to savings,ACC-001
+2023-12-27,-8.36,Coffee shop,ACC-001
+2023-12-30,-59.84,Groceries - supermarket,ACC-001
+2023-12-31,-42.00,New Year fireworks,ACC-001
+2024-01-01,-29.99,Gym membership,ACC-001
+2024-01-01,-850.00,Monthly rent,ACC-001
+2024-01-03,-61.17,Groceries - supermarket,ACC-001
+2024-01-05,-119.54,Electricity bill,ACC-001
+2024-01-07,-71.50,Fuel station,ACC-001
+2024-01-10,-52.19,Groceries - supermarket,ACC-001
+2024-01-10,-39.99,Internet bill,ACC-001
+2024-01-11,-5.60,Coffee shop,ACC-001
+2024-01-12,-12.99,Netflix subscription,ACC-001
+2024-01-13,-89.50,Restaurant - birthday dinner,ACC-001
+2024-01-15,-25.00,Phone bill,ACC-001
+2024-01-17,-45.69,Groceries - supermarket,ACC-001
+2024-01-18,-9.99,Spotify subscription,ACC-001
+2024-01-20,-184.20,Health insurance,ACC-001
+2024-01-21,-67.08,Fuel station,ACC-001
+2024-01-24,-77.05,Groceries - supermarket,ACC-001
+2024-01-25,2150.00,Salary deposit,ACC-001
+2024-01-26,-477.09,Transfer to savings,ACC-001
+2024-01-27,-5.08,Coffee shop,ACC-001
+2024-01-27,-340.00,Winter coat,ACC-001
+2024-01-30,-82.97,Groceries - supermarket,ACC-001
+2024-02-01,-29.99,Gym membership,ACC-001
+2024-02-01,-850.00,Monthly rent,ACC-001
+2024-02-03,-75.65,Groceries - supermarket,ACC-001
+2024-02-04,-4.36,Coffee shop,ACC-001
+2024-02-05,-114.42,Electricity bill,ACC-001
+2024-02-07,-47.18,Fuel station,ACC-001
+2024-02-08,340.00,Refund - returned coat,ACC-001
+2024-02-08,-40.84,Water bill,ACC-001
+2024-02-10,-70.31,Groceries - supermarket,ACC-001
+2024-02-10,-39.99,Internet bill,ACC-001
+2024-02-11,-7.27,Coffee shop,ACC-001
+2024-02-12,-12.99,Netflix subscription,ACC-001
+2024-02-14,-35.00,Flowers,ACC-001
+2024-02-14,-78.40,Restaurant - Valentine's Day,ACC-001
+2024-02-15,18.50,Credit card cashback,ACC-001
+2024-02-15,-25.00,Phone bill,ACC-001
+2024-02-17,-54.97,Groceries - supermarket,ACC-001
+2024-02-18,-9.99,Spotify subscription,ACC-001
+2024-02-19,-7.56,Coffee shop,ACC-001
+2024-02-20,-184.20,Health insurance,ACC-001
+2024-02-21,-69.46,Fuel station,ACC-001
+2024-02-24,-66.50,Groceries - supermarket,ACC-001
+2024-02-26,2150.00,Salary deposit,ACC-001
+2024-02-26,-314.28,Transfer to savings,ACC-001
+2024-03-01,-29.99,Gym membership,ACC-001
+2024-03-01,-850.00,Monthly rent,ACC-001
+2024-03-03,-72.06,Groceries - supermarket,ACC-001
+2024-03-04,-7.15,Coffee shop,ACC-001
+2024-03-05,-90.79,Electricity bill,ACC-001
+2024-03-07,-59.86,Fuel station,ACC-001
+2024-03-08,-1249.00,Laptop replacement,ACC-001
+2024-03-10,-80.05,Groceries - supermarket,ACC-001
+2024-03-10,-39.99,Internet bill,ACC-001
+2024-03-11,-7.16,Coffee shop,ACC-001
+2024-03-12,-12.99,Netflix subscription,ACC-001
+2024-03-15,12.40,Groceries - refund,ACC-001
+2024-03-15,-25.00,Phone bill,ACC-001
+2024-03-16,-10.45,Pharmacy,ACC-001
+2024-03-17,-53.27,Groceries - supermarket,ACC-001
+2024-03-18,-9.99,Spotify subscription,ACC-001
+2024-03-19,-6.29,Coffee shop,ACC-001
+2024-03-20,-184.20,Health insurance,ACC-001
+2024-03-21,-42.86,Fuel station,ACC-001
+2024-03-22,-312.00,Car insurance (semi-annual),ACC-001
+2024-03-23,-46.80,Restaurant - brunch,ACC-001
+2024-03-24,-68.46,Groceries - supermarket,ACC-001
+2024-03-25,2150.00,Salary deposit,ACC-001
+2024-03-26,-482.63,Transfer to savings,ACC-001
+2024-03-27,-8.49,Coffee shop,ACC-001
+2024-03-28,145.00,Dividend payment - shares,ACC-001
+2024-03-30,-88.89,Groceries - supermarket,ACC-001
+2024-04-01,-29.99,Gym membership,ACC-001
+2024-04-01,-850.00,Monthly rent,ACC-001
+2024-04-03,-83.98,Groceries - supermarket,ACC-001
+2024-04-05,-78.57,Electricity bill,ACC-001
+2024-04-06,-210.00,Concert tickets,ACC-001
+2024-04-07,-55.99,Fuel station,ACC-001
+2024-04-08,-35.10,Water bill,ACC-001
+2024-04-10,-64.37,Groceries - supermarket,ACC-001
+2024-04-10,-39.99,Internet bill,ACC-001
+2024-04-11,-7.02,Coffee shop,ACC-001
+2024-04-12,-12.99,Netflix subscription,ACC-001
+2024-04-14,-12.27,Pharmacy,ACC-001
+2024-04-15,-25.00,Phone bill,ACC-001
+2024-04-17,-45.37,Groceries - supermarket,ACC-001
+2024-04-18,-58.20,Doctor visit - copay,ACC-001
+2024-04-18,-9.99,Spotify subscription,ACC-001
+2024-04-19,-6.05,Coffee shop,ACC-001
+2024-04-20,-184.20,Health insurance,ACC-001
+2024-04-21,-71.02,Fuel station,ACC-001
+2024-04-24,-62.23,Groceries - supermarket,ACC-001
+2024-04-25,2150.00,Salary deposit,ACC-001
+2024-04-26,-425.49,Transfer to savings,ACC-001
+2024-04-27,-6.60,Coffee shop,ACC-001
+2024-04-30,42.00,Electricity rebate,ACC-001
+2024-04-30,-94.79,Groceries - supermarket,ACC-001
+2024-05-01,-29.99,Gym membership,ACC-001
+2024-05-01,-850.00,Monthly rent,ACC-001
+2024-05-03,-80.14,Groceries - supermarket,ACC-001
+2024-05-04,-4.25,Coffee shop,ACC-001
+2024-05-04,-89.00,Mother's Day gift,ACC-001
+2024-05-05,-66.04,Electricity bill,ACC-001
+2024-05-07,-59.26,Fuel station,ACC-001
+2024-05-10,-93.51,Groceries - supermarket,ACC-001
+2024-05-10,-39.99,Internet bill,ACC-001
+2024-05-11,-4.06,Coffee shop,ACC-001
+2024-05-12,-12.99,Netflix subscription,ACC-001
+2024-05-15,-25.00,Phone bill,ACC-001
+2024-05-17,-82.38,Groceries - supermarket,ACC-001
+2024-05-18,-9.99,Spotify subscription,ACC-001
+2024-05-19,-67.30,Restaurant - Italian,ACC-001
+2024-05-20,-184.20,Health insurance,ACC-001
+2024-05-21,-66.62,Fuel station,ACC-001
+2024-05-22,5.00,Coffee shop loyalty credit,ACC-001
+2024-05-24,-68.91,Groceries - supermarket,ACC-001
+2024-05-26,-444.42,Transfer to savings,ACC-001
+2024-05-27,2150.00,Salary deposit,ACC-001
+2024-05-30,-47.64,Groceries - supermarket,ACC-001
+2024-06-01,-29.99,Gym membership,ACC-001
+2024-06-01,-850.00,Monthly rent,ACC-001
+2024-06-02,380.00,Tax refund,ACC-001
+2024-06-03,-61.24,Groceries - supermarket,ACC-001
+2024-06-05,-65.19,Electricity bill,ACC-001
+2024-06-07,-57.29,Fuel station,ACC-001
+2024-06-08,-38.89,Water bill,ACC-001
+2024-06-10,-94.22,Groceries - supermarket,ACC-001
+2024-06-10,-39.99,Internet bill,ACC-001
+2024-06-12,-12.99,Netflix subscription,ACC-001
+2024-06-15,-25.00,Phone bill,ACC-001
+2024-06-15,-56.40,Restaurant - tapas,ACC-001
+2024-06-17,-84.76,Groceries - supermarket,ACC-001
+2024-06-18,-9.99,Spotify subscription,ACC-001
+2024-06-20,-184.20,Health insurance,ACC-001
+2024-06-21,-40.68,Fuel station,ACC-001
+2024-06-24,-54.69,Groceries - supermarket,ACC-001
+2024-06-25,2150.00,Salary deposit,ACC-001
+2024-06-26,-322.37,Transfer to savings,ACC-001
+2024-06-27,-3.87,Coffee shop,ACC-001
+2024-06-28,145.00,Dividend payment - shares,ACC-001
+2024-06-30,-54.77,Groceries - supermarket,ACC-001
+2024-07-01,-29.99,Gym membership,ACC-001
+2024-07-01,-850.00,Monthly rent,ACC-001
+2024-07-03,-69.97,Groceries - supermarket,ACC-001
+2024-07-04,-6.76,Coffee shop,ACC-001
+2024-07-05,-67.36,Electricity bill,ACC-001
+2024-07-05,-680.00,Flights to Athens,ACC-001
+2024-07-07,-61.46,Fuel station,ACC-001
+2024-07-08,15.00,Fuel station refund,ACC-001
+2024-07-10,-74.15,Groceries - supermarket,ACC-001
+2024-07-10,-39.99,Internet bill,ACC-001
+2024-07-11,-7.97,Coffee shop,ACC-001
+2024-07-12,-1240.00,Hotel - Santorini (7 nights),ACC-001
+2024-07-12,-12.99,Netflix subscription,ACC-001
+2024-07-14,-95.20,Holiday - restaurant Santorini,ACC-001
+2024-07-15,-128.00,Holiday - boat tour,ACC-001
+2024-07-15,-25.00,Phone bill,ACC-001
+2024-07-16,-72.50,Holiday - restaurant Oia,ACC-001
+2024-07-17,-93.11,Groceries - supermarket,ACC-001
+2024-07-18,-145.00,Holiday - museum and shopping,ACC-001
+2024-07-18,-9.99,Spotify subscription,ACC-001
+2024-07-19,-4.51,Coffee shop,ACC-001
+2024-07-19,-88.40,Holiday - dinner Athens,ACC-001
+2024-07-20,-184.20,Health insurance,ACC-001
+2024-07-20,-42.00,Holiday - taxi to airport,ACC-001
+2024-07-21,-62.24,Fuel station,ACC-001
+2024-07-24,-91.23,Groceries - supermarket,ACC-001
+2024-07-25,2230.00,Salary deposit,ACC-001
+2024-07-26,-333.03,Transfer to savings,ACC-001
+2024-07-27,-3.31,Coffee shop,ACC-001
+2024-07-30,-82.03,Groceries - supermarket,ACC-001
+2024-08-01,-29.99,Gym membership,ACC-001
+2024-08-01,-875.00,Monthly rent,ACC-001
+2024-08-03,-45.12,Groceries - supermarket,ACC-001
+2024-08-04,-7.03,Coffee shop,ACC-001
+2024-08-05,-66.06,Electricity bill,ACC-001
+2024-08-07,-47.47,Fuel station,ACC-001
+2024-08-08,-54.20,Restaurant - sushi,ACC-001
+2024-08-08,-34.07,Water bill,ACC-001
+2024-08-10,-45.57,Groceries - supermarket,ACC-001
+2024-08-10,-39.99,Internet bill,ACC-001
+2024-08-12,-12.99,Netflix subscription,ACC-001
+2024-08-15,24.30,Credit card cashback,ACC-001
+2024-08-15,-25.00,Phone bill,ACC-001
+2024-08-17,-43.66,Groceries - supermarket,ACC-001
+2024-08-18,-9.99,Spotify subscription,ACC-001
+2024-08-19,-4.49,Coffee shop,ACC-001
+2024-08-20,-184.20,Health insurance,ACC-001
+2024-08-21,-54.50,Fuel station,ACC-001
+2024-08-22,-19.64,Pharmacy,ACC-001
+2024-08-24,-59.51,Groceries - supermarket,ACC-001
+2024-08-24,-92.10,Restaurant - friend's birthday,ACC-001
+2024-08-26,2230.00,Salary deposit,ACC-001
+2024-08-26,-441.57,Transfer to savings,ACC-001
+2024-08-27,-5.36,Coffee shop,ACC-001
+2024-08-30,-69.25,Groceries - supermarket,ACC-001
+2024-09-01,-29.99,Gym membership,ACC-001
+2024-09-01,-875.00,Monthly rent,ACC-001
+2024-09-03,-80.64,Groceries - supermarket,ACC-001
+2024-09-04,-4.21,Coffee shop,ACC-001
+2024-09-05,-73.08,Electricity bill,ACC-001
+2024-09-07,-49.54,Fuel station,ACC-001
+2024-09-07,-178.00,New running shoes and sportswear,ACC-001
+2024-09-10,-77.69,Groceries - supermarket,ACC-001
+2024-09-10,-39.99,Internet bill,ACC-001
+2024-09-11,-5.44,Coffee shop,ACC-001
+2024-09-12,-12.99,Netflix subscription,ACC-001
+2024-09-15,-25.00,Phone bill,ACC-001
+2024-09-17,-94.16,Groceries - supermarket,ACC-001
+2024-09-18,-9.99,Spotify subscription,ACC-001
+2024-09-19,-4.52,Coffee shop,ACC-001
+2024-09-20,-184.20,Health insurance,ACC-001
+2024-09-20,89.00,Refund - returned running shoes,ACC-001
+2024-09-21,-67.30,Fuel station,ACC-001
+2024-09-21,-61.80,Restaurant - tapas,ACC-001
+2024-09-22,-312.00,Car insurance (semi-annual),ACC-001
+2024-09-24,-47.22,Groceries - supermarket,ACC-001
+2024-09-25,2230.00,Salary deposit,ACC-001
+2024-09-26,-393.40,Transfer to savings,ACC-001
+2024-09-28,162.00,Dividend payment - shares,ACC-001
+2024-09-30,-63.34,Groceries - supermarket,ACC-001
+2024-10-01,-29.99,Gym membership,ACC-001
+2024-10-01,-875.00,Monthly rent,ACC-001
+2024-10-03,-94.96,Groceries - supermarket,ACC-001
+2024-10-04,-5.33,Coffee shop,ACC-001
+2024-10-05,-92.34,Electricity bill,ACC-001
+2024-10-05,-48.50,Restaurant - lunch,ACC-001
+2024-10-07,-43.65,Fuel station,ACC-001
+2024-10-08,-39.50,Water bill,ACC-001
+2024-10-10,-86.31,Groceries - supermarket,ACC-001
+2024-10-10,-39.99,Internet bill,ACC-001
+2024-10-11,-5.21,Coffee shop,ACC-001
+2024-10-12,-12.99,Netflix subscription,ACC-001
+2024-10-15,-25.00,Phone bill,ACC-001
+2024-10-17,-93.36,Groceries - supermarket,ACC-001
+2024-10-18,-9.99,Spotify subscription,ACC-001
+2024-10-19,-32.00,Halloween costume,ACC-001
+2024-10-20,-184.20,Health insurance,ACC-001
+2024-10-21,-54.51,Fuel station,ACC-001
+2024-10-24,-91.10,Groceries - supermarket,ACC-001
+2024-10-25,2230.00,Salary deposit,ACC-001
+2024-10-26,-310.12,Transfer to savings,ACC-001
+2024-10-27,-7.36,Coffee shop,ACC-001
+2024-10-30,-86.98,Groceries - supermarket,ACC-001
+2024-11-01,-29.99,Gym membership,ACC-001
+2024-11-01,-875.00,Monthly rent,ACC-001
+2024-11-02,-189.00,Car repair - brakes,ACC-001
+2024-11-03,-94.76,Groceries - supermarket,ACC-001
+2024-11-04,-7.16,Coffee shop,ACC-001
+2024-11-05,-103.08,Electricity bill,ACC-001
+2024-11-06,-9.85,Pharmacy,ACC-001
+2024-11-07,-70.94,Fuel station,ACC-001
+2024-11-10,-71.46,Groceries - supermarket,ACC-001
+2024-11-10,-39.99,Internet bill,ACC-001
+2024-11-11,-6.30,Coffee shop,ACC-001
+2024-11-12,-12.99,Netflix subscription,ACC-001
+2024-11-15,12.99,Netflix subscription refund,ACC-001
+2024-11-15,-25.00,Phone bill,ACC-001
+2024-11-16,-58.90,Restaurant - Mexican,ACC-001
+2024-11-17,-80.08,Groceries - supermarket,ACC-001
+2024-11-18,-9.99,Spotify subscription,ACC-001
+2024-11-19,-7.72,Coffee shop,ACC-001
+2024-11-20,-184.20,Health insurance,ACC-001
+2024-11-21,-57.69,Fuel station,ACC-001
+2024-11-24,-50.20,Groceries - supermarket,ACC-001
+2024-11-25,2230.00,Salary deposit,ACC-001
+2024-11-26,-491.46,Transfer to savings,ACC-001
+2024-11-27,-8.29,Coffee shop,ACC-001
+2024-11-30,-57.73,Groceries - supermarket,ACC-001
+2024-12-01,-165.00,Christmas decorations and tree,ACC-001
+2024-12-01,-29.99,Gym membership,ACC-001
+2024-12-01,-875.00,Monthly rent,ACC-001
+2024-12-03,-91.90,Groceries - supermarket,ACC-001
+2024-12-04,-4.58,Coffee shop,ACC-001
+2024-12-05,-116.82,Electricity bill,ACC-001
+2024-12-07,-285.40,Christmas gifts - family,ACC-001
+2024-12-07,-60.35,Fuel station,ACC-001
+2024-12-08,-42.62,Water bill,ACC-001
+2024-12-10,-72.19,Groceries - supermarket,ACC-001
+2024-12-10,-39.99,Internet bill,ACC-001
+2024-12-11,-4.87,Coffee shop,ACC-001
+2024-12-12,-12.99,Netflix subscription,ACC-001
+2024-12-14,-142.00,Christmas gifts - friends,ACC-001
+2024-12-15,-25.00,Phone bill,ACC-001
+2024-12-17,-72.68,Groceries - supermarket,ACC-001
+2024-12-18,-9.99,Spotify subscription,ACC-001
+2024-12-19,-3.89,Coffee shop,ACC-001
+2024-12-20,620.00,Annual bonus,ACC-001
+2024-12-20,-184.20,Health insurance,ACC-001
+2024-12-21,-57.22,Fuel station,ACC-001
+2024-12-22,-78.30,Restaurant - Christmas dinner,ACC-001
+2024-12-24,-44.11,Groceries - supermarket,ACC-001
+2024-12-25,2230.00,Salary deposit,ACC-001
+2024-12-26,-380.76,Transfer to savings,ACC-001
+2024-12-27,-5.62,Coffee shop,ACC-001
+2024-12-27,-420.00,Ski trip - cabin rental,ACC-001
+2024-12-28,162.00,Dividend payment - shares,ACC-001
+2024-12-28,-180.00,Ski trip - lift passes,ACC-001
+2024-12-29,-65.00,Ski trip - equipment rental,ACC-001
+2024-12-29,-95.40,Ski trip - restaurant,ACC-001
+2024-12-30,-46.35,Groceries - supermarket,ACC-001
+2024-12-30,-78.20,Ski trip - dinner,ACC-001
+2025-01-01,-29.99,Gym membership,ACC-001
+2025-01-01,-875.00,Monthly rent,ACC-001
+2025-01-02,650.00,Rental income - apartment,ACC-001
+2025-01-02,-44.00,Ski trip - fuel and snacks,ACC-001
+2025-01-03,-74.92,Groceries - supermarket,ACC-001
+2025-01-04,-4.49,Coffee shop,ACC-001
+2025-01-05,-123.23,Electricity bill,ACC-001
+2025-01-07,-42.50,Fuel station,ACC-001
+2025-01-10,-71.84,Groceries - supermarket,ACC-001
+2025-01-10,-39.99,Internet bill,ACC-001
+2025-01-11,-5.52,Coffee shop,ACC-001
+2025-01-12,-12.99,Netflix subscription,ACC-001
+2025-01-15,-25.00,Phone bill,ACC-001
+2025-01-17,-47.30,Groceries - supermarket,ACC-001
+2025-01-18,-28.00,Birthday cake,ACC-001
+2025-01-18,-92.50,Restaurant - birthday dinner,ACC-001
+2025-01-18,-9.99,Spotify subscription,ACC-001
+2025-01-19,-4.80,Coffee shop,ACC-001
+2025-01-20,-191.40,Health insurance,ACC-001
+2025-01-21,-49.87,Fuel station,ACC-001
+2025-01-24,-70.49,Groceries - supermarket,ACC-001
+2025-01-26,-301.86,Transfer to savings,ACC-001
+2025-01-27,2230.00,Salary deposit,ACC-001
+2025-01-30,-68.81,Groceries - supermarket,ACC-001
+2025-02-01,-29.99,Gym membership,ACC-001
+2025-02-01,-875.00,Monthly rent,ACC-001
+2025-02-02,650.00,Rental income - apartment,ACC-001
+2025-02-03,-91.38,Groceries - supermarket,ACC-001
+2025-02-04,-4.69,Coffee shop,ACC-001
+2025-02-05,-112.35,Electricity bill,ACC-001
+2025-02-07,-68.25,Fuel station,ACC-001
+2025-02-08,-58.40,Restaurant - lunch,ACC-001
+2025-02-08,-40.68,Water bill,ACC-001
+2025-02-10,-47.49,Groceries - supermarket,ACC-001
+2025-02-10,-39.99,Internet bill,ACC-001
+2025-02-11,-5.02,Coffee shop,ACC-001
+2025-02-12,-12.99,Netflix subscription,ACC-001
+2025-02-12,8.50,Pharmacy refund,ACC-001
+2025-02-14,-42.00,Flowers and chocolates,ACC-001
+2025-02-14,-86.20,Restaurant - Valentine's Day,ACC-001
+2025-02-15,-25.00,Phone bill,ACC-001
+2025-02-17,-88.54,Groceries - supermarket,ACC-001
+2025-02-18,-9.99,Spotify subscription,ACC-001
+2025-02-19,-7.72,Coffee shop,ACC-001
+2025-02-20,-191.40,Health insurance,ACC-001
+2025-02-21,-63.24,Fuel station,ACC-001
+2025-02-24,-56.02,Groceries - supermarket,ACC-001
+2025-02-25,2230.00,Salary deposit,ACC-001
+2025-02-26,-410.92,Transfer to savings,ACC-001
+2025-02-27,-4.53,Coffee shop,ACC-001
+2025-03-01,-720.00,Dentist - crown,ACC-001
+2025-03-01,-29.99,Gym membership,ACC-001
+2025-03-01,-875.00,Monthly rent,ACC-001
+2025-03-02,650.00,Rental income - apartment,ACC-001
+2025-03-03,-85.96,Groceries - supermarket,ACC-001
+2025-03-05,-90.61,Electricity bill,ACC-001
+2025-03-07,-43.49,Fuel station,ACC-001
+2025-03-10,-44.34,Groceries - supermarket,ACC-001
+2025-03-10,-39.99,Internet bill,ACC-001
+2025-03-11,-3.79,Coffee shop,ACC-001
+2025-03-12,-12.99,Netflix subscription,ACC-001
+2025-03-12,-23.73,Pharmacy,ACC-001
+2025-03-15,-25.00,Phone bill,ACC-001
+2025-03-17,-59.68,Groceries - supermarket,ACC-001
+2025-03-18,-9.99,Spotify subscription,ACC-001
+2025-03-20,-191.40,Health insurance,ACC-001
+2025-03-21,-53.02,Fuel station,ACC-001
+2025-03-22,-312.00,Car insurance (semi-annual),ACC-001
+2025-03-22,-65.30,Restaurant - Indian,ACC-001
+2025-03-24,-48.93,Groceries - supermarket,ACC-001
+2025-03-25,2230.00,Salary deposit,ACC-001
+2025-03-26,-426.86,Transfer to savings,ACC-001
+2025-03-27,-3.99,Coffee shop,ACC-001
+2025-03-28,178.00,Dividend payment - shares,ACC-001
+2025-03-30,-93.93,Groceries - supermarket,ACC-001
+2025-04-01,-29.99,Gym membership,ACC-001
+2025-04-01,-875.00,Monthly rent,ACC-001
+2025-04-02,650.00,Rental income - apartment,ACC-001
+2025-04-03,-89.65,Groceries - supermarket,ACC-001
+2025-04-05,-185.00,Concert tickets - festival,ACC-001
+2025-04-05,-79.78,Electricity bill,ACC-001
+2025-04-07,-46.48,Fuel station,ACC-001
+2025-04-08,-35.27,Water bill,ACC-001
+2025-04-10,-84.19,Groceries - supermarket,ACC-001
+2025-04-10,-39.99,Internet bill,ACC-001
+2025-04-12,-12.99,Netflix subscription,ACC-001
+2025-04-15,31.20,Credit card cashback,ACC-001
+2025-04-15,-25.00,Phone bill,ACC-001
+2025-04-17,-87.62,Groceries - supermarket,ACC-001
+2025-04-18,-9.99,Spotify subscription,ACC-001
+2025-04-19,-6.49,Coffee shop,ACC-001
+2025-04-19,-72.00,Restaurant - Easter brunch,ACC-001
+2025-04-20,-191.40,Health insurance,ACC-001
+2025-04-21,-41.49,Fuel station,ACC-001
+2025-04-24,-89.64,Groceries - supermarket,ACC-001
+2025-04-25,2230.00,Salary deposit,ACC-001
+2025-04-26,-361.65,Transfer to savings,ACC-001
+2025-04-27,-8.13,Coffee shop,ACC-001
+2025-04-30,-53.13,Groceries - supermarket,ACC-001
+2025-05-01,-29.99,Gym membership,ACC-001
+2025-05-01,-875.00,Monthly rent,ACC-001
+2025-05-02,650.00,Rental income - apartment,ACC-001
+2025-05-03,-88.72,Groceries - supermarket,ACC-001
+2025-05-03,-94.00,Mother's Day - gift and dinner,ACC-001
+2025-05-05,-77.71,Electricity bill,ACC-001
+2025-05-07,-65.28,Fuel station,ACC-001
+2025-05-10,-43.31,Groceries - supermarket,ACC-001
+2025-05-10,-39.99,Internet bill,ACC-001
+2025-05-11,-7.37,Coffee shop,ACC-001
+2025-05-12,-12.99,Netflix subscription,ACC-001
+2025-05-15,-25.00,Phone bill,ACC-001
+2025-05-17,-81.04,Groceries - supermarket,ACC-001
+2025-05-17,-58.40,Restaurant - tapas,ACC-001
+2025-05-18,-9.99,Spotify subscription,ACC-001
+2025-05-19,-7.82,Coffee shop,ACC-001
+2025-05-20,-191.40,Health insurance,ACC-001
+2025-05-21,-67.38,Fuel station,ACC-001
+2025-05-24,-59.61,Groceries - supermarket,ACC-001
+2025-05-25,78.00,Medical expense reimbursement,ACC-001
+2025-05-26,2230.00,Salary deposit,ACC-001
+2025-05-26,-462.15,Transfer to savings,ACC-001
+2025-05-27,-32.80,Pharmacy,ACC-001
+2025-05-30,-91.33,Groceries - supermarket,ACC-001
+2025-06-01,-29.99,Gym membership,ACC-001
+2025-06-01,-875.00,Monthly rent,ACC-001
+2025-06-01,415.00,Tax refund,ACC-001
+2025-06-02,650.00,Rental income - apartment,ACC-001
+2025-06-03,-53.81,Groceries - supermarket,ACC-001
+2025-06-04,-6.80,Coffee shop,ACC-001
+2025-06-05,-62.20,Electricity bill,ACC-001
+2025-06-07,-64.29,Fuel station,ACC-001
+2025-06-08,-42.21,Water bill,ACC-001
+2025-06-10,-76.98,Groceries - supermarket,ACC-001
+2025-06-10,-39.99,Internet bill,ACC-001
+2025-06-12,-12.99,Netflix subscription,ACC-001
+2025-06-14,-820.00,New phone,ACC-001
+2025-06-15,-25.00,Phone bill,ACC-001
+2025-06-17,-63.12,Groceries - supermarket,ACC-001
+2025-06-18,-9.99,Spotify subscription,ACC-001
+2025-06-19,-3.35,Coffee shop,ACC-001
+2025-06-19,-33.99,Pharmacy,ACC-001
+2025-06-20,-191.40,Health insurance,ACC-001
+2025-06-21,-49.94,Fuel station,ACC-001
+2025-06-22,22.00,Water bill refund,ACC-001
+2025-06-24,-56.77,Groceries - supermarket,ACC-001
+2025-06-25,2230.00,Salary deposit,ACC-001
+2025-06-26,-474.26,Transfer to savings,ACC-001
+2025-06-28,178.00,Dividend payment - shares,ACC-001
+2025-06-28,-68.20,Restaurant - sushi,ACC-001
+2025-06-30,-45.68,Groceries - supermarket,ACC-001
+2025-07-01,-29.99,Gym membership,ACC-001
+2025-07-01,-875.00,Monthly rent,ACC-001
+2025-07-02,650.00,Rental income - apartment,ACC-001
+2025-07-03,-65.03,Groceries - supermarket,ACC-001
+2025-07-04,-6.96,Coffee shop,ACC-001
+2025-07-05,-59.19,Electricity bill,ACC-001
+2025-07-07,-51.10,Fuel station,ACC-001
+2025-07-10,-540.00,Flights to Lisbon,ACC-001
+2025-07-10,-80.61,Groceries - supermarket,ACC-001
+2025-07-10,-39.99,Internet bill,ACC-001
+2025-07-11,-8.11,Coffee shop,ACC-001
+2025-07-12,-12.99,Netflix subscription,ACC-001
+2025-07-15,-25.00,Phone bill,ACC-001
+2025-07-17,-58.62,Groceries - supermarket,ACC-001
+2025-07-18,-980.00,Hotel - Lisbon (5 nights),ACC-001
+2025-07-18,-9.99,Spotify subscription,ACC-001
+2025-07-19,-7.01,Coffee shop,ACC-001
+2025-07-19,-78.40,Holiday - restaurant Alfama,ACC-001
+2025-07-20,-191.40,Health insurance,ACC-001
+2025-07-20,-62.10,Holiday - tram and museum,ACC-001
+2025-07-21,-57.60,Fuel station,ACC-001
+2025-07-21,-104.50,Holiday - dinner Belem,ACC-001
+2025-07-22,-85.00,Holiday - day trip Sintra,ACC-001
+2025-07-23,-58.00,Holiday - taxi to airport,ACC-001
+2025-07-24,-74.13,Groceries - supermarket,ACC-001
+2025-07-25,2310.00,Salary deposit,ACC-001
+2025-07-26,-321.68,Transfer to savings,ACC-001
+2025-07-30,-69.11,Groceries - supermarket,ACC-001
+2025-08-01,-29.99,Gym membership,ACC-001
+2025-08-01,-905.00,Monthly rent,ACC-001
+2025-08-02,650.00,Rental income - apartment,ACC-001
+2025-08-03,-59.50,Groceries - supermarket,ACC-001
+2025-08-04,-4.77,Coffee shop,ACC-001
+2025-08-05,-63.37,Electricity bill,ACC-001
+2025-08-07,-48.52,Fuel station,ACC-001
+2025-08-08,-34.70,Water bill,ACC-001
+2025-08-09,-46.80,Restaurant - lunch,ACC-001
+2025-08-10,-58.64,Groceries - supermarket,ACC-001
+2025-08-10,-39.99,Internet bill,ACC-001
+2025-08-10,35.00,Mobile carrier rebate,ACC-001
+2025-08-11,-5.43,Coffee shop,ACC-001
+2025-08-12,-12.99,Netflix subscription,ACC-001
+2025-08-15,-25.00,Phone bill,ACC-001
+2025-08-17,-86.94,Groceries - supermarket,ACC-001
+2025-08-18,-9.99,Spotify subscription,ACC-001
+2025-08-20,-191.40,Health insurance,ACC-001
+2025-08-21,-51.89,Fuel station,ACC-001
+2025-08-23,-72.40,Restaurant - friend's birthday,ACC-001
+2025-08-24,-80.15,Groceries - supermarket,ACC-001
+2025-08-25,2310.00,Salary deposit,ACC-001
+2025-08-26,-432.85,Transfer to savings,ACC-001
+2025-08-27,-7.98,Coffee shop,ACC-001
+2025-08-30,-57.92,Groceries - supermarket,ACC-001
+2025-09-01,-29.99,Gym membership,ACC-001
+2025-09-01,-905.00,Monthly rent,ACC-001
+2025-09-02,650.00,Rental income - apartment,ACC-001
+2025-09-03,-42.02,Groceries - supermarket,ACC-001
+2025-09-04,-5.71,Coffee shop,ACC-001
+2025-09-05,-71.61,Electricity bill,ACC-001
+2025-09-06,-128.00,New autumn jacket,ACC-001
+2025-09-07,-53.81,Fuel station,ACC-001
+2025-09-10,-57.21,Groceries - supermarket,ACC-001
+2025-09-10,-39.99,Internet bill,ACC-001
+2025-09-12,-12.99,Netflix subscription,ACC-001
+2025-09-15,-25.00,Phone bill,ACC-001
+2025-09-15,30.00,Restaurant - Italian refund,ACC-001
+2025-09-17,-64.78,Groceries - supermarket,ACC-001
+2025-09-18,-9.99,Spotify subscription,ACC-001
+2025-09-20,-191.40,Health insurance,ACC-001
+2025-09-20,-54.30,Restaurant - Italian,ACC-001
+2025-09-21,-53.03,Fuel station,ACC-001
+2025-09-22,-312.00,Car insurance (semi-annual),ACC-001
+2025-09-24,-72.74,Groceries - supermarket,ACC-001
+2025-09-25,2310.00,Salary deposit,ACC-001
+2025-09-26,-409.59,Transfer to savings,ACC-001
+2025-09-27,-3.65,Coffee shop,ACC-001
+2025-09-28,195.00,Dividend payment - shares,ACC-001
+2025-09-30,-76.70,Groceries - supermarket,ACC-001
+2025-10-01,-29.99,Gym membership,ACC-001
+2025-10-01,-905.00,Monthly rent,ACC-001
+2025-10-02,650.00,Rental income - apartment,ACC-001
+2025-10-03,-81.81,Groceries - supermarket,ACC-001
+2025-10-05,-89.60,Electricity bill,ACC-001
+2025-10-07,-46.32,Fuel station,ACC-001
+2025-10-08,25.00,Doctor visit reimbursement,ACC-001
+2025-10-08,-37.35,Water bill,ACC-001
+2025-10-10,-77.66,Groceries - supermarket,ACC-001
+2025-10-10,-39.99,Internet bill,ACC-001
+2025-10-11,-5.40,Coffee shop,ACC-001
+2025-10-11,-62.00,Restaurant - Thai,ACC-001
+2025-10-12,-12.99,Netflix subscription,ACC-001
+2025-10-15,-25.00,Phone bill,ACC-001
+2025-10-17,-53.91,Groceries - supermarket,ACC-001
+2025-10-18,-9.99,Spotify subscription,ACC-001
+2025-10-19,-4.23,Coffee shop,ACC-001
+2025-10-20,-191.40,Health insurance,ACC-001
+2025-10-21,-54.15,Fuel station,ACC-001
+2025-10-21,-26.57,Pharmacy,ACC-001
+2025-10-24,-52.55,Groceries - supermarket,ACC-001
+2025-10-25,-38.40,Halloween party supplies,ACC-001
+2025-10-26,-463.68,Transfer to savings,ACC-001
+2025-10-27,-5.82,Coffee shop,ACC-001
+2025-10-27,2310.00,Salary deposit,ACC-001
+2025-10-30,-43.29,Groceries - supermarket,ACC-001
+2025-11-01,-29.99,Gym membership,ACC-001
+2025-11-01,-905.00,Monthly rent,ACC-001
+2025-11-02,650.00,Rental income - apartment,ACC-001
+2025-11-03,-88.93,Groceries - supermarket,ACC-001
+2025-11-05,-108.71,Electricity bill,ACC-001
+2025-11-07,-53.79,Fuel station,ACC-001
+2025-11-08,-245.00,Car service - annual,ACC-001
+2025-11-10,-83.26,Groceries - supermarket,ACC-001
+2025-11-10,-39.99,Internet bill,ACC-001
+2025-11-11,-3.91,Coffee shop,ACC-001
+2025-11-12,-12.99,Netflix subscription,ACC-001
+2025-11-15,27.80,Credit card cashback,ACC-001
+2025-11-15,-25.00,Phone bill,ACC-001
+2025-11-17,-53.60,Groceries - supermarket,ACC-001
+2025-11-18,-9.99,Spotify subscription,ACC-001
+2025-11-19,-6.01,Coffee shop,ACC-001
+2025-11-20,-191.40,Health insurance,ACC-001
+2025-11-21,-56.95,Fuel station,ACC-001
+2025-11-22,-69.20,Restaurant - lunch,ACC-001
+2025-11-24,-84.62,Groceries - supermarket,ACC-001
+2025-11-25,2310.00,Salary deposit,ACC-001
+2025-11-26,-472.09,Transfer to savings,ACC-001
+2025-11-27,-4.88,Coffee shop,ACC-001
+2025-11-30,-78.88,Groceries - supermarket,ACC-001
+2025-12-01,-178.00,Christmas decorations,ACC-001
+2025-12-01,-29.99,Gym membership,ACC-001
+2025-12-01,-905.00,Monthly rent,ACC-001
+2025-12-02,650.00,Rental income - apartment,ACC-001
+2025-12-03,-64.62,Groceries - supermarket,ACC-001
+2025-12-05,-121.31,Electricity bill,ACC-001
+2025-12-06,-310.50,Christmas gifts - family,ACC-001
+2025-12-07,-53.30,Fuel station,ACC-001
+2025-12-08,-42.15,Water bill,ACC-001
+2025-12-10,-90.06,Groceries - supermarket,ACC-001
+2025-12-10,-39.99,Internet bill,ACC-001
+2025-12-11,-7.32,Coffee shop,ACC-001
+2025-12-11,-16.63,Pharmacy,ACC-001
+2025-12-12,-12.99,Netflix subscription,ACC-001
+2025-12-13,-156.00,Christmas gifts - friends,ACC-001
+2025-12-15,-25.00,Phone bill,ACC-001
+2025-12-17,-65.63,Groceries - supermarket,ACC-001
+2025-12-18,-9.99,Spotify subscription,ACC-001
+2025-12-19,720.00,Annual bonus,ACC-001
+2025-12-19,-4.47,Coffee shop,ACC-001
+2025-12-20,-191.40,Health insurance,ACC-001
+2025-12-21,-63.56,Fuel station,ACC-001
+2025-12-23,-94.60,Restaurant - Christmas dinner,ACC-001
+2025-12-24,-50.44,Groceries - supermarket,ACC-001
+2025-12-25,2310.00,Salary deposit,ACC-001
+2025-12-26,-478.40,Transfer to savings,ACC-001
+2025-12-27,-6.98,Coffee shop,ACC-001
+2025-12-28,195.00,Dividend payment - shares,ACC-001
+2025-12-30,-87.66,Groceries - supermarket,ACC-001
+2025-12-31,-58.00,New Year supplies,ACC-001
+2026-01-01,-29.99,Gym membership,ACC-001
+2026-01-01,-905.00,Monthly rent,ACC-001
+2026-01-02,650.00,Rental income - apartment,ACC-001
+2026-01-03,-54.26,Groceries - supermarket,ACC-001
+2026-01-04,-5.43,Coffee shop,ACC-001
+2026-01-05,-118.48,Electricity bill,ACC-001
+2026-01-07,-56.45,Fuel station,ACC-001
+2026-01-10,-78.78,Groceries - supermarket,ACC-001
+2026-01-10,-39.99,Internet bill,ACC-001
+2026-01-12,-12.99,Netflix subscription,ACC-001
+2026-01-15,-25.00,Phone bill,ACC-001
+2026-01-17,-79.44,Groceries - supermarket,ACC-001
+2026-01-17,-98.40,Restaurant - birthday dinner,ACC-001
+2026-01-18,-9.99,Spotify subscription,ACC-001
+2026-01-19,-6.89,Coffee shop,ACC-001
+2026-01-20,-197.80,Health insurance,ACC-001
+2026-01-21,-52.14,Fuel station,ACC-001
+2026-01-22,29.99,Gym membership refund,ACC-001
+2026-01-24,-45.40,Groceries - supermarket,ACC-001
+2026-01-26,2380.00,Salary deposit,ACC-001
+2026-01-26,-327.67,Transfer to savings,ACC-001
+2026-01-30,-63.60,Groceries - supermarket,ACC-001
+2026-02-01,-29.99,Gym membership,ACC-001
+2026-02-01,-905.00,Monthly rent,ACC-001
+2026-02-02,650.00,Rental income - apartment,ACC-001
+2026-02-03,-81.93,Groceries - supermarket,ACC-001
+2026-02-04,-4.37,Coffee shop,ACC-001
+2026-02-05,-110.56,Electricity bill,ACC-001
+2026-02-07,-63.42,Fuel station,ACC-001
+2026-02-08,-34.06,Water bill,ACC-001
+2026-02-10,-87.23,Groceries - supermarket,ACC-001
+2026-02-10,-39.99,Internet bill,ACC-001
+2026-02-11,-5.51,Coffee shop,ACC-001
+2026-02-11,-62.30,Restaurant - Asian fusion,ACC-001
+2026-02-12,-12.99,Netflix subscription,ACC-001
+2026-02-14,-48.00,Flowers and gift,ACC-001
+2026-02-14,-92.50,Restaurant - Valentine's Day,ACC-001
+2026-02-15,-32.83,Pharmacy,ACC-001
+2026-02-15,-25.00,Phone bill,ACC-001
+2026-02-17,-92.53,Groceries - supermarket,ACC-001
+2026-02-18,-9.99,Spotify subscription,ACC-001
+2026-02-19,-4.98,Coffee shop,ACC-001
+2026-02-20,-197.80,Health insurance,ACC-001
+2026-02-21,-56.57,Fuel station,ACC-001
+2026-02-24,-64.21,Groceries - supermarket,ACC-001
+2026-02-25,2380.00,Salary deposit,ACC-001
+2026-02-26,-370.35,Transfer to savings,ACC-001
+2026-02-27,-5.34,Coffee shop,ACC-001
+2026-02-28,55.00,Electricity rebate,ACC-001
+2026-03-01,-29.99,Gym membership,ACC-001
+2026-03-01,-905.00,Monthly rent,ACC-001
+2026-03-02,650.00,Rental income - apartment,ACC-001
+2026-03-03,-90.07,Groceries - supermarket,ACC-001
+2026-03-04,-4.93,Coffee shop,ACC-001
+2026-03-05,-101.77,Electricity bill,ACC-001
+2026-03-07,-450.00,Eye exam and new glasses,ACC-001
+2026-03-07,-67.47,Fuel station,ACC-001
+2026-03-10,-73.37,Groceries - supermarket,ACC-001
+2026-03-10,-39.99,Internet bill,ACC-001
+2026-03-11,-4.99,Coffee shop,ACC-001
+2026-03-12,-12.99,Netflix subscription,ACC-001
+2026-03-15,-25.00,Phone bill,ACC-001
+2026-03-17,-77.14,Groceries - supermarket,ACC-001
+2026-03-18,20.00,Internet bill refund,ACC-001
+2026-03-18,-9.99,Spotify subscription,ACC-001
+2026-03-20,-197.80,Health insurance,ACC-001
+2026-03-21,-44.18,Fuel station,ACC-001
+2026-03-21,-58.20,Restaurant - brunch,ACC-001
+2026-03-22,-312.00,Car insurance (semi-annual),ACC-001
+2026-03-24,-46.45,Groceries - supermarket,ACC-001
+2026-03-25,2380.00,Salary deposit,ACC-001
+2026-03-26,-406.82,Transfer to savings,ACC-001
+2026-03-27,-8.24,Coffee shop,ACC-001
+2026-03-28,210.00,Dividend payment - shares,ACC-001
+2026-03-30,-64.72,Groceries - supermarket,ACC-001
+2026-04-01,-29.99,Gym membership,ACC-001
+2026-04-01,-905.00,Monthly rent,ACC-001
+2026-04-02,650.00,Rental income - apartment,ACC-001
+2026-04-03,-310.00,Flights to Barcelona,ACC-001
+2026-04-03,-44.76,Groceries - supermarket,ACC-001
+2026-04-04,-7.65,Coffee shop,ACC-001
+2026-04-05,-88.02,Electricity bill,ACC-001
+2026-04-07,-39.37,Fuel station,ACC-001
+2026-04-08,-38.70,Water bill,ACC-001
+2026-04-10,-92.45,Groceries - supermarket,ACC-001
+2026-04-10,-580.00,Hotel - Barcelona (4 nights),ACC-001
+2026-04-10,-39.99,Internet bill,ACC-001
+2026-04-11,-4.46,Coffee shop,ACC-001
+2026-04-11,-72.00,Holiday - tapas dinner,ACC-001
+2026-04-12,-48.50,Holiday - Sagrada Familia tickets,ACC-001
+2026-04-12,-12.99,Netflix subscription,ACC-001
+2026-04-13,-94.20,Holiday - paella restaurant,ACC-001
+2026-04-14,-38.00,Holiday - taxi to airport,ACC-001
+2026-04-15,-25.00,Phone bill,ACC-001
+2026-04-17,-53.88,Groceries - supermarket,ACC-001
+2026-04-18,-9.99,Spotify subscription,ACC-001
+2026-04-19,-3.81,Coffee shop,ACC-001
+2026-04-20,-197.80,Health insurance,ACC-001
+2026-04-21,-39.06,Fuel station,ACC-001
+2026-04-24,-45.64,Groceries - supermarket,ACC-001
+2026-04-25,-65.40,Restaurant - lunch,ACC-001
+2026-04-26,-449.80,Transfer to savings,ACC-001
+2026-04-27,2380.00,Salary deposit,ACC-001
+2026-04-30,-92.74,Groceries - supermarket,ACC-001

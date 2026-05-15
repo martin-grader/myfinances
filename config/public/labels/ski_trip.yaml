@@ -1,0 +1,13 @@
+label: ski_trip
+sublabels:
+  lodging:
+    - "Ski trip - cabin rental"
+  lift_passes:
+    - "Ski trip - lift passes"
+  equipment:
+    - "Ski trip - equipment rental"
+  dining:
+    - "Ski trip - dinner"
+    - "Ski trip - restaurant"
+  fuel_and_snacks:
+    - "Ski trip - fuel and snacks"

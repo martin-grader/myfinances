@@ -28,6 +28,9 @@ def monthly_costs(df_all_labels) -> MonthlyCosts:
     return MonthlyCosts(df_all_labels, 1)
 
 
-def test_monthly_costs_regression(monthly_costs) -> None:
-    np.testing.assert_equal(monthly_costs.calculate_sum_negative_transactions(), -1300.0)
-    np.testing.assert_equal(monthly_costs.calculate_sum_positive_transactions(), 5300.0)
+def test_monthly_costs_negative_transactions_regression(monthly_costs) -> None:
+    np.testing.assert_equal(monthly_costs.calculate_sum_negative_transactions(), -182965.09)
+
+
+def test_monthly_costs_positive_transactions_regression(monthly_costs) -> None:
+    np.testing.assert_equal(monthly_costs.calculate_sum_positive_transactions(), 193220.49)

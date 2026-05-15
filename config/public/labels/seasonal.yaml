@@ -1,0 +1,17 @@
+label: seasonal
+sublabels:
+  christmas_decor:
+    - "Christmas tree and decorations"
+    - "Christmas decorations"
+ #   - "Christmas decorations and tree"
+  halloween:
+    - "Halloween "
+  new_year:
+    - "New Year "
+  holiday_meals:
+    - "Restaurant - Christmas dinner"
+    - "Restaurant - Easter brunch"
+    - "Restaurant - Valentine's Day"
+    - "Restaurant - holiday dinner"
+    - "Restaurant - birthday dinner"
+    - "Restaurant - friend's birthday"

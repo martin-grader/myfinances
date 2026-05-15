@@ -1,0 +1,7 @@
+label: passive_income
+is_income: True
+sublabels:
+  dividends:
+    - "Dividend payment - shares"
+  rental_income:
+    - "Rental income - apartment"

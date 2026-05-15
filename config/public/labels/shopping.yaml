@@ -1,0 +1,14 @@
+label: shopping
+sublabels:
+  clothing:
+    - "Winter coat"
+    - "New autumn jacket"
+    - "New running shoes and sportswear"
+  electronics:
+    - "New phone"
+    - "Laptop replacement"
+  cashback:
+    - "Credit card cashback"
+  refunds:
+    - "Refund - returned coat"
+    - "Refund - returned running shoes"

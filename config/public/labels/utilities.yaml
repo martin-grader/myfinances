@@ -1,0 +1,13 @@
+label: utilities
+sublabels:
+  electricity:
+    - "Electricity bill"
+  water:
+    - "Water bill"
+  internet:
+    - "Internet bill"
+  phone:
+    - "Phone bill"
+  rebates:
+    - "Electricity rebate"
+    - "Mobile carrier rebate"

@@ -1,0 +1,20 @@
+label: food
+sublabels:
+  groceries:
+    - "Groceries"
+  coffee:
+    - "Coffee shop"
+  restaurants:
+    - "Restaurant - Asian fusion"
+    - "Restaurant - Indian"
+    - "Restaurant - Italian"
+    - "Restaurant - Mexican"
+    - "Restaurant - Sushi Hana"
+    - "Restaurant - Thai"
+    - "Restaurant - Trattoria Verde"
+    - "Restaurant - brunch"
+    - "Restaurant - lunch"
+    - "Restaurant - sushi"
+    - "Restaurant - tapas"
+  birthday_cake:
+    - "Birthday cake"

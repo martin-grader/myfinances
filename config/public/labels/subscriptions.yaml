@@ -1,0 +1,7 @@
+label: subscriptions
+sublabels:
+  streaming:
+    - "Netflix subscription"
+    - "Spotify subscription"
+  gym:
+    - "Gym membership"

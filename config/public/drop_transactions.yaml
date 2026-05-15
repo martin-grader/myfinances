@@ -1,5 +1,2 @@
 drop_transactions:
-  - 'gift'
-drop_car_transactions:
-  - 'car cleaning'
-  - 'car wash'
+  - 'Eye exam'

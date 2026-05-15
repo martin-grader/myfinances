@@ -1,0 +1,6 @@
+label: entertainment
+sublabels:
+  cinema:
+    - "Cinema tickets"
+  concerts:
+    - "Concert tickets"

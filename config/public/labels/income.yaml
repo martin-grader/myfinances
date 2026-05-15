@@ -1,7 +1,11 @@
-label: 'Income'
+label: income
+is_income: True
 sublabels:
-    Shares:
-      - 'Stock Options'
-      - 'Shares'
-    Salary:
-      - 'Salary from company'
+  salary:
+    - "Salary deposit"
+  bonus:
+    - "Annual bonus"
+  tax_refund:
+    - "Tax refund"
+  incoming_transfer:
+    - "Transfer from checking"

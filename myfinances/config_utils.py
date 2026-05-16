@@ -12,6 +12,7 @@ class LabelMinimal:
     Label: str
     Sublabel: str
     Amount: float = 0.0
+    IsIncome: bool = False
 
 
 @dataclass
@@ -20,6 +21,7 @@ class Label:
     Sublabel: str
     Identifier: str = ''
     Amount: float = 0.0
+    IsIncome: bool = False
 
 
 def load_yaml(file_to_load: Path) -> dict:
@@ -63,6 +65,7 @@ class AddConfig(BaseModel):
     Label: str
     Sublabel: str
     Amount: float
+    IsIncome: bool = False
 
 
 class AddLabels(TransactionLabelsPrototype):
@@ -72,11 +75,13 @@ class AddLabels(TransactionLabelsPrototype):
             to_add_config(add_candidate) for add_candidate in self.config.values()
         ]
         self.transactions: list[Label] = [
-            Label(add_config.Label, add_config.Sublabel, '', add_config.Amount)
+            Label(add_config.Label, add_config.Sublabel, '', add_config.Amount, add_config.IsIncome)
             for add_config in add_configs
         ]
         self.transactions_clean: list[LabelMinimal] = [
-            LabelMinimal(add_config.Label, add_config.Sublabel, add_config.Amount)
+            LabelMinimal(
+                add_config.Label, add_config.Sublabel, add_config.Amount, add_config.IsIncome
+            )
             for add_config in add_configs
         ]
 

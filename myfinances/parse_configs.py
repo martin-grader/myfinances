@@ -17,21 +17,27 @@ class Configs(BaseModel):
 
 
 class ConfigPaths:
-    def __init__(self, configs: Configs) -> None:
-        self.inputs_config: Path = Path().cwd() / 'config' / configs.inputs_config
+    def __init__(self, configs: Configs, config_file: Path) -> None:
+        self._config_directory: Path = config_file.parent
+        self.inputs_config: Path = self.absolute_path(configs.inputs_config)
         self.label_configs: list[Path] = get_all_label_configs(
-            Path().cwd() / 'config' / configs.label_config_root
+            self.absolute_path(configs.label_config_root)
         )
-        self.rename_config: Path = Path().cwd() / 'config' / configs.rename_transactions_config
-        self.drop_transactions_config: Path = (
-            Path().cwd() / 'config' / configs.drop_transactions_config
-        )
+        self.rename_config: Path = self.absolute_path(configs.rename_transactions_config)
+        self.drop_transactions_config: Path = self.absolute_path(configs.drop_transactions_config)
         self.drop_configs: list[Path] = [
-            Path().cwd() / 'config' / drop_config for drop_config in configs.drop_configs
+            self.absolute_path(drop_config) for drop_config in configs.drop_configs
         ]
         self.add_configs: list[Path] = [
-            Path().cwd() / 'config' / add_config for add_config in configs.add_configs
+            self.absolute_path(add_config) for add_config in configs.add_configs
         ]
+
+    def absolute_path(self, candidate: str) -> Path:
+        path: Path = Path(candidate)
+        if path.is_absolute():
+            return path
+        else:
+            return Path(self._config_directory / candidate).absolute()
 
 
 def get_all_label_configs(labels_dir) -> list[Path]:
@@ -43,7 +49,7 @@ def get_all_label_configs(labels_dir) -> list[Path]:
 
 
 def parse_all_configs(config_file: str) -> ConfigPaths:
-    configs: dict = load_yaml(Path().cwd() / config_file)
+    configs: dict = load_yaml(Path(config_file))
     configs_checked: Configs = Configs(**configs)
-    config_paths: ConfigPaths = ConfigPaths(configs_checked)
+    config_paths: ConfigPaths = ConfigPaths(configs_checked, Path(config_file))
     return config_paths

@@ -1,8 +1,9 @@
 from pathlib import Path
+from typing import Annotated
 
 import yaml
 from loguru import logger as log
-from pydantic import BaseModel, TypeAdapter, ValidationError
+from pydantic import BaseModel, BeforeValidator, TypeAdapter, ValidationError
 from pydantic.dataclasses import dataclass
 
 
@@ -23,8 +24,23 @@ class Label:
 
 def load_yaml(file_to_load: Path) -> dict:
     with open(file_to_load, 'r') as file:
-        test = yaml.safe_load(file)
-    return test
+        raw: dict = yaml.safe_load(file)
+    return raw
+
+
+def ensure_path(value: str, info) -> list[Path] | Path:
+    base_dir: str = info.context['base']
+    return _resolve(value, base_dir)
+
+
+def _resolve(value: list[str] | str, base: str) -> list[Path] | Path:
+    if isinstance(value, list):
+        return [_resolve(x, base) for x in value]  # type: ignore
+    p = Path(value)
+    abs_path: Path = p if p.is_absolute() else base / p
+    if not abs_path.exists():
+        raise FileExistsError(abs_path)
+    return abs_path.resolve()
 
 
 class TransactionLabelsPrototype:
@@ -91,7 +107,7 @@ class RenameConfigs(BaseModel):
 
 class InputConfig(BaseModel):
     Account: str
-    Files: list[str]
+    Files: Annotated[list[Path], BeforeValidator(ensure_path)]
     Delimiter: str
     Decimal: str
     DateKey: str
@@ -104,7 +120,7 @@ def to_config(config_file: Path, config_definition):
     config: dict = load_yaml(config_file)
     ta = TypeAdapter(config_definition)
     try:
-        rename_config = ta.validate_python(config)
+        rename_config = ta.validate_python(config, context={'base': config_file.parent})
     except ValidationError as e:
         log.error(e.errors())
         raise

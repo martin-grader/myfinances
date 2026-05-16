@@ -1,6 +1,6 @@
 - Account: 'ACC-001'
   Files:
-    - 'data/public/bank_transactions_ACC-001.csv'
+    - '../../data/public/bank_transactions_ACC-001.csv'
   Delimiter: ','
   Decimal: '.'
   DateKey: 'date'
@@ -10,7 +10,7 @@
     - 'description'
 - Account: 'ACC-002'
   Files:
-    - 'data/public/bank_transactions_ACC-002.csv'
+    - '../../data/public/bank_transactions_ACC-002.csv'
   Delimiter: ','
   Decimal: '.'
   DateKey: 'date'

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 import pytest
 from pandera.typing import DataFrame
@@ -12,13 +14,13 @@ from myfinances.parse_configs import ConfigPaths, Configs
 def df_all_labels() -> DataFrame[TransactionLabeled]:
     configs: Configs = Configs(
         **{
-            'inputs_config': 'public/inputs.yaml',
-            'label_config_root': 'public/labels',
-            'rename_transactions_config': 'public/rename_transactions.yaml',
-            'drop_transactions_config': 'public/drop_transactions.yaml',
+            'inputs_config': '../config/public/inputs.yaml',
+            'label_config_root': '../config/public/labels',
+            'rename_transactions_config': '../config/public/rename_transactions.yaml',
+            'drop_transactions_config': '../config/public/drop_transactions.yaml',
         }  # type: ignore
     )
-    config_paths = ConfigPaths(configs)
+    config_paths = ConfigPaths(configs, Path(__file__))
     transactions_labled: DataFrame[TransactionLabeled] = get_labled_data(config_paths)
     return transactions_labled
 

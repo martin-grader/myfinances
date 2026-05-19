@@ -1,3 +1,5 @@
 transactions:
-- old_text: 'fuel'
-  new_text: 'diesel'
+- old_text: 'Fuel station'
+  new_text: 'Diesel'
+- old_text: 'Fuel station refund'
+  new_text: 'Diesel refund'

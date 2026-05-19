@@ -121,6 +121,16 @@ class InputConfig(BaseModel):
     TextKeys: list[str]
 
 
+class Configs(BaseModel):
+    inputs_config: Annotated[Path, BeforeValidator(ensure_path)]
+    label_configs: Annotated[list[Path], BeforeValidator(ensure_path)]
+
+    rename_transactions_config: Annotated[Path, BeforeValidator(ensure_path)] = Path()
+    drop_transactions_config: Annotated[Path, BeforeValidator(ensure_path)] = Path()
+    drop_configs: Annotated[list[Path], BeforeValidator(ensure_path)] = []
+    add_configs: Annotated[list[Path], BeforeValidator(ensure_path)] = []
+
+
 def to_config(config_file: Path, config_definition):
     config: dict = load_yaml(config_file)
     ta = TypeAdapter(config_definition)

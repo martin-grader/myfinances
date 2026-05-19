@@ -1,0 +1,20 @@
+inputs_config: 'public/inputs.yaml'
+label_configs:
+  - "public/labels/entertainment.yaml"
+  - "public/labels/food.yaml"
+  - "public/labels/gifts.yaml"
+  - "public/labels/health.yaml"
+  - "public/labels/housing.yaml"
+  - "public/labels/income.yaml"
+  - "public/labels/passive_income.yaml"
+  - "public/labels/seasonal.yaml"
+  - "public/labels/shopping.yaml"
+  - "public/labels/ski_trip.yaml"
+  - "public/labels/subscriptions.yaml"
+  - "public/labels/transfers.yaml"
+  - "public/labels/transportation.yaml"
+  - "public/labels/travel.yaml"
+  - "public/labels/utilities.yaml"
+
+rename_transactions_config: 'public/rename_transactions.yaml'
+drop_transactions_config: 'public/drop_transactions.yaml'

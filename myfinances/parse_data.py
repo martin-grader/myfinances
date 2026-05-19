@@ -20,8 +20,7 @@ def load_data(inputs_config: Path) -> DataFrame[Transaction]:
     inputs: list[InputConfig] = to_config(inputs_config, list[InputConfig])
     dfs: list[DataFrame[Transaction]] = []
     for input_config in inputs:
-        data_files: list[Path] = get_all_data_files(input_config)
-        for file in data_files:
+        for file in input_config.Files:
             df_raw: pd.DataFrame = load_generic(file, input_config.Delimiter, input_config.Decimal)
             date: pd.Series = parse_dates(df_raw, input_config.DateKey, input_config.DateFormat)
             text: pd.Series = parse_text(df_raw, input_config.TextKeys)
@@ -39,17 +38,6 @@ def load_data(inputs_config: Path) -> DataFrame[Transaction]:
     df: DataFrame[Transaction] = pd.concat(dfs)  # type: ignore
 
     return df
-
-
-def get_all_data_files(input_config: InputConfig) -> list[Path]:
-    all_data_files: list[Path] = []
-    for files in input_config.Files:
-        base_path: Path = Path().cwd() / Path(files).parent
-        file_name: str = Path(files).name
-        for file in base_path.rglob(file_name):
-            all_data_files.append(file)
-
-    return all_data_files
 
 
 def load_generic(file_name: Path, delimiter: str, decimal: str) -> pd.DataFrame:

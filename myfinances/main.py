@@ -1,16 +1,17 @@
 import sys
 from argparse import Namespace
+from pathlib import Path
 
 import pandas as pd
 from loguru import logger as log
 from pandera.typing import DataFrame
 
+from myfinances.config_utils import Configs, to_config
 from myfinances.dashboard import Dashboard
 from myfinances.drop_data import drop_data
 from myfinances.label_data import TransactionLabeled, set_all_labels
 from myfinances.monthly_costs import MonthlyCosts
 from myfinances.parse_arguments import get_parsed_arguments
-from myfinances.parse_configs import ConfigPaths, parse_all_configs
 from myfinances.parse_data import Transaction, load_data
 from myfinances.rename_transactions import rename_transactions
 
@@ -21,7 +22,7 @@ log.add(sys.stderr, level='INFO')
 
 def main() -> None:
     args: Namespace = get_parsed_arguments()
-    configs_paths: ConfigPaths = parse_all_configs(args.config)
+    configs_paths: Configs = to_config(Path(args.config), Configs)
 
     transactions_labled: DataFrame[TransactionLabeled] = get_labled_data(configs_paths)
 
@@ -46,7 +47,7 @@ def main() -> None:
 def get_labled_data(configs_paths) -> DataFrame[TransactionLabeled]:
     transactions_all: DataFrame[Transaction] = load_data(configs_paths.inputs_config)
     transactions_renamed: DataFrame[Transaction] = rename_transactions(
-        transactions_all, configs_paths.rename_config
+        transactions_all, configs_paths.rename_transactions_config
     )
     transactions_relevant: DataFrame[Transaction] = drop_data(
         transactions_renamed, configs_paths.drop_transactions_config

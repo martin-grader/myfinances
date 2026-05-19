@@ -4,23 +4,17 @@ import numpy as np
 import pytest
 from pandera.typing import DataFrame
 
+from myfinances.config_utils import Configs, to_config
 from myfinances.label_data import TransactionLabeled
 from myfinances.main import get_labled_data
 from myfinances.monthly_costs import MonthlyCosts
-from myfinances.parse_configs import ConfigPaths, Configs
 
 
 @pytest.fixture
 def df_all_labels() -> DataFrame[TransactionLabeled]:
-    configs: Configs = Configs(
-        **{
-            'inputs_config': '../config/public/inputs.yaml',
-            'label_config_root': '../config/public/labels',
-            'rename_transactions_config': '../config/public/rename_transactions.yaml',
-            'drop_transactions_config': '../config/public/drop_transactions.yaml',
-        }  # type: ignore
+    config_paths: Configs = to_config(
+        Path(__file__).parent / 'data/config/default_public.yaml', Configs
     )
-    config_paths = ConfigPaths(configs, Path(__file__))
     transactions_labled: DataFrame[TransactionLabeled] = get_labled_data(config_paths)
     return transactions_labled
 

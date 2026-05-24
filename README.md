@@ -39,6 +39,7 @@ Labeling (here: all yaml files in `config/public/labels`):
 This configuration allows to change the text of transactions. This might help categorization.
 <br>
 See the example <a href='https://github.com/martin-grader/myfinances/blob/main/config/public/rename_transactions.yaml'>configuration</a> (`config/public/rename_transactions.yaml`) on how to rename a wrongly named transaction.
+Note that string is compared basen on fullmatch.
 </details>
 
 <details>
@@ -52,7 +53,7 @@ See the example <a href='https://github.com/martin-grader/myfinances/blob/main/c
 Provides an overview of monthly expenses by label.
 
 May be adjusted to:
-Exclude transactions (here: `config/public/drop_candidates_future.yaml`)
+Exclude transactions by label (here: `config/public/drop_candidates_future.yaml`)
 Redefine amount of the transactions (here: `config/public/reset_candidates_future.yaml`)
 Add user defined transactions (here: `config/public/add_candidates_future.yaml`)
 

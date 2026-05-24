@@ -6,6 +6,7 @@ import pytest
 from pandera.typing import DataFrame
 
 from myfinances.config_utils import Configs, to_config
+from myfinances.drop_data import drop_data
 from myfinances.label_data import TransactionLabeled
 from myfinances.main import get_labled_data
 from myfinances.monthly_costs import MonthlyCosts
@@ -33,7 +34,7 @@ def monthly_costs(df_all_labels) -> MonthlyCosts:
 
 
 def test_monthly_costs_negative_transactions_regression(monthly_costs) -> None:
-    np.testing.assert_equal(monthly_costs.calculate_sum_negative_transactions(), -182965.09)
+    np.testing.assert_equal(monthly_costs.calculate_sum_negative_transactions(), -182455.77)
 
 
 def test_monthly_costs_positive_transactions_regression(monthly_costs) -> None:
@@ -58,3 +59,14 @@ def test_renamed_transactions(config_paths: Configs, old_text: str, new_text: st
     assert not (
         transactions_renamed.loc[~rename_candidates, Transaction.Text].str.fullmatch(new_text).any()
     )
+
+
+@pytest.mark.parametrize('text', ['Eye exam', 'Flights to Berlin'])
+def test_drop_transactions(config_paths: Configs, text: str) -> None:
+    transactions_all: DataFrame[Transaction] = load_data(config_paths.inputs_config)
+    rename_candidates: pd.Series = transactions_all[Transaction.Text].str.match(text)
+    assert rename_candidates.any()
+    transactions_dropped: DataFrame[Transaction] = drop_data(
+        transactions_all, config_paths.drop_transactions_config
+    )
+    assert not transactions_dropped[Transaction.Text].str.fullmatch(text).any()

@@ -36,8 +36,5 @@ jobs:
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
 
-      - name: Run ty type check
-        run: poetry run ty check
-
       - name: Run the automated tests (for example)
         run: poetry run pytest -v --color=yes

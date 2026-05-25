@@ -328,7 +328,7 @@ class Dashboard:
             fluid=True,
             className='dbc',
         )
-        (  # type: ignore
+        (
             self.app.callback(
                 dependencies.Input('reset-labels', 'n_clicks'),
                 output=[

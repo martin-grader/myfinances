@@ -63,7 +63,7 @@ class MonthlyCosts(MonthlyTransactions):
             .sum()
             .div(self.get_n_months_to_analyze())
             .sort_values()
-        )  # type: ignore
+        )
         return total_grouped_expenses
 
     def _sum_amount_by_sublabel(
@@ -75,7 +75,7 @@ class MonthlyCosts(MonthlyTransactions):
             .sum()
             .div(self.get_n_months_to_analyze())
             .sort_values()
-        )  # type: ignore
+        )
         return total_grouped_expenses
 
     def get_averaged_income_by_label(self) -> pd.api.typing.DataFrameGroupBy:

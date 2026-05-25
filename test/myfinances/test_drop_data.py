@@ -11,7 +11,10 @@ from myfinances.parse_data import Transaction
 @pytest.fixture
 def df_before() -> DataFrame[Transaction]:
     df_before: DataFrame[Transaction] = pd.DataFrame(
-        {Transaction.Text: ['-1', '1', '2', '3', '2'], 'b': ['-2', '4', '2', '6', '2']}
+        {
+            Transaction.Text: ['-1', '1', '2', '3', '2'],
+            'b': ['-2', '4', '2', '6', '2'],
+        }
     )  # type:ignore
     return df_before
 
@@ -47,13 +50,13 @@ def test_drop_data(df_before, monkeypatch) -> None:
 
 def test_drop_transaction_by_key_and_reason(df_before, monkeypatch, ser_bool) -> None:
     monkeypatch.setattr(dt, 'get_rows_by_string', mock_get_rows_by_string)
-    df_expected: pd.DataFrame = df_before.iloc[ser_bool[~ser_bool].index.values, :]  # type:ignore
+    df_expected: pd.DataFrame = df_before.iloc[ser_bool[~ser_bool].index.values, :]
     df: DataFrame[Transaction] = dt.drop_transaction_by_key_and_reason(df_before, '', '')
     pd.testing.assert_frame_equal(df, df_expected)
 
 
 def test_drop_by_bool(df_before, ser_bool) -> None:
-    df_expected: pd.DataFrame = df_before.iloc[ser_bool[~ser_bool].index.values, :]  # type:ignore
+    df_expected: pd.DataFrame = df_before.iloc[ser_bool[~ser_bool].index.values, :]
     df: DataFrame[Transaction] = dt.drop_by_bool(df_before, ser_bool, '', '')
     pd.testing.assert_frame_equal(df, df_expected)
 

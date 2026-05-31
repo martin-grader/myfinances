@@ -18,3 +18,6 @@ label_configs:
 
 rename_transactions_config: 'public/rename_transactions.yaml'
 drop_transactions_config: 'public/drop_transactions.yaml'
+drop_configs:
+  - 'public/deactivated_transactions.yaml'
+  - 'public/irrelevant_transactions.yaml'

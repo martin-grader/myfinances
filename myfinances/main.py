@@ -25,19 +25,14 @@ def main() -> None:
     configs_paths: Configs = to_config(Path(args.config), Configs)
 
     transactions_labled: DataFrame[TransactionLabeled] = get_labled_data(configs_paths)
-
-    monthly_costs: MonthlyCosts = MonthlyCosts(transactions_labled, 1)
-    for drop_config in configs_paths.drop_configs:
-        monthly_costs.drop_costs_by_config(drop_config)
-    for add_config in configs_paths.add_configs:
-        monthly_costs.add_costs_by_config(add_config)
+    monthly_costs: MonthlyCosts = prepare_transactions_state(transactions_labled, configs_paths)
 
     if args.dashboard:
         dashboard: Dashboard = Dashboard(monthly_costs)
         dashboard.run()
 
 
-def get_labled_data(configs_paths) -> DataFrame[TransactionLabeled]:
+def get_labled_data(configs_paths: Configs) -> DataFrame[TransactionLabeled]:
     transactions_all: DataFrame[Transaction] = load_data(configs_paths.inputs_config)
     transactions_renamed: DataFrame[Transaction] = rename_transactions(
         transactions_all, configs_paths.rename_transactions_config
@@ -49,6 +44,17 @@ def get_labled_data(configs_paths) -> DataFrame[TransactionLabeled]:
         transactions_relevant, configs_paths.label_configs
     )
     return transactions_labled
+
+
+def prepare_transactions_state(
+    transactions_labled: DataFrame[TransactionLabeled], configs_paths: Configs
+) -> MonthlyCosts:
+    monthly_costs: MonthlyCosts = MonthlyCosts(transactions_labled, 1)
+    for drop_config in configs_paths.drop_configs:
+        monthly_costs.drop_costs_by_config(drop_config)
+    for add_config in configs_paths.add_configs:
+        monthly_costs.add_costs_by_config(add_config)
+    return monthly_costs
 
 
 if __name__ == '__main__':

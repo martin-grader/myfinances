@@ -8,7 +8,7 @@ from pandera.typing import DataFrame
 from myfinances.config_utils import Configs, to_config
 from myfinances.drop_data import drop_data
 from myfinances.label_data import TransactionLabeled, set_all_labels
-from myfinances.main import get_labled_data
+from myfinances.main import get_labled_data, prepare_transactions_state
 from myfinances.monthly_costs import MonthlyCosts
 from myfinances.parse_data import Transaction, load_data
 from myfinances.rename_transactions import rename_transactions
@@ -87,3 +87,11 @@ def test_set_all_labels(config_paths: Configs) -> None:
     )
     assert not transactions_labled[TransactionLabeled.Label].isna().any()
     assert not transactions_labled[TransactionLabeled.Sublabel].isna().any()
+
+
+def test_mask_costs(df_all_labels: DataFrame[TransactionLabeled], config_paths: Configs) -> None:
+    assert df_all_labels.loc[:, TransactionLabeled.Sublabel].str.contains('flowers').any()
+    monthly_costs: MonthlyCosts = prepare_transactions_state(df_all_labels, config_paths)
+    df: DataFrame[TransactionLabeled] = monthly_costs.get_transactions()
+    assert not df.loc[:, TransactionLabeled.Sublabel].str.contains('flowers').any()
+    assert not df.loc[:, TransactionLabeled.Label].str.contains('transfers').any()

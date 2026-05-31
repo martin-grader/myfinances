@@ -7,7 +7,7 @@ from pandera.typing import DataFrame
 
 from myfinances.config_utils import Configs, to_config
 from myfinances.drop_data import drop_data
-from myfinances.label_data import TransactionLabeled
+from myfinances.label_data import TransactionLabeled, set_all_labels
 from myfinances.main import get_labled_data
 from myfinances.monthly_costs import MonthlyCosts
 from myfinances.parse_data import Transaction, load_data
@@ -62,7 +62,7 @@ def test_renamed_transactions(config_paths: Configs, old_text: str, new_text: st
 
 
 @pytest.mark.parametrize('text', ['Eye exam', 'Flights to Berlin'])
-def test_drop_transactions(config_paths: Configs, text: str) -> None:
+def test_drop_data(config_paths: Configs, text: str) -> None:
     transactions_all: DataFrame[Transaction] = load_data(config_paths.inputs_config)
     rename_candidates: pd.Series = transactions_all[Transaction.Text].str.match(text)
     assert rename_candidates.any()
@@ -70,3 +70,20 @@ def test_drop_transactions(config_paths: Configs, text: str) -> None:
         transactions_all, config_paths.drop_transactions_config
     )
     assert not transactions_dropped[Transaction.Text].str.fullmatch(text).any()
+
+
+def test_set_all_labels(config_paths: Configs) -> None:
+    transactions_all: DataFrame[Transaction] = load_data(config_paths.inputs_config)
+    assert TransactionLabeled.Label not in transactions_all.columns
+    assert TransactionLabeled.Sublabel not in transactions_all.columns
+    transactions_all = transactions_all.loc[
+        transactions_all[TransactionLabeled.Text] != 'Fuel station'
+    ]
+    transactions_all = transactions_all.loc[
+        transactions_all[TransactionLabeled.Text] != 'Fuel station refund'
+    ]
+    transactions_labled: DataFrame[TransactionLabeled] = set_all_labels(
+        transactions_all, config_paths.label_configs
+    )
+    assert not transactions_labled[TransactionLabeled.Label].isna().any()
+    assert not transactions_labled[TransactionLabeled.Sublabel].isna().any()

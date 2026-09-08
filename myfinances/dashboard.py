@@ -959,6 +959,7 @@ class Dashboard:
         return is_open
 
     def run(self) -> None:
+        # self.app.run()
         self.app.run(debug=True)
 
 

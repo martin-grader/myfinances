@@ -10,7 +10,7 @@ authors = ["Martin Grader <martingrader@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.14"
 pandas = "^2.2.3"
 numpy = "^2.1.2"
 matplotlib = "^3.9.2"
@@ -21,8 +21,8 @@ pydantic = "^2.9.2"
 pyyaml = "^6.0.2"
 requests = "^2.32.3"
 hypothesis = "^6.123.7"
-dash = "^4.1.0"
-dash-bootstrap-components = "^1.7.1"
+dash = "^3.3.0"
+dash-bootstrap-components = "^2.0.4"
 dash-bootstrap-templates = "^2.1.0"
 
 [tool.poetry.group.dev.dependencies]
